@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { addCostume, addCustomCategory, slugify } from '../core/events';
-import { addSpecies, editSpecies } from '../core/ops';
+import { addSpecies, editSpecies, mergeSpeciesTable } from '../core/ops';
+import seed from '../data/species.json';
 import type { Collection, GenderRule, Species } from '../core/types';
 import { useCollection } from './context';
 
@@ -187,16 +188,42 @@ function NewCategoryForm() {
   );
 }
 
+const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const PAGE = 100;
+
 export function SpeciesTable() {
   const { collection: c } = useCollection();
   const { run, error } = useSafeUpdate();
   const [editing, setEditing] = useState<string | null>(null);
-  const list = [...c.species].sort((a, b) => a.dex - b.dex || a.name.localeCompare(b.name));
+  const [search, setSearch] = useState('');
+  const [message, setMessage] = useState('');
+  const [limit, setLimit] = useState(PAGE);
+  const term = norm(search.trim());
+  const matching = [...c.species]
+    .sort((a, b) => a.dex - b.dex || a.name.localeCompare(b.name))
+    .filter((s) => !term || norm(s.name).includes(term) || String(s.dex) === term.replace(/^0+/, ''));
+  const list = matching.slice(0, limit);
   const byId = new Map(c.species.map((s) => [s.id, s]));
+
+  function updateTable() {
+    let added = 0;
+    const ok = run((col) => {
+      const next = mergeSpeciesTable(col, seed as Species[]);
+      added = next.species.length - col.species.length;
+      return next;
+    });
+    if (ok) setMessage(`Tabela atualizada: ${added} espécies novas.`);
+  }
 
   return (
     <section>
       {error && <p role="alert" className="error">{error}</p>}
+      <div className="toolbar">
+        <input type="search" aria-label="Buscar espécie" placeholder="Nome ou Nº" value={search} onChange={(e) => { setSearch(e.target.value); setLimit(PAGE); }} />
+        <button type="button" onClick={updateTable}>Atualizar tabela de espécies</button>
+      </div>
+      {message && <p>{message}</p>}
+      <p className="muted">{matching.length} espécie(s)</p>
       <table>
         <thead>
           <tr>
@@ -230,6 +257,9 @@ export function SpeciesTable() {
           ))}
         </tbody>
       </table>
+      {matching.length > list.length && (
+        <button type="button" onClick={() => setLimit(limit + PAGE)}>Mostrar mais ({matching.length - list.length})</button>
+      )}
       {editing && byId.get(editing) && <SpeciesEditor key={editing} sp={byId.get(editing)!} onDone={() => setEditing(null)} />}
       <div className="forms">
         <NewCostumeForm />

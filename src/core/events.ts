@@ -9,15 +9,27 @@ export function slugify(name: string): string {
   return normalize(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
+// Símbolos que aparecem sozinhos em nomes (ex.: Unown "!" e "?").
+const SYMBOL_NAMES: Record<string, string> = { '!': 'EXCLAMACAO', '?': 'INTERROGACAO' };
+
 /** Código curto e legível a partir de um nome; com colisão, troca o fim por um número. */
 export function makeCode(name: string, taken: string[], length = 4): string {
-  const base = normalize(name).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, length) || 'X';
+  const letters = normalize(name).toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const base = (letters || SYMBOL_NAMES[name.trim()] || 'X').slice(0, length);
   if (!taken.includes(base)) return base;
   for (let n = 2; ; n++) {
     const suffix = String(n);
     const code = base.slice(0, length - suffix.length) + suffix;
     if (!taken.includes(code)) return code;
   }
+}
+
+// "T" + código vira o ID da vaga do traje: o código "N" daria "TN", que já é "não sortudo".
+const RESERVED_COSTUME_CODES = ['N'];
+
+/** Código de traje que não colide com os da espécie nem com vagas fixas. */
+export function costumeCode(name: string, taken: string[]): string {
+  return makeCode(name, [...taken, ...RESERVED_COSTUME_CODES]);
 }
 
 /** Registra em `openedSlots` as vagas que existem em `after` e não existiam em `before`. */
@@ -41,7 +53,7 @@ export function addCostume(
   const id = t.costumeId ?? slugify(t.name);
   const next = updateSpecies(c, speciesId, (s) => {
     if (s.costumes.some((x) => x.id === id)) return s;
-    const code = makeCode(t.name, s.costumes.map((x) => x.code));
+    const code = costumeCode(t.name, s.costumes.map((x) => x.code));
     return { ...s, costumes: [...s.costumes, { id, code, name: t.name, shiny: t.shiny, ...(t.since ? { since: t.since } : {}) }] };
   });
   return trackNewSlots(c, next);

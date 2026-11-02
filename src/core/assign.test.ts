@@ -182,3 +182,14 @@ describe('IDs e renomeação', () => {
     expect(pend).toContainEqual({ exemplarId: b.id, from: null, to: '0026EV' });
   });
 });
+
+describe('desempenho', () => {
+  it('tabela grande (~1.300 espécies) com centenas de exemplares calcula rápido', () => {
+    const big = Array.from({ length: 1300 }, (_, i) => species({ id: `s${i}`, name: `S${i}`, dex: i + 1 }));
+    const exemplars = Array.from({ length: 400 }, (_, i) => ex({ speciesId: `s${i * 3}`, iv: iv(i % 100) }));
+    const t0 = performance.now();
+    const r = computeCollection(collection({ species: big, exemplars }));
+    expect(performance.now() - t0).toBeLessThan(1500);
+    expect(Object.values(r.exemplars).every((e) => e.status === 'manter')).toBe(true);
+  });
+});

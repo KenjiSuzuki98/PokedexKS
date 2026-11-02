@@ -6,6 +6,7 @@ import {
   addSpecies,
   confirmRename,
   editSpecies,
+  mergeSpeciesTable,
   exemplarWarnings,
   removeExemplar,
   replaceExemplar,
@@ -98,5 +99,54 @@ describe('tabela de espécies', () => {
     c = addEvent(c, { id: 'e', name: 'E', start: '2026-01-01', end: '2026-01-02', description: '', active: false, brings: { forms: [{ speciesId: 'raichu', form: 'gigamax' }] } });
     c = activateEvent(c, 'e').collection;
     expect(c.openedSlots).toContain('0026GX');
+  });
+});
+
+describe('mergeSpeciesTable', () => {
+  const incoming = () => [
+    species({ id: 'pichu', name: 'Pichu', dex: 172, shiny: true, base: { atk: 77, def: 53, sta: 85 } }),
+    species({
+      id: 'pikachu', name: 'Pikachu', dex: 25, evolvesFrom: 'pichu', shiny: true, gigamax: true,
+      base: { atk: 112, def: 96, sta: 111 }, costumes: [{ id: 'pikachu-festa', code: 'FEST', name: 'Festa', shiny: true }],
+    }),
+    species({ id: 'raichu', name: 'Raichu', dex: 26, evolvesFrom: 'pikachu', shiny: true, base: { atk: 193, def: 151, sta: 155 } }),
+    species({ id: 'raichu-alola', name: 'Raichu de Alola', dex: 26, form: 'A', evolvesFrom: 'pikachu' }),
+  ];
+
+  it('acrescenta espécies, fantasias e marcações sem mudar IDs de vaga existentes', () => {
+    const before = collection({ exemplars: [ex({ speciesId: 'raichu', iv: iv(90) })] });
+    const after = mergeSpeciesTable(before, incoming());
+    const ids = (c: typeof before) => computeCollection(c).slots.map((s) => s.id);
+    expect(ids(after)).toEqual(expect.arrayContaining(ids(before)));
+    expect(ids(after)).toEqual(expect.arrayContaining(['0026AEV', '0025GX', '0025TFEST', '0025BTFEST']));
+    expect(after.exemplars).toEqual(before.exemplars);
+  });
+
+  it('atualiza atributos base, mas nunca desliga marcações nem remove fantasias', () => {
+    const mine = collection({
+      species: collection().species.map((s) =>
+        s.id === 'raichu' ? { ...s, mega: true, base: { atk: 1, def: 1, sta: 1 }, costumes: [{ id: 'minha', code: 'MINH', name: 'Minha', shiny: false }] } : s,
+      ),
+    });
+    const raichu = mergeSpeciesTable(mine, incoming()).species.find((s) => s.id === 'raichu')!;
+    expect(raichu.mega).toBe(true);
+    expect(raichu.base).toEqual({ atk: 193, def: 151, sta: 155 });
+    expect(raichu.costumes.map((t) => t.id)).toEqual(['minha']);
+  });
+
+  it('reconhece a espécie pelo Nº e forma quando o id é diferente', () => {
+    const c = mergeSpeciesTable(collection(), [species({ id: 'outro-id', name: 'Pikachu', dex: 25, gigamax: true })]);
+    expect(c.species.filter((s) => s.dex === 25)).toHaveLength(1);
+    expect(c.species.find((s) => s.id === 'pikachu')!.gigamax).toBe(true);
+  });
+
+  it('fantasia nova com código já usado na espécie ganha outro código', () => {
+    const mine = collection({
+      species: collection().species.map((s) =>
+        s.id === 'pikachu' ? { ...s, costumes: [{ id: 'minha', code: 'FEST', name: 'Festão', shiny: false }] } : s,
+      ),
+    });
+    const pika = mergeSpeciesTable(mine, incoming()).species.find((s) => s.id === 'pikachu')!;
+    expect(pika.costumes.map((t) => t.code)).toEqual(['FEST', 'FES2']);
   });
 });

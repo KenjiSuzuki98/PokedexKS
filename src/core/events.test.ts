@@ -10,6 +10,10 @@ describe('makeCode', () => {
   it('gera código curto, sem acento, em maiúsculas', () => {
     expect(makeCode('Chapéu de Festa', [])).toBe('CHAP');
   });
+  it('dá nome a símbolos que não viram letras', () => {
+    expect(makeCode('!', [])).toBe('EXCL');
+    expect(makeCode('?', [])).toBe('INTE');
+  });
   it('resolve colisão com sufixo numérico', () => {
     expect(makeCode('Chapéu', ['CHAP'])).toBe('CHA2');
     expect(makeCode('Chapéu', ['CHAP', 'CHA2'])).toBe('CHA3');
@@ -24,6 +28,13 @@ describe('trajes', () => {
     const a = slotIds(after);
     expect(a).toEqual(expect.arrayContaining(b));
     expect(a.filter((id) => !b.includes(id)).sort()).toEqual(['0025BTFEST', '0025TFEST']);
+  });
+
+  it('traje chamado "N" não colide com a vaga TN (troca normal)', () => {
+    const c = addCostume(collection(), 'pikachu', { name: 'N', shiny: false });
+    const ids = slotIds(c);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(c.species.find((s) => s.id === 'pikachu')!.costumes[0]!.code).not.toBe('N');
   });
 
   it('código do traje é gravado e não muda quando entra outro com nome parecido', () => {

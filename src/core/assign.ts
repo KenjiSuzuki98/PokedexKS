@@ -1,4 +1,4 @@
-import { depth, speciesMap } from './chain';
+import { chainRoot, depth, speciesMap } from './chain';
 import { generateSlots, matchesSlot } from './slots';
 import type { Collection, Exemplar, Slot, Species, Status } from './types';
 
@@ -72,27 +72,47 @@ export function computeCollection(c: Collection): CollectionResult {
   const byId = speciesMap(c);
   const slots = generateSlots(c);
   const slotsBySpecies = new Map<string, Slot[]>();
-  for (const s of slots) slotsBySpecies.set(s.speciesId, [...(slotsBySpecies.get(s.speciesId) ?? []), s]);
+  for (const s of slots) {
+    const list = slotsBySpecies.get(s.speciesId);
+    if (list) list.push(s);
+    else slotsBySpecies.set(s.speciesId, [s]);
+  }
 
-  const sorted = [...c.exemplars].sort(compareExemplars);
+  // Exemplares só disputam vagas da própria família: agrupa pela espécie base.
+  const rootOf = (speciesId: string) => {
+    const sp = byId.get(speciesId);
+    return sp ? chainRoot(sp, byId).id : speciesId;
+  };
+  const byRoot = new Map<string, Exemplar[]>();
+  for (const e of [...c.exemplars].sort(compareExemplars)) {
+    const root = rootOf(e.speciesId);
+    byRoot.set(root, [...(byRoot.get(root) ?? []), e]);
+  }
+
   const occupancy: Record<string, string | null> = {};
   const committed = new Map<string, string>();
   const won = new Map<string, Slot[]>();
   const eligibleFor = (phase: Species) =>
-    sorted.filter((e) => {
+    (byRoot.get(rootOf(phase.id)) ?? []).filter((e) => {
       const at = committed.get(e.id);
       return (at === undefined || at === phase.id) && canReach(e, phase, byId);
     });
 
   // Fases mais altas primeiro: o maior IV vai para a maior evolução.
-  // Entre ramos da mesma altura (Eevee), vai primeiro o ramo com menos candidatos,
-  // para a reserva ocupar um ramo livre em vez de tirar a vaga de quem já evoluiu.
-  const byDepth = new Map<number, Species[]>();
-  for (const sp of c.species) byDepth.set(depth(sp, byId), [...(byDepth.get(depth(sp, byId)) ?? []), sp]);
-  const depths = [...byDepth.keys()].sort((a, b) => b - a);
+  // Entre ramos da mesma altura e da mesma família (Eevee), vai primeiro o ramo com menos
+  // candidatos, para a reserva ocupar um ramo livre em vez de tirar a vaga de quem já evoluiu.
+  const groups = new Map<string, { depth: number; phases: Species[] }>();
+  for (const sp of c.species) {
+    const d = depth(sp, byId);
+    const key = `${d}|${rootOf(sp.id)}`;
+    const g = groups.get(key) ?? { depth: d, phases: [] };
+    g.phases.push(sp);
+    groups.set(key, g);
+  }
+  const ordered = [...groups.values()].sort((a, b) => b.depth - a.depth);
 
-  for (const d of depths) {
-    const pending = [...byDepth.get(d)!].sort((a, b) => a.id.localeCompare(b.id));
+  for (const g of ordered) {
+    const pending = [...g.phases].sort((a, b) => a.id.localeCompare(b.id));
     while (pending.length) {
       const counts = pending.map((p) => eligibleFor(p).length);
       const i = counts.indexOf(Math.min(...counts));

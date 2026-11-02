@@ -1,5 +1,5 @@
 import { validateSpeciesTable } from './chain';
-import { trackNewSlots, updateSpecies } from './events';
+import { costumeCode, trackNewSlots, updateSpecies } from './events';
 import type { Collection, Exemplar, Species } from './types';
 
 function findExemplar(c: Collection, id: string): Exemplar {
@@ -68,6 +68,48 @@ export function editSpecies(c: Collection, id: string, patch: Partial<Species>):
     if (k in patch) throw new Error(`"${k}" não pode ser editado: mudaria IDs de vaga. Cadastre outra espécie.`);
   }
   return trackNewSlots(c, assertValid(updateSpecies(c, id, (s) => ({ ...s, ...patch }))));
+}
+
+/**
+ * Atualiza a tabela de espécies com uma tabela nova (ex.: a embutida no app) sem perder nada:
+ * acrescenta espécies e fantasias, só liga marcações (nunca desliga) e atualiza atributos base.
+ * A espécie é reconhecida pelo id ou pelo Nº + forma; IDs de vaga existentes não mudam.
+ */
+export function mergeSpeciesTable(c: Collection, incoming: Species[]): Collection {
+  const key = (s: Pick<Species, 'dex' | 'form'>) => `${s.dex}:${s.form ?? ''}`;
+  const byId = new Map(c.species.map((s) => [s.id, s]));
+  const byKey = new Map(c.species.map((s) => [key(s), s]));
+  const finalId = new Map(incoming.map((s) => [s.id, (byId.get(s.id) ?? byKey.get(key(s)))?.id ?? s.id]));
+
+  const merged = new Map(c.species.map((s) => [s.id, s]));
+  for (const inc of incoming) {
+    const id = finalId.get(inc.id)!;
+    const evolvesFrom = inc.evolvesFrom ? finalId.get(inc.evolvesFrom) ?? inc.evolvesFrom : undefined;
+    const old = merged.get(id);
+    if (!old) {
+      merged.set(id, { ...inc, id, ...(evolvesFrom ? { evolvesFrom } : {}) });
+      continue;
+    }
+    const codes = old.costumes.map((t) => t.code);
+    const extra = inc.costumes
+      .filter((t) => !old.costumes.some((o) => o.id === t.id))
+      .map((t) => {
+        const code = codes.includes(t.code) ? costumeCode(t.name, codes) : t.code;
+        codes.push(code);
+        return { ...t, code };
+      });
+    merged.set(id, {
+      ...old,
+      ...(old.evolvesFrom || evolvesFrom ? { evolvesFrom: old.evolvesFrom ?? evolvesFrom } : {}),
+      shiny: old.shiny || inc.shiny,
+      mega: old.mega || inc.mega,
+      dynamax: old.dynamax || inc.dynamax,
+      gigamax: old.gigamax || inc.gigamax,
+      base: inc.base.atk ? inc.base : old.base,
+      costumes: [...old.costumes, ...extra],
+    });
+  }
+  return assertValid({ ...c, species: [...merged.values()] });
 }
 
 /** Marca as novas vagas abertas como vistas (todas, ou só as informadas). */

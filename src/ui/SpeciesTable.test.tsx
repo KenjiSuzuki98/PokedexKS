@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 import { screen, within } from '@testing-library/react';
 import { generateSlots } from '../core/slots';
-import { collection } from '../core/test-helpers';
+import { collection, ex, iv } from '../core/test-helpers';
+import seed from '../data/species.json';
 import { SpeciesTable } from './SpeciesTable';
 import { renderWith } from './test-utils';
 
@@ -71,5 +72,28 @@ describe('SpeciesTable', () => {
     await r.user.type(within(form).getByLabelText(/valores/i), 'Com chapéu:CH');
     await r.user.click(within(form).getByRole('button', { name: 'Criar categoria' }));
     expect(generateSlots(r.collection).map((s) => s.id)).toEqual(expect.arrayContaining(['0025CH', '0026CH', '0172CH']));
+  });
+});
+
+describe('atualizar tabela de espécies', () => {
+  it('acrescenta a tabela embutida no app sem perder exemplares', async () => {
+    const before = collection({ exemplars: [ex({ speciesId: 'raichu', iv: iv(90) })] });
+    const r = renderWith(<SpeciesTable />, before);
+    await r.user.click(screen.getByRole('button', { name: /atualizar tabela de espécies/i }));
+    expect(r.collection.species.length).toBeGreaterThanOrEqual(seed.length);
+    expect(r.collection.species.some((s) => s.id === 'bulbasaur')).toBe(true);
+    expect(r.collection.exemplars).toEqual(before.exemplars);
+    expect(screen.getByText(/espécies novas/i)).toBeInTheDocument();
+  });
+});
+
+describe('busca na tabela de espécies', () => {
+  it('filtra por nome ou Nº', async () => {
+    const r = renderWith(<SpeciesTable />);
+    await r.user.type(screen.getByRole('searchbox', { name: /buscar espécie/i }), 'rai');
+    expect(screen.getAllByRole('rowheader').map((h) => h.textContent)).toEqual(['Raichu']);
+    await r.user.clear(screen.getByRole('searchbox', { name: /buscar espécie/i }));
+    await r.user.type(screen.getByRole('searchbox', { name: /buscar espécie/i }), '172');
+    expect(screen.getAllByRole('rowheader').map((h) => h.textContent)).toEqual(['Pichu']);
   });
 });
