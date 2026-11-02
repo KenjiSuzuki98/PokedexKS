@@ -1,0 +1,469 @@
+[
+  {
+    "id": "bulbasaur",
+    "name": "Bulbasaur",
+    "dex": 1,
+    "gender": "ambos",
+    "shiny": true,
+    "mega": false,
+    "dynamax": true,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 118,
+      "def": 111,
+      "sta": 128
+    }
+  },
+  {
+    "id": "ivysaur",
+    "name": "Ivysaur",
+    "dex": 2,
+    "evolvesFrom": "bulbasaur",
+    "gender": "ambos",
+    "shiny": true,
+    "mega": false,
+    "dynamax": true,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 151,
+      "def": 143,
+      "sta": 155
+    }
+  },
+  {
+    "id": "venusaur",
+    "name": "Venusaur",
+    "dex": 3,
+    "evolvesFrom": "ivysaur",
+    "gender": "ambos",
+    "shiny": true,
+    "mega": true,
+    "dynamax": true,
+    "gigamax": true,
+    "costumes": [],
+    "base": {
+      "atk": 198,
+      "def": 189,
+      "sta": 190
+    }
+  },
+  {
+    "id": "charmander",
+    "name": "Charmander",
+    "dex": 4,
+    "gender": "ambos",
+    "shiny": true,
+    "mega": false,
+    "dynamax": true,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 116,
+      "def": 93,
+      "sta": 118
+    }
+  },
+  {
+    "id": "charmeleon",
+    "name": "Charmeleon",
+    "dex": 5,
+    "evolvesFrom": "charmander",
+    "gender": "ambos",
+    "shiny": true,
+    "mega": false,
+    "dynamax": true,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 158,
+      "def": 126,
+      "sta": 151
+    }
+  },
+  {
+    "id": "charizard",
+    "name": "Charizard",
+    "dex": 6,
+    "evolvesFrom": "charmeleon",
+    "gender": "ambos",
+    "shiny": true,
+    "mega": true,
+    "dynamax": true,
+    "gigamax": true,
+    "costumes": [],
+    "base": {
+      "atk": 223,
+      "def": 173,
+      "sta": 186
+    }
+  },
+  {
+    "id": "squirtle",
+    "name": "Squirtle",
+    "dex": 7,
+    "gender": "ambos",
+    "shiny": true,
+    "mega": false,
+    "dynamax": true,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 94,
+      "def": 121,
+      "sta": 127
+    }
+  },
+  {
+    "id": "wartortle",
+    "name": "Wartortle",
+    "dex": 8,
+    "evolvesFrom": "squirtle",
+    "gender": "ambos",
+    "shiny": true,
+    "mega": false,
+    "dynamax": true,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 126,
+      "def": 155,
+      "sta": 151
+    }
+  },
+  {
+    "id": "blastoise",
+    "name": "Blastoise",
+    "dex": 9,
+    "evolvesFrom": "wartortle",
+    "gender": "ambos",
+    "shiny": true,
+    "mega": true,
+    "dynamax": true,
+    "gigamax": true,
+    "costumes": [],
+    "base": {
+      "atk": 171,
+      "def": 207,
+      "sta": 188
+    }
+  },
+  {
+    "id": "pichu",
+    "name": "Pichu",
+    "dex": 172,
+    "gender": "ambos",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 77,
+      "def": 53,
+      "sta": 85
+    }
+  },
+  {
+    "id": "pikachu",
+    "name": "Pikachu",
+    "dex": 25,
+    "evolvesFrom": "pichu",
+    "gender": "ambos",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 112,
+      "def": 96,
+      "sta": 111
+    }
+  },
+  {
+    "id": "raichu",
+    "name": "Raichu",
+    "dex": 26,
+    "evolvesFrom": "pikachu",
+    "gender": "ambos",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 193,
+      "def": 151,
+      "sta": 155
+    }
+  },
+  {
+    "id": "nidoran-f",
+    "name": "Nidoran♀",
+    "dex": 29,
+    "gender": "femea",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 86,
+      "def": 89,
+      "sta": 146
+    }
+  },
+  {
+    "id": "nidorina",
+    "name": "Nidorina",
+    "dex": 30,
+    "evolvesFrom": "nidoran-f",
+    "gender": "femea",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 117,
+      "def": 120,
+      "sta": 172
+    }
+  },
+  {
+    "id": "nidoqueen",
+    "name": "Nidoqueen",
+    "dex": 31,
+    "evolvesFrom": "nidorina",
+    "gender": "femea",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 180,
+      "def": 173,
+      "sta": 207
+    }
+  },
+  {
+    "id": "nidoran-m",
+    "name": "Nidoran♂",
+    "dex": 32,
+    "gender": "macho",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 105,
+      "def": 76,
+      "sta": 130
+    }
+  },
+  {
+    "id": "nidorino",
+    "name": "Nidorino",
+    "dex": 33,
+    "evolvesFrom": "nidoran-m",
+    "gender": "macho",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 137,
+      "def": 111,
+      "sta": 156
+    }
+  },
+  {
+    "id": "nidoking",
+    "name": "Nidoking",
+    "dex": 34,
+    "evolvesFrom": "nidorino",
+    "gender": "macho",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 204,
+      "def": 156,
+      "sta": 191
+    }
+  },
+  {
+    "id": "magnemite",
+    "name": "Magnemite",
+    "dex": 81,
+    "gender": "sem",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 165,
+      "def": 121,
+      "sta": 93
+    }
+  },
+  {
+    "id": "magneton",
+    "name": "Magneton",
+    "dex": 82,
+    "evolvesFrom": "magnemite",
+    "gender": "sem",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 223,
+      "def": 169,
+      "sta": 137
+    }
+  },
+  {
+    "id": "magnezone",
+    "name": "Magnezone",
+    "dex": 462,
+    "evolvesFrom": "magneton",
+    "gender": "sem",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 238,
+      "def": 205,
+      "sta": 172
+    }
+  },
+  {
+    "id": "happiny",
+    "name": "Happiny",
+    "dex": 440,
+    "gender": "femea",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 25,
+      "def": 77,
+      "sta": 225
+    }
+  },
+  {
+    "id": "chansey",
+    "name": "Chansey",
+    "dex": 113,
+    "evolvesFrom": "happiny",
+    "gender": "femea",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 60,
+      "def": 128,
+      "sta": 487
+    }
+  },
+  {
+    "id": "blissey",
+    "name": "Blissey",
+    "dex": 242,
+    "evolvesFrom": "chansey",
+    "gender": "femea",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 129,
+      "def": 169,
+      "sta": 496
+    }
+  },
+  {
+    "id": "eevee",
+    "name": "Eevee",
+    "dex": 133,
+    "gender": "ambos",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 104,
+      "def": 114,
+      "sta": 146
+    }
+  },
+  {
+    "id": "vaporeon",
+    "name": "Vaporeon",
+    "dex": 134,
+    "evolvesFrom": "eevee",
+    "gender": "ambos",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 205,
+      "def": 161,
+      "sta": 277
+    }
+  },
+  {
+    "id": "jolteon",
+    "name": "Jolteon",
+    "dex": 135,
+    "evolvesFrom": "eevee",
+    "gender": "ambos",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 232,
+      "def": 182,
+      "sta": 163
+    }
+  },
+  {
+    "id": "flareon",
+    "name": "Flareon",
+    "dex": 136,
+    "evolvesFrom": "eevee",
+    "gender": "ambos",
+    "shiny": true,
+    "mega": false,
+    "dynamax": false,
+    "gigamax": false,
+    "costumes": [],
+    "base": {
+      "atk": 246,
+      "def": 179,
+      "sta": 163
+    }
+  }
+]
