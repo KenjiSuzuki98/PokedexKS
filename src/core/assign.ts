@@ -138,7 +138,8 @@ export function computeCollection(c: Collection): CollectionResult {
     const phaseId = committed.get(e.id);
     const traded = e.origin === 'troca' || e.lucky;
     const status: Status = mine.length > 0 ? 'manter' : traded ? 'descartar' : 'trocar';
-    const best = [...mine].sort((a, b) => nicknameRank(a) - nicknameRank(b))[0];
+    // Apelido fixo: se o exemplar já foi renomeado e ainda ocupa aquela vaga, não pede outra renomeação.
+    const best = mine.find((s) => s.id === e.nickname) ?? [...mine].sort((a, b) => nicknameRank(a) - nicknameRank(b))[0];
     const nickname = best?.id ?? null;
     exemplars[e.id] = {
       exemplarId: e.id,

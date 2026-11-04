@@ -1,131 +1,178 @@
 // @vitest-environment jsdom
-import { screen } from '@testing-library/react';
-import { calculateIV, toIV } from '../core/iv/calc';
+import { screen, within } from '@testing-library/react';
 import { collection, ex, pichuLine, species } from '../core/test-helpers';
 import { ExemplarForm } from './ExemplarForm';
 import { renderWith } from './test-utils';
 
-async function fillDate(user: ReturnType<typeof renderWith>['user'], value: string) {
-  const input = screen.getByLabelText('Data');
+const table = [
+  ...pichuLine,
+  species({ id: 'raichu-alola', name: 'Raichu de Alola', dex: 26, form: 'A', evolvesFrom: 'pikachu', shiny: true }),
+  species({ id: 'magnemite', name: 'Magnemite', dex: 81, gender: 'sem' }),
+  species({ id: 'chansey', name: 'Chansey', dex: 113, gender: 'femea' }),
+];
+const base = (over = {}) => collection({ species: table, ...over });
+const auto = (name: string) => screen.getByRole('status', { name });
+
+async function pick(user: ReturnType<typeof renderWith>['user'], text: string) {
+  const input = screen.getByRole('combobox', { name: 'Pokémon' });
   await user.clear(input);
-  await user.type(input, value);
+  await user.type(input, text);
 }
+async function stats(user: ReturnType<typeof renderWith>['user'], atk: string, def: string, sta: string) {
+  for (const [label, v] of [['ATK', atk], ['DEF', def], ['PS', sta]] as const) {
+    await user.clear(screen.getByLabelText(label));
+    await user.type(screen.getByLabelText(label), v);
+  }
+}
+const save = (user: ReturnType<typeof renderWith>['user']) => user.click(screen.getByRole('button', { name: 'Salvar' }));
 
 describe('ExemplarForm', () => {
-  it('cadastra um exemplar novo', async () => {
-    const onDone = vi.fn();
-    const r = renderWith(<ExemplarForm onDone={onDone} />);
-    const { user } = r;
-    await user.selectOptions(screen.getByLabelText('Espécie'), 'Pikachu');
-    await user.type(screen.getByLabelText('CP'), '812');
-    await user.type(screen.getByLabelText('IV'), '96% 15/14/14');
-    await user.selectOptions(screen.getByLabelText('Origem'), 'troca');
-    await fillDate(user, '2026-05-01');
-    await user.selectOptions(screen.getByLabelText('Sexo'), 'femea');
-    await user.selectOptions(screen.getByLabelText('Tamanho'), 'xxl');
-    await user.click(screen.getByLabelText('Brilhante'));
-    await user.type(screen.getByLabelText('Notas'), 'do evento');
-    await user.click(screen.getByRole('button', { name: 'Salvar' }));
+  it('nome ou Nº preenchem sozinhos Nº Pokédex e Região', async () => {
+    const { user } = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(user, 'pikachu');
+    expect(auto('Nº Pokédex')).toHaveTextContent('0025');
+    expect(auto('Região')).toHaveTextContent('Kanto');
+    await pick(user, '172');
+    expect(auto('Nº Pokédex')).toHaveTextContent('0172');
+    expect(auto('Região')).toHaveTextContent('Johto');
+  });
 
-    expect(r.collection.exemplars).toHaveLength(1);
+  it('sem PC e sem data de captura', () => {
+    renderWith(<ExemplarForm onDone={() => {}} />, base());
+    expect(screen.queryByLabelText(/^(CP|PC)$/)).toBeNull();
+    expect(screen.queryByLabelText('Data')).toBeNull();
+  });
+
+  it('ATK/DEF/PS calculam o IV % como no jogo e são salvos', async () => {
+    const onDone = vi.fn();
+    const r = renderWith(<ExemplarForm onDone={onDone} />, base());
+    await pick(r.user, 'Raichu');
+    await stats(r.user, '15', '14', '14');
+    expect(auto('IV %')).toHaveTextContent('96');
+    await save(r.user);
     const e = r.collection.exemplars[0]!;
-    expect(e).toMatchObject({
-      speciesId: 'pikachu', cp: 812, iv: { atk: 15, def: 14, sta: 14, percent: 96 }, origin: 'troca',
-      date: '2026-05-01', sex: 'femea', size: 'xxl', shiny: true, lucky: false, rocket: 'normal', notes: 'do evento',
-    });
+    expect(e).toMatchObject({ speciesId: 'raichu', iv: { atk: 15, def: 14, sta: 14, percent: 96 }, origin: 'capturado' });
+    expect(e.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     expect(onDone).toHaveBeenCalledWith(e.id);
   });
 
-  it('busca de espécie filtra a lista', async () => {
-    const { user } = renderWith(<ExemplarForm onDone={() => {}} />);
-    await user.type(screen.getByLabelText('Buscar espécie'), 'rai');
-    expect(screen.getAllByRole('option', { name: /Raichu|Pichu|Pikachu/ }).map((o) => o.textContent)).toEqual(['Raichu']);
-  });
-
-  it('a espécie salva é a que aparece selecionada depois da busca', async () => {
-    const r = renderWith(<ExemplarForm onDone={() => {}} />);
-    await r.user.type(screen.getByLabelText('Buscar espécie'), 'rai');
-    await r.user.click(screen.getByRole('button', { name: 'Salvar' }));
-    expect(r.collection.exemplars[0]!.speciesId).toBe('raichu');
-  });
-
-  it('IV inconsistente avisa com o valor calculado e não salva', async () => {
-    const r = renderWith(<ExemplarForm onDone={() => {}} />);
-    await r.user.type(screen.getByLabelText('IV'), '90% 15/14/14');
-    await r.user.click(screen.getByRole('button', { name: 'Salvar' }));
-    expect(screen.getByRole('alert')).toHaveTextContent('96%');
+  it('valor fora de 0–15 avisa e não salva', async () => {
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(r.user, 'Raichu');
+    await stats(r.user, '16', '1', '1');
+    await save(r.user);
+    expect(screen.getByRole('alert')).toHaveTextContent(/0 a 15/);
     expect(r.collection.exemplars).toEqual([]);
   });
 
-  it('só a porcentagem é aceita e fica como IV sem detalhe', async () => {
-    const r = renderWith(<ExemplarForm onDone={() => {}} />);
-    await r.user.type(screen.getByLabelText('IV'), '82');
-    await r.user.click(screen.getByRole('button', { name: 'Salvar' }));
-    expect(r.collection.exemplars[0]!.iv).toEqual({ percent: 82, noDetail: true });
+  it('botões de sexo, tamanho e Rocket; marcadores de brilhante, Dinamax e Gigamax', async () => {
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(r.user, 'Raichu');
+    await r.user.click(within(screen.getByRole('group', { name: 'Sexo' })).getByRole('button', { name: 'Fêmea' }));
+    await r.user.click(within(screen.getByRole('group', { name: 'Tamanho' })).getByRole('button', { name: 'XXL' }));
+    await r.user.click(within(screen.getByRole('group', { name: 'Rocket' })).getByRole('button', { name: 'Sombroso' }));
+    await r.user.click(screen.getByLabelText('Brilhante'));
+    await r.user.click(screen.getByLabelText('Gigamax'));
+    expect(within(screen.getByRole('group', { name: 'Tamanho' })).getByRole('button', { name: 'XXL' })).toHaveAttribute('aria-pressed', 'true');
+    await save(r.user);
+    expect(r.collection.exemplars[0]).toMatchObject({ sex: 'femea', size: 'xxl', rocket: 'sombroso', shiny: true, gigamax: true });
   });
 
-  it('edita um exemplar existente mantendo o id', async () => {
-    const e = ex({ speciesId: 'raichu', cp: 1000, iv: { atk: 10, def: 10, sta: 10, percent: 67 } });
-    const r = renderWith(<ExemplarForm exemplarId={e.id} onDone={() => {}} />, collection({ exemplars: [e] }));
-    expect(screen.getByLabelText('IV')).toHaveValue('67% 10/10/10');
-    await r.user.clear(screen.getByLabelText('CP'));
-    await r.user.type(screen.getByLabelText('CP'), '1100');
-    await r.user.click(screen.getByRole('button', { name: 'Salvar' }));
-    expect(r.collection.exemplars).toEqual([{ ...e, cp: 1100 }]);
+  it('sortudo marca sozinho "recebido em troca"', async () => {
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(r.user, 'Raichu');
+    await r.user.click(screen.getByLabelText('Sortudo'));
+    expect(screen.getByLabelText('Recebido em troca')).toBeChecked();
+    expect(screen.getByLabelText('Recebido em troca')).toBeDisabled();
+    await save(r.user);
+    expect(r.collection.exemplars[0]).toMatchObject({ lucky: true, origin: 'troca' });
   });
 
-  it('espécie sem gênero não pede sexo', async () => {
-    const c = collection({ species: [...pichuLine, species({ id: 'magnemite', name: 'Magnemite', dex: 81, gender: 'sem' })] });
-    const r = renderWith(<ExemplarForm onDone={() => {}} />, c);
-    await r.user.selectOptions(screen.getByLabelText('Espécie'), 'Magnemite');
-    expect(screen.queryByLabelText('Sexo')).toBeNull();
-    await r.user.click(screen.getByRole('button', { name: 'Salvar' }));
-    expect(r.collection.exemplars[0]!.sex).toBeNull();
+  it('ID preenchido sozinho: a vaga que ele vai ocupar, ou "fora da Pokédex"', async () => {
+    const best = ex({ speciesId: 'raichu', iv: { atk: 15, def: 15, sta: 15, percent: 100 } });
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(r.user, 'Raichu');
+    expect(auto('ID')).toHaveTextContent('0026EV');
+    r.unmount();
+    const r2 = renderWith(<ExemplarForm onDone={() => {}} />, base({ exemplars: [best] }));
+    await pick(r2.user, 'Raichu');
+    await stats(r2.user, '1', '1', '1');
+    expect(auto('ID')).toHaveTextContent(/fora da pokédex.*troca/i);
+    await r2.user.click(screen.getByLabelText('Brilhante'));
+    expect(auto('ID')).toHaveTextContent('0026BR');
+  });
+
+  it('espécie sem gênero ou de um sexo só', async () => {
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(r.user, 'Magnemite');
+    expect(within(screen.getByRole('group', { name: 'Sexo' })).getByRole('button', { name: 'Macho' })).toBeDisabled();
+    await save(r.user);
+    await pick(r.user, 'Chansey');
+    await save(r.user);
+    expect(r.collection.exemplars.map((e) => e.sex)).toEqual([null, 'femea']);
+  });
+
+  it('variação lista as formas do mesmo Nº', async () => {
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(r.user, 'Raichu');
+    const variation = screen.getByLabelText('Variação');
+    expect(within(variation).getAllByRole('option').map((o) => o.textContent)).toEqual(['Raichu', 'Raichu de Alola', 'nova variação…']);
+    await r.user.selectOptions(variation, 'raichu-alola');
+    expect(auto('Nº Pokédex')).toHaveTextContent('0026A');
+    await save(r.user);
+    expect(r.collection.exemplars[0]!.speciesId).toBe('raichu-alola');
+  });
+
+  it('cadastra variação nova na hora', async () => {
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(r.user, 'Pikachu');
+    await r.user.selectOptions(screen.getByLabelText('Variação'), '__novo');
+    await r.user.type(screen.getByLabelText('Nome da nova variação'), 'Libre');
+    await save(r.user);
+    const created = r.collection.species.find((s) => s.name === 'Pikachu (Libre)')!;
+    expect(created).toMatchObject({ dex: 25, evolvesFrom: 'pichu' });
+    expect(created.form).toBeTruthy();
+    expect(r.collection.exemplars[0]!.speciesId).toBe(created.id);
+  });
+
+  it('cadastra traje novo na hora (com brilhante)', async () => {
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(r.user, 'Pikachu');
+    await r.user.selectOptions(screen.getByLabelText('Traje'), '__novo');
+    await r.user.type(screen.getByLabelText('Nome do traje novo'), 'Festa');
+    await r.user.click(screen.getByLabelText('Traje tem brilhante'));
+    await save(r.user);
+    const pika = r.collection.species.find((s) => s.id === 'pikachu')!;
+    expect(pika.costumes).toEqual([expect.objectContaining({ name: 'Festa', shiny: true })]);
+    expect(r.collection.exemplars[0]!.costumeId).toBe(pika.costumes[0]!.id);
   });
 
   it('cadastra fundo novo na hora', async () => {
-    const r = renderWith(<ExemplarForm onDone={() => {}} />);
-    await r.user.selectOptions(screen.getByLabelText('Espécie'), 'Pikachu');
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(r.user, 'Pikachu');
     await r.user.selectOptions(screen.getByLabelText('Fundo'), '__novo');
     await r.user.type(screen.getByLabelText('Nome do fundo novo'), 'Paris');
     await r.user.selectOptions(screen.getByLabelText('Tipo do fundo'), 'localidade');
-    await r.user.click(screen.getByRole('button', { name: 'Salvar' }));
+    await save(r.user);
     expect(r.collection.backgrounds).toEqual([expect.objectContaining({ name: 'Paris', code: 'L1', species: ['pikachu'] })]);
     expect(r.collection.exemplars[0]!.backgroundId).toBe(r.collection.backgrounds[0]!.id);
   });
 
-  it('mostra avisos de inconsistência', async () => {
-    const { user } = renderWith(<ExemplarForm onDone={() => {}} />);
-    await user.click(screen.getByLabelText('Sortudo'));
-    expect(screen.getByText(/sortudo sempre vem de troca/i)).toBeInTheDocument();
+  it('Pokémon desconhecido avisa e não salva', async () => {
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(r.user, 'Agumon');
+    await save(r.user);
+    expect(screen.getByRole('alert')).toHaveTextContent(/escolha o pokémon/i);
+    expect(r.collection.exemplars).toEqual([]);
   });
 
-  it('calculadora de IV preenche o IV a partir de CP, PS e poeira', async () => {
-    const r = renderWith(<ExemplarForm onDone={() => {}} />);
-    const { user } = r;
-    await user.selectOptions(screen.getByLabelText('Espécie'), 'Pikachu');
-    await user.type(screen.getByLabelText('CP'), '536');
-    await user.click(screen.getByRole('button', { name: /calcular iv/i }));
-    await user.type(screen.getByLabelText('PS'), '75');
-    await user.type(screen.getByLabelText('Poeira'), '2500');
-    const expected = calculateIV({ base: pichuLine[1]!.base, cp: 536, hp: 75, dust: 2500, poweredUp: false });
-    expect(screen.getByText(new RegExp(`${expected.min}% a ${expected.max}%`))).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: /usar resultado/i }));
-    await user.click(screen.getByRole('button', { name: 'Salvar' }));
-    expect(r.collection.exemplars[0]!.iv).toEqual(toIV(expected));
-  });
-
-  it('refino pela avaliação reduz a faixa', async () => {
-    const { user } = renderWith(<ExemplarForm onDone={() => {}} />);
-    await user.selectOptions(screen.getByLabelText('Espécie'), 'Pikachu');
-    await user.type(screen.getByLabelText('CP'), '500');
-    await user.click(screen.getByRole('button', { name: /calcular iv/i }));
-    await user.type(screen.getByLabelText('PS'), '72');
-    await user.type(screen.getByLabelText('Poeira'), '2500');
-    await user.click(screen.getByLabelText('Já fortalecido'));
-    const before = screen.getByText(/combinações/).textContent!;
-    await user.selectOptions(screen.getByLabelText('Estrelas'), '3');
-    await user.selectOptions(screen.getByLabelText('Barras de ataque'), '3');
-    expect(screen.getByText(/combinações/).textContent).not.toBe(before);
+  it('edita um exemplar existente mantendo id, data e PC antigos', async () => {
+    const e = ex({ speciesId: 'raichu', cp: 1000, date: '2025-01-01', iv: { atk: 10, def: 10, sta: 10, percent: 67 } });
+    const r = renderWith(<ExemplarForm exemplarId={e.id} onDone={() => {}} />, base({ exemplars: [e] }));
+    expect(screen.getByRole('combobox', { name: 'Pokémon' })).toHaveValue('Raichu');
+    expect(screen.getByLabelText('ATK')).toHaveValue(10);
+    await stats(r.user, '15', '10', '10');
+    await save(r.user);
+    expect(r.collection.exemplars).toEqual([{ ...e, iv: { atk: 15, def: 10, sta: 10, percent: 78 } }]);
   });
 });

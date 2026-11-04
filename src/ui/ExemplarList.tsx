@@ -3,9 +3,11 @@ import { filterExemplars, sortExemplars, type AttrKey, type Filter, type SortCri
 import type { Collection, Exemplar, Status } from '../core/types';
 import { useCollection } from './context';
 import { CopyButton } from './CopyButton';
-import { ATTR_LABELS, formatIV, formatStats, speciesName } from './format';
+import { ATTR_LABELS, dexLabel, formatIV, formatStats, speciesName } from './format';
 
-const KEYS = Object.keys(ATTR_LABELS) as AttrKey[];
+// PC e data mudam o tempo todo e não interessam para a coleção.
+const KEYS = (Object.keys(ATTR_LABELS) as AttrKey[]).filter((k) => k !== 'cp' && k !== 'data');
+const OUT_LABEL: Record<Status, string> = { manter: '', trocar: 'Fora da Pokédex — troca', descartar: 'Fora da Pokédex — descarte' };
 // Atributos com poucos valores, bons para filtro por valor.
 const FILTER_KEYS: AttrKey[] = ['cadeia', 'especie', 'origem', 'sexo', 'tamanho', 'brilhante', 'sortudo', 'rocket', 'traje', 'fundo', 'evento'];
 
@@ -32,7 +34,7 @@ function attrText(c: Collection, e: Exemplar, key: AttrKey): string {
   }
 }
 
-export function ExemplarList({ status, onOpen }: { status?: Status; onOpen: (id: string) => void }) {
+export function ExemplarList({ onOpen }: { onOpen: (id: string) => void }) {
   const { collection: c, result: r } = useCollection();
   const [text, setText] = useState('');
   const [sort1, setSort1] = useState<SortCriterion>({ key: 'evolucao', dir: 'asc' });
@@ -48,12 +50,11 @@ export function ExemplarList({ status, onOpen }: { status?: Status; onOpen: (id:
 
   const list = useMemo(() => {
     const filters: Filter[] = [];
-    const st = status ?? statusFilter;
-    if (st) filters.push({ key: 'status', value: st });
+    if (statusFilter) filters.push({ key: 'status', value: statusFilter });
     let items = filterExemplars(c, r, c.exemplars, { filters, text });
     if (attr && attrValue !== '') items = items.filter((e) => attrText(c, e, attr) === attrValue);
     return sortExemplars(c, r, items, sort2 ? [sort1, sort2] : [sort1]);
-  }, [c, r, status, statusFilter, text, attr, attrValue, sort1, sort2]);
+  }, [c, r, statusFilter, text, attr, attrValue, sort1, sort2]);
 
   return (
     <section>
@@ -86,17 +87,15 @@ export function ExemplarList({ status, onOpen }: { status?: Status; onOpen: (id:
             <option value="desc">decrescente</option>
           </select>
         </label>
-        {!status && (
-          <label>
-            Filtrar status
-            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as Status | '')}>
-              <option value="">todos</option>
-              <option value="manter">manter</option>
-              <option value="trocar">trocar</option>
-              <option value="descartar">descartar</option>
-            </select>
-          </label>
-        )}
+        <label>
+          Filtrar status
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as Status | '')}>
+            <option value="">todos</option>
+            <option value="manter">na Pokédex</option>
+            <option value="trocar">fora: troca</option>
+            <option value="descartar">fora: descarte</option>
+          </select>
+        </label>
         <label>
           Filtrar por
           <select value={attr} onChange={(e) => { setAttr(e.target.value as AttrKey | ''); setAttrValue(''); }}>
@@ -119,7 +118,7 @@ export function ExemplarList({ status, onOpen }: { status?: Status; onOpen: (id:
       <table>
         <thead>
           <tr>
-            <th>Espécie</th><th>CP</th><th>IV</th><th>Status</th><th>Renomear para</th>
+            <th>Espécie</th><th>Nº</th><th>IV</th><th>ID / situação</th>
           </tr>
         </thead>
         <tbody>
@@ -136,13 +135,9 @@ export function ExemplarList({ status, onOpen }: { status?: Status; onOpen: (id:
                   {e.lucky && <span className="tag" title="sortudo">S</span>}
                   {e.pendingFields?.length ? <span className="tag warn" title={`falta: ${e.pendingFields.join(', ')}`}>!</span> : null}
                 </td>
-                <td>{e.cp ?? '—'}</td>
+                <td>{dexLabel(c, e.speciesId)}</td>
                 <td>
                   <span>{formatIV(e)}</span> <small className="muted">{formatStats(e)}</small>
-                </td>
-                <td>
-                  <span className={`status ${res.status}`}>{res.status}</span>
-                  {res.reservedFor && <small className="muted"> aguardando evolução → {speciesName(c, res.reservedFor)}</small>}
                 </td>
                 <td>
                   {res.nickname ? (
@@ -150,8 +145,9 @@ export function ExemplarList({ status, onOpen }: { status?: Status; onOpen: (id:
                       <code>{res.nickname}</code> <CopyButton text={res.nickname} />
                     </>
                   ) : (
-                    '—'
+                    <span className={`status ${res.status}`}>{OUT_LABEL[res.status]}</span>
                   )}
+                  {res.reservedFor && <small className="muted"> aguardando evolução → {speciesName(c, res.reservedFor)}</small>}
                 </td>
               </tr>
             );

@@ -193,3 +193,34 @@ describe('desempenho', () => {
     expect(Object.values(r.exemplars).every((e) => e.status === 'manter')).toBe(true);
   });
 });
+
+describe('apelido fixo (renomear uma só vez)', () => {
+  it('exemplar já renomeado mantém o ID enquanto ainda ocupa aquela vaga, mesmo ganhando vaga mais rara', () => {
+    const a = ex({ speciesId: 'raichu', iv: iv(80), shiny: true, nickname: '0026EV' });
+    const b = ex({ speciesId: 'raichu', iv: iv(90), shiny: true, nickname: '0026BR' });
+    // b é melhor em tudo; a fica sem vaga
+    expect(run([a, b]).exemplars[a.id]!.slots).toEqual([]);
+    // sai b: a passa a ocupar EV e BR, mas o apelido continua 0026EV
+    const r = run([a]);
+    expect(r.exemplars[a.id]!.slots).toEqual(expect.arrayContaining(['0026EV', '0026BR']));
+    expect(r.exemplars[a.id]!.nickname).toBe('0026EV');
+    expect(r.renamePending).toEqual([]);
+  });
+
+  it('o substituto herda o ID de quem perdeu a vaga', () => {
+    const old = ex({ speciesId: 'raichu', iv: iv(80), nickname: '0026EV' });
+    const better = ex({ speciesId: 'raichu', iv: iv(95) });
+    const r = run([old, better]);
+    expect(r.exemplars[better.id]!.nickname).toBe('0026EV');
+    expect(r.exemplars[old.id]).toMatchObject({ status: 'trocar', nickname: null });
+  });
+
+  it('dois exemplares não recebem o mesmo apelido', () => {
+    // a está renomeado com EV mas agora b é melhor em EV; a só tem BR
+    const a = ex({ speciesId: 'raichu', iv: iv(80), shiny: true, nickname: '0026EV' });
+    const b = ex({ speciesId: 'raichu', iv: iv(95) });
+    const r = run([a, b]);
+    expect(r.exemplars[a.id]!.nickname).toBe('0026BR');
+    expect(r.exemplars[b.id]!.nickname).toBe('0026EV');
+  });
+});

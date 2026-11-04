@@ -11,14 +11,14 @@ import { RenamePending } from './RenamePending';
 import { SpeciesTable } from './SpeciesTable';
 import { Timeline } from './Timeline';
 
-const TABS = ['Meus Pokémon', 'Trocas', 'Descarte', 'Coleção', 'Renomeações', 'Espécies', 'Linha do tempo', 'Dados'] as const;
+const TABS = ['Coleção', 'Meus Pokémon', 'Renomeações', 'Espécies', 'Linha do tempo', 'Dados'] as const;
 type Tab = (typeof TABS)[number];
 
 type View = { kind: 'tab' } | { kind: 'detail'; id: string } | { kind: 'new' };
 
 function Shell() {
   const { result } = useCollection();
-  const [tab, setTab] = useState<Tab>('Meus Pokémon');
+  const [tab, setTab] = useState<Tab>('Coleção');
   const [view, setView] = useState<View>({ kind: 'tab' });
   const open = (id: string) => setView({ kind: 'detail', id });
   const pending = result.renamePending.length;
@@ -38,9 +38,7 @@ function Shell() {
       <section>
         <h2>{tab}</h2>
         {tab === 'Meus Pokémon' && <ExemplarList onOpen={open} />}
-        {tab === 'Trocas' && <ExemplarList status="trocar" onOpen={open} />}
-        {tab === 'Descarte' && <ExemplarList status="descartar" onOpen={open} />}
-        {tab === 'Coleção' && <CollectionProgress />}
+        {tab === 'Coleção' && <CollectionProgress onOpenExemplar={open} />}
         {tab === 'Renomeações' && <RenamePending onOpen={open} />}
         {tab === 'Espécies' && <SpeciesTable />}
         {tab === 'Linha do tempo' && <Timeline />}

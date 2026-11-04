@@ -16,20 +16,20 @@ const keep = ex({ speciesId: 'raichu', iv: iv(90) });
 const trade = ex({ speciesId: 'raichu', iv: iv(10) });
 
 describe('App', () => {
-  it('carrega a coleção e mostra Meus Pokémon', async () => {
+  it('abre na Coleção (página principal)', async () => {
     render(<App store={fakeStore(collection({ exemplars: [keep, trade] })).store} />);
-    expect(await screen.findByRole('heading', { name: 'Meus Pokémon' })).toBeInTheDocument();
-    expect(screen.getAllByRole('row')).toHaveLength(3);
+    expect(await screen.findByRole('heading', { name: 'Coleção' })).toBeInTheDocument();
+    expect(screen.getByRole('meter', { name: 'Geral' })).toBeInTheDocument();
   });
 
   it('navega entre as telas', async () => {
     const user = userEvent.setup();
     render(<App store={fakeStore(collection({ exemplars: [keep, trade] })).store} />);
     const nav = await screen.findByRole('navigation');
-    await user.click(within(nav).getByRole('button', { name: /^Trocas/ }));
-    expect(screen.getByRole('heading', { name: 'Trocas' })).toBeInTheDocument();
-    expect(screen.getAllByRole('row')).toHaveLength(2);
-    for (const tela of ['Descarte', 'Coleção', 'Renomeações', 'Espécies', 'Linha do tempo', 'Dados']) {
+    expect(within(nav).getAllByRole('button').map((b) => b.textContent!.replace(/ \(\d+\)$/, ''))).toEqual([
+      'Coleção', 'Meus Pokémon', 'Renomeações', 'Espécies', 'Linha do tempo', 'Dados',
+    ]);
+    for (const tela of ['Meus Pokémon', 'Renomeações', 'Espécies', 'Linha do tempo', 'Dados', 'Coleção']) {
       await user.click(within(nav).getByRole('button', { name: new RegExp(`^${tela}`) }));
       expect(screen.getByRole('heading', { name: tela })).toBeInTheDocument();
     }
@@ -46,8 +46,8 @@ describe('App', () => {
     const { store, save } = fakeStore(collection());
     render(<App store={store} />);
     await user.click(await screen.findByRole('button', { name: /novo exemplar/i }));
-    await user.selectOptions(screen.getByLabelText('Espécie'), 'Raichu');
-    await user.type(screen.getByLabelText('IV'), '15/15/15');
+    await user.type(screen.getByRole('combobox', { name: 'Pokémon' }), 'Raichu');
+    for (const label of ['ATK', 'DEF', 'PS']) await user.type(screen.getByLabelText(label), '15');
     await user.click(screen.getByRole('button', { name: 'Salvar' }));
     expect(save).toHaveBeenCalled();
     expect(save.mock.calls.at(-1)![0].exemplars).toHaveLength(1);
@@ -57,9 +57,19 @@ describe('App', () => {
   it('abre o detalhe a partir da lista e volta', async () => {
     const user = userEvent.setup();
     render(<App store={fakeStore(collection({ exemplars: [keep] })).store} />);
-    await user.click(await screen.findByRole('button', { name: /abrir Raichu/i }));
+    const nav = await screen.findByRole('navigation');
+    await user.click(within(nav).getByRole('button', { name: /^Meus Pokémon/ }));
+    await user.click(screen.getByRole('button', { name: /abrir Raichu/i }));
     expect(screen.getByRole('heading', { name: /Raichu/ })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: /voltar/i }));
     expect(screen.getByRole('heading', { name: 'Meus Pokémon' })).toBeInTheDocument();
+  });
+
+  it('da Coleção, clicar num ocupante abre o exemplar', async () => {
+    const user = userEvent.setup();
+    render(<App store={fakeStore(collection({ exemplars: [keep] })).store} />);
+    await user.click(await screen.findByRole('button', { name: /^Evolução/ }));
+    await user.click(screen.getByRole('button', { name: /Raichu 90%/ }));
+    expect(screen.getByRole('heading', { name: /Raichu/ })).toBeInTheDocument();
   });
 });

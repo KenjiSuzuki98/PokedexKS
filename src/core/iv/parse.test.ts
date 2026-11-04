@@ -1,4 +1,4 @@
-import { parseIV } from './parse';
+import { parseIV, percentOf } from './parse';
 
 describe('parseIV', () => {
   it('"96% 15/14/14" e "15/14/14 96%" dão o mesmo resultado', () => {
@@ -38,5 +38,17 @@ describe('parseIV', () => {
     for (const s of ['', 'abc', '16/14/15', '101%', '15/14', '96% 15/14/15 3', '10 10 10 10']) {
       expect(parseIV(s).ok, s).toBe(false);
     }
+  });
+});
+
+describe('percentOf segue a planilha de IVs (IV % jogo = ARRED(soma/45; 2))', () => {
+  it('bate nas 4.096 combinações', () => {
+    for (let a = 0; a <= 15; a++)
+      for (let d = 0; d <= 15; d++)
+        for (let s = 0; s <= 15; s++) {
+          const excel = Math.round(((a + d + s) / 45) * 100 + Number.EPSILON);
+          expect(percentOf(a, d, s)).toBe(excel);
+        }
+    expect([percentOf(15, 15, 15), percentOf(15, 15, 14), percentOf(15, 15, 13), percentOf(15, 15, 12), percentOf(15, 15, 10)]).toEqual([100, 98, 96, 93, 89]);
   });
 });

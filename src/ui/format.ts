@@ -44,3 +44,9 @@ export function today(): string {
 export function newId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
+
+/** Nº da Pokédex com 4 dígitos + letra de forma, como no ID das vagas. */
+export function dexLabel(c: Collection, speciesId: string): string {
+  const sp = c.species.find((s) => s.id === speciesId);
+  return sp ? String(sp.dex).padStart(4, '0') + (sp.form ?? '') : '—';
+}

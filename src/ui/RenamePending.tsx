@@ -20,7 +20,7 @@ export function RenamePending({ onOpen }: { onOpen?: (id: string) => void }) {
             <tr key={p.exemplarId}>
               <td>
                 <button type="button" className="link" onClick={() => onOpen?.(e.id)}>{speciesName(c, e.speciesId)}</button>{' '}
-                <small className="muted">{formatIV(e)} · CP {e.cp ?? '—'}</small>
+                <small className="muted">{formatIV(e)}</small>
               </td>
               <td>{p.from ? <code>{p.from}</code> : <span className="muted">sem apelido</span>}</td>
               <td>

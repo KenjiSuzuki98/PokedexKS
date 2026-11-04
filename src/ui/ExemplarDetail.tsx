@@ -3,7 +3,8 @@ import { confirmRename, removeExemplar } from '../core/ops';
 import { useCollection } from './context';
 import { CopyButton } from './CopyButton';
 import { ExemplarForm } from './ExemplarForm';
-import { formatIV, formatStats, speciesName } from './format';
+import { dexLabel, formatIV, formatStats, speciesName } from './format';
+import { regionOf } from '../core/region';
 
 export function ExemplarDetail({ id, onClose }: { id: string; onClose: () => void }) {
   const { collection: c, result: r, update } = useCollection();
@@ -23,23 +24,31 @@ export function ExemplarDetail({ id, onClose }: { id: string; onClose: () => voi
   }
 
   const slots = r.slots.filter((s) => res.slots.includes(s.id));
+  const sp = c.species.find((s) => s.id === e.speciesId);
   const needsRename = (e.nickname || null) !== res.nickname;
 
   return (
     <section className="detail">
       <button type="button" className="link" onClick={onClose}>← voltar</button>
       <h2>
-        {speciesName(c, e.speciesId)} <small>CP {e.cp ?? '—'} · {formatIV(e)} {formatStats(e)}</small>
+        {speciesName(c, e.speciesId)}{' '}
+        <small>
+          #{dexLabel(c, e.speciesId)} · {regionOf(sp?.dex ?? 0)} · {formatIV(e)} {formatStats(e)}
+        </small>
       </h2>
-      <p>
-        <span className={`status ${res.status}`}>{res.status}</span>
-        {res.reservedFor && <span className="muted"> aguardando evolução → {speciesName(c, res.reservedFor)}</span>}
-      </p>
-      <p className="rename">
-        Renomear para: <code>{res.nickname ?? 'sem apelido de vaga'}</code>
-        {res.nickname && <CopyButton text={res.nickname} />}
-        {e.nickname && <span className="muted"> (hoje no jogo: {e.nickname})</span>}
-      </p>
+      {res.status === 'manter' ? (
+        <p className="rename">
+          Renomear para: <code>{res.nickname}</code>
+          <CopyButton text={res.nickname!} />
+          {res.reservedFor && <span className="muted"> aguardando evolução → {speciesName(c, res.reservedFor)}</span>}
+          {e.nickname && e.nickname !== res.nickname && <span className="muted"> (hoje no jogo: {e.nickname})</span>}
+        </p>
+      ) : (
+        <p className={`status ${res.status}`}>
+          {res.status === 'trocar' ? 'Fora da Pokédex — troca' : 'Fora da Pokédex — descarte'}
+          {e.nickname && <span className="muted"> (tire o apelido {e.nickname} no jogo)</span>}
+        </p>
+      )}
       {needsRename && (
         <button type="button" onClick={() => update((col) => confirmRename(col, id, res.nickname))}>
           Já renomeei

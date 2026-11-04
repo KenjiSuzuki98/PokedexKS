@@ -53,6 +53,22 @@ describe('ExemplarDetail', () => {
     confirm.mockRestore();
   });
 
+  it('mostra Nº, região e ATK/DEF/PS, sem PC', () => {
+    const e = ex({ speciesId: 'raichu', cp: 1234, iv: { atk: 15, def: 14, sta: 14, percent: 96 } });
+    renderWith(<ExemplarDetail id={e.id} onClose={() => {}} />, collection({ exemplars: [e] }));
+    const h = screen.getByRole('heading', { name: /Raichu/ });
+    expect(h).toHaveTextContent(/0026.*Kanto.*96%.*15\/14\/14/);
+    expect(screen.queryByText(/CP|PC 1234|1234/)).toBeNull();
+  });
+
+  it('quem não entra na Pokédex mostra troca ou descarte', () => {
+    const best = ex({ speciesId: 'raichu', iv: iv(99) });
+    const worse = ex({ speciesId: 'raichu', iv: iv(10), origin: 'troca' });
+    renderWith(<ExemplarDetail id={worse.id} onClose={() => {}} />, collection({ exemplars: [best, worse] }));
+    expect(screen.getByText(/fora da pokédex.*descarte/i)).toBeInTheDocument();
+    expect(screen.queryByText(/renomear para/i)).toBeNull();
+  });
+
   it('exemplar inexistente', () => {
     renderWith(<ExemplarDetail id="nada" onClose={() => {}} />, c);
     expect(screen.getByText(/não encontrado/i)).toBeInTheDocument();
