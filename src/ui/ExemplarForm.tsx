@@ -1,12 +1,15 @@
-import { useMemo, useState, type FormEvent, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent, type ReactNode } from 'react';
 import { computeCollection } from '../core/assign';
 import { makeCode, registerBackground, slugify } from '../core/events';
+import { calculateIV, type DustModifier } from '../core/iv/calc';
 import { percentOf } from '../core/iv/parse';
+import { parseScreenshotText } from '../core/screenshot';
 import { addExemplar, addSpecies, exemplarWarnings, replaceExemplar } from '../core/ops';
 import { regionOf } from '../core/region';
 import type { BackgroundType, Collection, Exemplar, IV, Rocket, Sex, Size, Species, Status } from '../core/types';
 import { useCollection } from './context';
 import { newId, today } from './format';
+import { recognizeImage } from './ocr';
 import { SpeciesPicker } from './SpeciesPicker';
 
 const NEW = '__novo';
@@ -49,8 +52,17 @@ const Auto = ({ label, children }: { label: string; children: ReactNode }) => (
   </div>
 );
 
-export function ExemplarForm({ exemplarId, onDone }: { exemplarId?: string; onDone: (id: string) => void }) {
-  const { collection: c, update } = useCollection();
+export function ExemplarForm({
+  exemplarId,
+  onDone,
+  recognize = recognizeImage,
+}: {
+  exemplarId?: string;
+  onDone: (id: string) => void;
+  /** Lê o texto do print (padrão: OCR grátis no aparelho). */
+  recognize?: (file: File) => Promise<string>;
+}) {
+  const { collection: c, result: r, update } = useCollection();
   const original = c.exemplars.find((e) => e.id === exemplarId);
   const originalSp = c.species.find((s) => s.id === original?.speciesId);
 
@@ -74,6 +86,9 @@ export function ExemplarForm({ exemplarId, onDone }: { exemplarId?: string; onDo
   const [eventId, setEventId] = useState(original?.eventId ?? '');
   const [notes, setNotes] = useState(original?.notes ?? '');
   const [error, setError] = useState('');
+  const [calc, setCalc] = useState({ open: false, cp: '', hp: '', dust: '', poweredUp: false });
+  const [reading, setReading] = useState(false);
+  const [readNote, setReadNote] = useState('');
 
   const options = useMemo(
     () => [...c.species].sort((a, b) => a.dex - b.dex || (a.form ?? '').localeCompare(b.form ?? '')),
@@ -137,6 +152,56 @@ export function ExemplarForm({ exemplarId, onDone }: { exemplarId?: string; onDo
   }, [c, variation, atk, def, sta, effectiveSex, size, shiny, lucky, rocket, costumeId, backgroundId, dynamax, gigamax, origin]);
 
   const draftForWarnings = variation ? build(variation.id) : null;
+  // Calculadora de IV: PC, PS e poeira (vindos do print ou digitados).
+  const modifier: DustModifier = lucky ? 'sortudo' : rocket === 'sombroso' ? 'sombroso' : rocket === 'purificado' ? 'purificado' : 'normal';
+  const ivCalc = useMemo(() => {
+    const [cpN, hpN, dustN] = [calc.cp, calc.hp, calc.dust].map(Number) as [number, number, number];
+    if (!calc.open || !sp || !cpN || !hpN || !dustN) return null;
+    const res = calculateIV({ base: sp.base, cp: cpN, hp: hpN, dust: dustN, poweredUp: calc.poweredUp, modifier });
+    const seen = new Set<string>();
+    const combos = res.combos.filter((x) => {
+      const k = `${x.atk}/${x.def}/${x.sta}`;
+      return seen.has(k) ? false : (seen.add(k), true);
+    });
+    return { ...res, combos };
+  }, [calc, sp, modifier]);
+  const applyCombo = (x: { atk: number; def: number; sta: number }) => {
+    setAtk(String(x.atk));
+    setDef(String(x.def));
+    setSta(String(x.sta));
+  };
+  // Uma combinação só: preenche ATK/DEF/PS sozinho.
+  useEffect(() => {
+    if (ivCalc?.combos.length === 1) applyCombo(ivCalc.combos[0]!);
+  }, [ivCalc]);
+
+  async function readPrint(ev: ChangeEvent<HTMLInputElement>) {
+    const file = ev.target.files?.[0];
+    ev.target.value = '';
+    if (!file) return;
+    setError('');
+    setReading(true);
+    try {
+      const g = parseScreenshotText(c, r.slots, await recognize(file));
+      const id = g.speciesId ?? g.candyOf;
+      if (id) choosePokemon(id);
+      if (g.sex) setSex(g.sex);
+      if (g.size) setSize(g.size);
+      if (g.rocket) setRocket(g.rocket);
+      if (g.lucky) setLucky(true);
+      if (g.traded) setTraded(true);
+      setCalc({ ...calc, open: true, cp: g.cp?.toString() ?? '', hp: g.hp?.toString() ?? '', dust: g.dust?.toString() ?? '' });
+      const missing = [!id && 'Pokémon', !g.cp && 'PC', !g.hp && 'PS', !g.dust && 'poeira'].filter(Boolean);
+      setReadNote(
+        `Print lido.${missing.length ? ` Não achei: ${missing.join(', ')}.` : ''} Confira brilhante, traje e fundo, que não aparecem como texto.`,
+      );
+    } catch {
+      setError('Não consegui ler o print. Tente outra imagem ou preencha à mão.');
+    } finally {
+      setReading(false);
+    }
+  }
+
   const warnings = draftForWarnings ? exemplarWarnings(c, draftForWarnings).filter((w) => !/sortudo/i.test(w)) : [];
 
   function submit(ev: FormEvent) {
@@ -200,6 +265,41 @@ export function ExemplarForm({ exemplarId, onDone }: { exemplarId?: string; onDo
           </Auto>
         </div>
       </div>
+
+      <div className="ef-print">
+        <label className="file-button">
+          📷 Ler print
+          <input type="file" accept="image/*" aria-label="Ler print" onChange={readPrint} disabled={reading} />
+        </label>
+        <button type="button" aria-expanded={calc.open} onClick={() => setCalc({ ...calc, open: !calc.open })}>
+          🧮 IV por PC/PS/poeira
+        </button>
+        {reading && <span className="muted">Lendo print…</span>}
+      </div>
+      {readNote && <p className="muted" role="status">{readNote}</p>}
+      {calc.open && (
+        <fieldset className="ef-calc">
+          <legend>Calcular IV</legend>
+          <label>PC<input type="number" inputMode="numeric" value={calc.cp} onChange={(e) => setCalc({ ...calc, cp: e.target.value })} /></label>
+          <label>PS máximo<input type="number" inputMode="numeric" value={calc.hp} onChange={(e) => setCalc({ ...calc, hp: e.target.value })} /></label>
+          <label>Poeira<input type="number" inputMode="numeric" value={calc.dust} onChange={(e) => setCalc({ ...calc, dust: e.target.value })} /></label>
+          <label className="check">
+            <input type="checkbox" checked={calc.poweredUp} onChange={(e) => setCalc({ ...calc, poweredUp: e.target.checked })} />
+            Já fortalecido
+          </label>
+          {ivCalc && ivCalc.combos.length === 0 && <p className="warn">Nenhuma combinação bate. Confira PC, PS, poeira e Pokémon.</p>}
+          {ivCalc && ivCalc.combos.length > 1 && (
+            <div className="combos">
+              <p className="muted">IV entre {ivCalc.min}% e {ivCalc.max}%. Escolha a combinação (a avaliação do jogo ajuda):</p>
+              {ivCalc.combos.slice(0, 40).map((x) => (
+                <button key={`${x.atk}/${x.def}/${x.sta}`} type="button" onClick={() => applyCombo(x)}>
+                  {x.atk}/{x.def}/{x.sta} ({x.percent}%)
+                </button>
+              ))}
+            </div>
+          )}
+        </fieldset>
+      )}
 
       <div className="ef-mid">
         <div className="ef-checks">

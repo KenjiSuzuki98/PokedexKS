@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { screen, within } from '@testing-library/react';
+import { calculateIV, cpFor, hpFor, levelsForDust } from '../core/iv/calc';
 import { collection, ex, pichuLine, species } from '../core/test-helpers';
 import { ExemplarForm } from './ExemplarForm';
 import { renderWith } from './test-utils';
@@ -146,6 +147,46 @@ describe('ExemplarForm', () => {
     await r.user.selectOptions(traje, 'boina');
     await save(r.user);
     expect(r.collection.exemplars[0]!.costumeId).toBe('boina');
+  });
+
+  describe('ler print', () => {
+    // Números coerentes com Pikachu sombroso 15/14/15 no menor nível da faixa de 2500 (sombroso paga 3000).
+    const pikachu = table.find((s) => s.id === 'pikachu')!;
+    const level = levelsForDust(2500, false)[0]!;
+    const cp = cpFor(pikachu.base, { atk: 15, def: 14, sta: 15 }, level);
+    const hp = hpFor(pikachu.base, 15, level);
+    const screenText = `PC ${cp}\nPikachu ♀\n${hp} / ${hp} PS\nXXL\n3000 2 DOCE DE PIKACHU\nFORTALECER 3000\nFrustração`;
+    const upload = (user: ReturnType<typeof renderWith>['user']) =>
+      user.upload(screen.getByLabelText('Ler print'), new File(['x'], 'print.png', { type: 'image/png' }));
+
+    it('preenche espécie, sexo, tamanho, Rocket e calcula o IV a partir de PC, PS e poeira', async () => {
+      const recognize = vi.fn().mockResolvedValue(screenText);
+      const r = renderWith(<ExemplarForm onDone={() => {}} recognize={recognize} />, base());
+      await upload(r.user);
+      expect(await screen.findByRole('combobox', { name: 'Pokémon' })).toHaveValue('Pikachu');
+      expect(within(screen.getByRole('group', { name: 'Sexo' })).getByRole('button', { name: 'Fêmea' })).toHaveAttribute('aria-pressed', 'true');
+      expect(within(screen.getByRole('group', { name: 'Tamanho' })).getByRole('button', { name: 'XXL' })).toHaveAttribute('aria-pressed', 'true');
+      expect(within(screen.getByRole('group', { name: 'Rocket' })).getByRole('button', { name: 'Sombroso' })).toHaveAttribute('aria-pressed', 'true');
+      expect(screen.getByLabelText('PC')).toHaveValue(cp);
+      expect(screen.getByLabelText('PS máximo')).toHaveValue(hp);
+      expect(screen.getByLabelText('Poeira')).toHaveValue(3000);
+
+      const result = calculateIV({ base: pikachu.base, cp, hp, dust: 3000, poweredUp: false, modifier: 'sombroso' });
+      const distinct = new Set(result.combos.map((x) => `${x.atk}/${x.def}/${x.sta}`));
+      if (distinct.size > 1) await r.user.click(screen.getByRole('button', { name: /^15\/14\/15/ }));
+      expect(screen.getByLabelText('ATK')).toHaveValue(15);
+      expect(screen.getByLabelText('DEF')).toHaveValue(14);
+      expect(screen.getByLabelText('PS')).toHaveValue(15);
+      expect(screen.getByText(/confira brilhante, traje e fundo/i)).toBeInTheDocument();
+    });
+
+    it('falha na leitura avisa sem mudar nada', async () => {
+      const recognize = vi.fn().mockRejectedValue(new Error('sem rede'));
+      const r = renderWith(<ExemplarForm onDone={() => {}} recognize={recognize} />, base());
+      await upload(r.user);
+      expect(await screen.findByRole('alert')).toHaveTextContent(/não consegui ler o print/i);
+      expect(screen.getByRole('combobox', { name: 'Pokémon' })).toHaveValue('');
+    });
   });
 
   it('escolhe o Pokémon pelo código de renomear', async () => {
