@@ -27,12 +27,7 @@ function Shell() {
   let body;
   if (view.kind === 'detail') body = <ExemplarDetail id={view.id} onClose={() => setView({ kind: 'tab' })} />;
   else if (view.kind === 'new')
-    body = (
-      <section>
-        <h2>Novo exemplar</h2>
-        <ExemplarForm onDone={open} />
-      </section>
-    );
+    body = <ExemplarForm onDone={open} onCancel={() => setView({ kind: 'tab' })} />;
   else
     body = (
       <section>

@@ -5,7 +5,7 @@ import type { Collection, Exemplar } from './types';
 
 export type AttrKey =
   | 'evolucao' | 'cadeia' | 'especie' | 'dex' | 'iv' | 'cp' | 'data' | 'status' | 'origem'
-  | 'sexo' | 'tamanho' | 'brilhante' | 'sortudo' | 'rocket' | 'traje' | 'fundo' | 'evento' | 'codigo';
+  | 'sexo' | 'tamanho' | 'brilhante' | 'sortudo' | 'rocket' | 'traje' | 'fundo' | 'evento' | 'codigo' | 'inclusao';
 
 export interface SortCriterion {
   key: AttrKey;
@@ -51,6 +51,7 @@ function makeGetter(c: Collection, r: CollectionResult) {
       case 'traje': return e.costumeId ?? '';
       case 'fundo': return e.backgroundId ?? '';
       case 'evento': return e.eventId ?? '';
+      case 'inclusao': return e.addedAt ?? e.date;
       case 'codigo': return r.exemplars[e.id]?.nickname ?? '';
     }
   };

@@ -55,3 +55,15 @@ describe('filterExemplars', () => {
     expect(ids(filterExemplars(c, r, c.exemplars, { filters: [{ key: 'cp', min: 500, max: 1000 }] }))).toEqual([pika1.id, pika2.id]);
   });
 });
+
+describe('data de inclusão', () => {
+  it('ordena por quando entrou no app (recentes primeiro); sem registro, vale a data do exemplar', () => {
+    const velho = ex({ speciesId: 'pikachu', date: '2024-01-01' });
+    const novo = ex({ speciesId: 'raichu', date: '2020-01-01', addedAt: '2026-11-10T10:00:00.000Z' });
+    const meio = ex({ speciesId: 'pichu', date: '2020-01-01', addedAt: '2026-11-10T09:00:00.000Z' });
+    const col = collection({ exemplars: [velho, novo, meio] });
+    const res = computeCollection(col);
+    const recentes = sortExemplars(col, res, col.exemplars, [{ key: 'inclusao', dir: 'desc' }]);
+    expect(recentes.map((e) => e.id)).toEqual([novo.id, meio.id, velho.id]);
+  });
+});

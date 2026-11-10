@@ -84,6 +84,20 @@ describe('ExemplarList', () => {
     expect(rows()[0]).toHaveTextContent('0026BR');
   });
 
+  it('ordena por data de inclusão: recentes ou antigos primeiro', async () => {
+    const antigo = ex({ speciesId: 'pichu', addedAt: '2026-01-01T00:00:00Z' });
+    const recente = ex({ speciesId: 'magnemite', addedAt: '2026-11-01T00:00:00Z' });
+    const col = collection({ species: [...c.species, { ...c.species[0]!, id: 'magnemite', name: 'Magnemite', dex: 81, evolvesFrom: undefined }], exemplars: [antigo, recente] });
+    const { user } = renderWith(<ExemplarList onOpen={() => {}} />, col);
+    await user.click(screen.getByRole('button', { name: 'Filtrar' }));
+    await user.selectOptions(screen.getByLabelText('Ordenar por'), 'inclusao');
+    await user.selectOptions(screen.getByLabelText('Direção 1'), 'desc');
+    expect(within(screen.getByLabelText('Direção 1')).getByRole('option', { name: 'recentes primeiro' })).toBeInTheDocument();
+    expect(rows()[0]).toHaveTextContent('Magnemite');
+    await user.selectOptions(screen.getByLabelText('Direção 1'), 'asc');
+    expect(rows()[0]).toHaveTextContent('Pichu');
+  });
+
   it('ordena por dois critérios, crescente ou decrescente', async () => {
     const { user } = renderWith(<ExemplarList onOpen={() => {}} />, c);
     await user.click(screen.getByRole('button', { name: 'Filtrar' }));
@@ -94,7 +108,9 @@ describe('ExemplarList', () => {
     await user.selectOptions(screen.getByLabelText('Depois por'), 'iv');
     await user.selectOptions(screen.getByLabelText('Direção 2'), 'desc');
     expect(ivCol()).toEqual(['96%', '40%', '31%', '20%', '69%'].map((p) => expect.stringContaining(p)));
-    expect(screen.getByLabelText('Ordenar por')).not.toHaveTextContent(/^CP$|Data/);
+    const sortOptions = within(screen.getByLabelText('Ordenar por')).getAllByRole('option').map((o) => o.textContent);
+    expect(sortOptions).not.toContain('CP');
+    expect(sortOptions).not.toContain('Data');
   });
 
   it('filtra por status e por atributo', async () => {

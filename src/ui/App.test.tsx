@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { collection, ex, iv } from '../core/test-helpers';
 import type { Collection } from '../core/types';
@@ -47,7 +47,7 @@ describe('App', () => {
     render(<App store={store} />);
     await user.click(await screen.findByRole('button', { name: /novo exemplar/i }));
     await user.type(screen.getByRole('combobox', { name: 'Pokémon' }), 'Raichu');
-    for (const label of ['ATK', 'DEF', 'PS']) await user.type(screen.getByLabelText(label), '15');
+    for (const label of ['ATK', 'DEF', 'PS']) fireEvent.change(screen.getByLabelText(label), { target: { value: '15' } });
     await user.click(screen.getByRole('button', { name: 'Salvar' }));
     expect(save).toHaveBeenCalled();
     expect(save.mock.calls.at(-1)![0].exemplars).toHaveLength(1);

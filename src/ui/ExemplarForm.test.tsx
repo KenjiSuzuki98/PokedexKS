@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { screen, within } from '@testing-library/react';
+import { fireEvent, screen, within } from '@testing-library/react';
 import { calculateIV, cpFor, hpFor, levelsForDust } from '../core/iv/calc';
 import { collection, ex, pichuLine, species } from '../core/test-helpers';
 import { ExemplarForm } from './ExemplarForm';
@@ -19,10 +19,10 @@ async function pick(user: ReturnType<typeof renderWith>['user'], text: string) {
   await user.clear(input);
   await user.type(input, text);
 }
-async function stats(user: ReturnType<typeof renderWith>['user'], atk: string, def: string, sta: string) {
+// IV agora é controle deslizante (sem teclado).
+async function stats(_user: ReturnType<typeof renderWith>['user'], atk: string, def: string, sta: string) {
   for (const [label, v] of [['ATK', atk], ['DEF', def], ['PS', sta]] as const) {
-    await user.clear(screen.getByLabelText(label));
-    await user.type(screen.getByLabelText(label), v);
+    fireEvent.change(screen.getByLabelText(label), { target: { value: v } });
   }
 }
 const save = (user: ReturnType<typeof renderWith>['user']) => user.click(screen.getByRole('button', { name: 'Salvar' }));
@@ -57,13 +57,52 @@ describe('ExemplarForm', () => {
     expect(onDone).toHaveBeenCalledWith(e.id);
   });
 
-  it('valor fora de 0–15 avisa e não salva', async () => {
+  it('IV por controle deslizante com − e +; sem mexer, salva sem IV', async () => {
     const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
     await pick(r.user, 'Raichu');
-    await stats(r.user, '16', '1', '1');
+    expect(auto('IV %')).toHaveTextContent('--');
+    await r.user.click(screen.getByRole('button', { name: 'Diminuir ATK' }));
+    expect(screen.getByLabelText('ATK')).toHaveValue('14');
+    await r.user.click(screen.getByRole('button', { name: 'Aumentar ATK' }));
+    expect(screen.getByLabelText('ATK')).toHaveValue('15');
+    await r.user.click(screen.getByRole('button', { name: 'Limpar IV' }));
     await save(r.user);
-    expect(screen.getByRole('alert')).toHaveTextContent(/0 a 15/);
+    expect(r.collection.exemplars[0]!.iv).toBeUndefined();
+  });
+
+  it('IV pela metade (só ATK) avisa e não salva', async () => {
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(r.user, 'Raichu');
+    fireEvent.change(screen.getByLabelText('ATK'), { target: { value: '10' } });
+    await save(r.user);
+    expect(screen.getByRole('alert')).toHaveTextContent(/ATK, DEF e PS/);
     expect(r.collection.exemplars).toEqual([]);
+  });
+
+  it('feito para uma mão: título, cancelar e barra de ações embaixo', async () => {
+    const onCancel = vi.fn();
+    const r = renderWith(<ExemplarForm onDone={() => {}} onCancel={onCancel} />, base());
+    expect(screen.getByRole('heading', { name: 'Novo exemplar' })).toBeInTheDocument();
+    const bar = screen.getByRole('toolbar', { name: 'Ações' });
+    expect(within(bar).getByRole('button', { name: 'Salvar' })).toBeInTheDocument();
+    expect(within(bar).getByLabelText('Ler print')).toBeInTheDocument();
+    expect(within(bar).getByRole('button', { name: /IV por PC/ })).toBeInTheDocument();
+    await r.user.click(screen.getByRole('button', { name: 'Cancelar' }));
+    expect(onCancel).toHaveBeenCalled();
+  });
+
+  it('evento de origem e notas ficam em "Mais detalhes"', () => {
+    renderWith(<ExemplarForm onDone={() => {}} />, base());
+    const more = screen.getByText('Mais detalhes').closest('details')!;
+    expect(within(more).getByLabelText('Evento de origem')).toBeInTheDocument();
+    expect(within(more).getByLabelText('Notas')).toBeInTheDocument();
+  });
+
+  it('exemplar novo guarda a data de inclusão', async () => {
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(r.user, 'Raichu');
+    await save(r.user);
+    expect(r.collection.exemplars[0]!.addedAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
   });
 
   it('botões de sexo, tamanho e Rocket; marcadores de brilhante, Dinamax e Gigamax', async () => {
@@ -174,9 +213,9 @@ describe('ExemplarForm', () => {
       const result = calculateIV({ base: pikachu.base, cp, hp, dust: 3000, poweredUp: false, modifier: 'sombroso' });
       const distinct = new Set(result.combos.map((x) => `${x.atk}/${x.def}/${x.sta}`));
       if (distinct.size > 1) await r.user.click(screen.getByRole('button', { name: /^15\/14\/15/ }));
-      expect(screen.getByLabelText('ATK')).toHaveValue(15);
-      expect(screen.getByLabelText('DEF')).toHaveValue(14);
-      expect(screen.getByLabelText('PS')).toHaveValue(15);
+      expect(screen.getByLabelText('ATK')).toHaveValue('15');
+      expect(screen.getByLabelText('DEF')).toHaveValue('14');
+      expect(screen.getByLabelText('PS')).toHaveValue('15');
       expect(screen.getByText(/confira brilhante, traje e fundo/i)).toBeInTheDocument();
     });
 
@@ -220,7 +259,7 @@ describe('ExemplarForm', () => {
     const e = ex({ speciesId: 'raichu', cp: 1000, date: '2025-01-01', iv: { atk: 10, def: 10, sta: 10, percent: 67 } });
     const r = renderWith(<ExemplarForm exemplarId={e.id} onDone={() => {}} />, base({ exemplars: [e] }));
     expect(screen.getByRole('combobox', { name: 'Pokémon' })).toHaveValue('Raichu');
-    expect(screen.getByLabelText('ATK')).toHaveValue(10);
+    expect(screen.getByLabelText('ATK')).toHaveValue('10');
     await stats(r.user, '15', '10', '10');
     await save(r.user);
     expect(r.collection.exemplars).toEqual([{ ...e, iv: { atk: 15, def: 10, sta: 10, percent: 78 } }]);

@@ -4,7 +4,7 @@ import { acknowledgeOpenedSlots } from '../core/ops';
 import { computeProgress } from '../core/progress';
 import { slotsInScope, type Scope } from '../core/scope';
 import type { Species } from '../core/types';
-import { makePokemonSearch } from '../core/search';
+import { listChains, type ChainFilter, type ChainQuery, type ChainSortKey } from '../core/chains';
 import { useCollection } from './context';
 import { formatIV, speciesName } from './format';
 import { Gauge } from './Gauge';
@@ -21,6 +21,13 @@ const CATEGORY_LABELS: Record<string, string> = {
   sexo: 'Sexo',
 };
 const PAGE = 60;
+const REGIONS = ['Kanto', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola', 'Galar', 'Hisui', 'Paldea'];
+const SORT_LABELS: Record<ChainSortKey, string> = { dex: 'Nº Pokédex', nome: 'Nome', progresso: 'Progresso', inclusao: 'Data de inclusão' };
+const FILTER_LABELS: Record<ChainFilter, string> = {
+  todas: 'todas', iniciadas: 'com algum exemplar', vazias: 'sem nenhum exemplar', completas: 'completas',
+  incompletas: 'incompletas', 'com-reservas': 'com reservas',
+};
+type SlotOrder = 'ordem' | 'recentes' | 'antigos';
 
 type View =
   | { kind: 'home' }
@@ -30,16 +37,38 @@ type View =
 function SlotList({ scope, onOpenExemplar }: { scope: Scope; onOpenExemplar: (id: string) => void }) {
   const { collection: c, result: r } = useCollection();
   const [onlyMissing, setOnlyMissing] = useState(false);
+  const [order, setOrder] = useState<SlotOrder>('ordem');
   const [limit, setLimit] = useState(100);
   const rows = useMemo(() => slotsInScope(c, r, scope), [c, r, scope]);
-  const shown = onlyMissing ? rows.filter((x) => !x.occupantId) : rows;
+  const shown = useMemo(() => {
+    const list = onlyMissing ? rows.filter((x) => !x.occupantId) : rows;
+    if (order === 'ordem') return list;
+    const added = new Map(c.exemplars.map((e) => [e.id, e.addedAt ?? e.date]));
+    const when = (id: string | null) => (id ? added.get(id) ?? '' : '');
+    // Vagas livres ficam no fim; entre as ocupadas, pela inclusão de quem ocupa.
+    return [...list].sort((a, b) => {
+      const [x, y] = [when(a.occupantId), when(b.occupantId)];
+      if (!x || !y) return (x ? -1 : 0) + (y ? 1 : 0);
+      return order === 'recentes' ? y.localeCompare(x) : x.localeCompare(y);
+    });
+  }, [rows, onlyMissing, order, c.exemplars]);
 
   return (
     <>
-      <label className="check">
-        <input type="checkbox" checked={onlyMissing} onChange={(e) => setOnlyMissing(e.target.checked)} />
-        Só o que falta
-      </label>
+      <div className="toolbar">
+        <label className="check">
+          <input type="checkbox" checked={onlyMissing} onChange={(e) => setOnlyMissing(e.target.checked)} />
+          Só o que falta
+        </label>
+        <label>
+          Ordenar vagas
+          <select value={order} onChange={(e) => setOrder(e.target.value as SlotOrder)}>
+            <option value="ordem">ordem da Pokédex</option>
+            <option value="recentes">inclusões recentes</option>
+            <option value="antigos">inclusões antigas</option>
+          </select>
+        </label>
+      </div>
       <table className="slots">
         <thead>
           <tr><th>ID</th><th>Vaga</th><th>Quem ocupa</th></tr>
@@ -79,6 +108,16 @@ export function CollectionProgress({ onOpenExemplar }: { onOpenExemplar: (id: st
   const { collection: c, result: r, update } = useCollection();
   const [view, setView] = useState<View>({ kind: 'home' });
   const [search, setSearch] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
+  const [sort, setSort] = useState<ChainQuery['sort']>({ key: 'dex', dir: 'asc' });
+  const [filter, setFilter] = useState<ChainFilter>('todas');
+  const [region, setRegion] = useState('');
+  const filtering = !!(search.trim() || filter !== 'todas' || region);
+  const clearFilters = () => {
+    setSearch('');
+    setFilter('todas');
+    setRegion('');
+  };
   const [limit, setLimit] = useState(PAGE);
   const p = useMemo(() => computeProgress(c, r), [c, r]);
   const byId = useMemo(() => speciesMap(c), [c]);
@@ -140,8 +179,8 @@ export function CollectionProgress({ onOpenExemplar }: { onOpenExemplar: (id: st
   }
 
   const opened = (c.openedSlots ?? []).map((id) => r.slots.find((s) => s.id === id)).filter((s) => s !== undefined);
-  const finder = makePokemonSearch(c, r.slots);
-  const visibleChains = chains.filter(([, members]) => !search.trim() || members.some((s) => finder.species(s, search)));
+  const visibleChains = listChains(c, r, p, { sort, filter, region: region || undefined, text: search }).map((x) => [x.rootId] as const);
+  const dateSort = sort.key === 'inclusao';
   const home: View = { kind: 'home' };
 
   return (
@@ -174,16 +213,50 @@ export function CollectionProgress({ onOpenExemplar }: { onOpenExemplar: (id: st
       </div>
 
       <h3>Por cadeia</h3>
-      <input
-        type="search"
-        aria-label="Buscar cadeia"
-        placeholder="Nome, Nº ou código"
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          setLimit(PAGE);
-        }}
-      />
+      <div className="toolbar">
+        <input
+          type="search"
+          aria-label="Buscar cadeia"
+          placeholder="Nome, Nº ou código"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setLimit(PAGE);
+          }}
+        />
+        <button type="button" className="icon" aria-label="Filtrar" title="Filtrar e ordenar" aria-expanded={showFilters} onClick={() => setShowFilters(!showFilters)}>🔎</button>
+        {filtering && <button type="button" className="icon" aria-label="Limpar filtros" title="Limpar filtros" onClick={clearFilters}>🧹</button>}
+      </div>
+      {showFilters && (
+        <div className="toolbar filters">
+          <label>
+            Ordenar cadeias por
+            <select value={sort.key} onChange={(e) => setSort({ ...sort, key: e.target.value as ChainSortKey })}>
+              {(Object.keys(SORT_LABELS) as ChainSortKey[]).map((k) => <option key={k} value={k}>{SORT_LABELS[k]}</option>)}
+            </select>
+          </label>
+          <label>
+            Direção
+            <select value={sort.dir} onChange={(e) => setSort({ ...sort, dir: e.target.value as 'asc' | 'desc' })}>
+              <option value="asc">{dateSort ? 'antigos primeiro' : 'crescente'}</option>
+              <option value="desc">{dateSort ? 'recentes primeiro' : 'decrescente'}</option>
+            </select>
+          </label>
+          <label>
+            Situação
+            <select value={filter} onChange={(e) => { setFilter(e.target.value as ChainFilter); setLimit(PAGE); }}>
+              {(Object.keys(FILTER_LABELS) as ChainFilter[]).map((k) => <option key={k} value={k}>{FILTER_LABELS[k]}</option>)}
+            </select>
+          </label>
+          <label>
+            Região
+            <select value={region} onChange={(e) => { setRegion(e.target.value); setLimit(PAGE); }}>
+              <option value="">todas</option>
+              {REGIONS.map((x) => <option key={x} value={x}>{x}</option>)}
+            </select>
+          </label>
+        </div>
+      )}
       <div className="cards">
         {visibleChains.slice(0, limit).map(([rootId]) =>
           card(`Cadeia ${byId.get(rootId)!.name}`, p.byChain[rootId]!, () => setView({ kind: 'chain', rootId })),

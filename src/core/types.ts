@@ -117,6 +117,8 @@ export interface Exemplar {
   extra?: Record<string, string>;
   eventId?: string;
   notes?: string;
+  /** Quando entrou no app (ISO). Sem isso, vale `date`. */
+  addedAt?: string;
   /** Apelido que está hoje no jogo. */
   nickname?: string;
   /** Campos que ainda faltam completar (ex.: vindos de CSV). */

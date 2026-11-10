@@ -92,4 +92,47 @@ describe('CollectionProgress', () => {
     await r.user.click(within(box).getByRole('button', { name: /marcar como vistas/i }));
     expect(r.collection.openedSlots).toEqual([]);
   });
+
+  describe('ordenar e filtrar cadeias', () => {
+    const sp = [...pichuLine, species({ id: 'magnemite', name: 'Magnemite', dex: 81 }), species({ id: 'treecko', name: 'Treecko', dex: 252 })];
+    const col = collection({
+      species: sp,
+      exemplars: [
+        ex({ speciesId: 'raichu', iv: iv(90), addedAt: '2026-01-01T00:00:00Z' }),
+        ex({ speciesId: 'magnemite', iv: iv(50), addedAt: '2026-11-01T00:00:00Z' }),
+      ],
+    });
+    const chainNames = () =>
+      screen.getAllByRole('meter').map((m) => m.getAttribute('aria-label') ?? '').filter((n) => n.startsWith('Cadeia '));
+
+    it('filtros ficam atrás do 🔎; com filtro ativo aparece o 🧹', async () => {
+      const r = renderWith(<CollectionProgress onOpenExemplar={() => {}} />, col);
+      expect(screen.queryByLabelText('Ordenar cadeias por')).toBeNull();
+      await r.user.click(screen.getByRole('button', { name: 'Filtrar' }));
+      await r.user.selectOptions(screen.getByLabelText('Situação'), 'vazias');
+      expect(chainNames()).toEqual(['Cadeia Treecko']);
+      await r.user.click(screen.getByRole('button', { name: 'Limpar filtros' }));
+      expect(chainNames()).toHaveLength(3);
+    });
+
+    it('ordena por inclusão (recentes ou antigos primeiro) e filtra por região', async () => {
+      const r = renderWith(<CollectionProgress onOpenExemplar={() => {}} />, col);
+      await r.user.click(screen.getByRole('button', { name: 'Filtrar' }));
+      await r.user.selectOptions(screen.getByLabelText('Ordenar cadeias por'), 'inclusao');
+      await r.user.selectOptions(screen.getByLabelText('Direção'), 'desc');
+      expect(chainNames()).toEqual(['Cadeia Magnemite', 'Cadeia Pichu', 'Cadeia Treecko']);
+      await r.user.selectOptions(screen.getByLabelText('Direção'), 'asc');
+      expect(chainNames()[0]).toBe('Cadeia Pichu');
+      await r.user.selectOptions(screen.getByLabelText('Região'), 'Hoenn');
+      expect(chainNames()).toEqual(['Cadeia Treecko']);
+    });
+
+    it('lista de vagas: ordena pelas inclusões mais recentes', async () => {
+      const r = renderWith(<CollectionProgress onOpenExemplar={() => {}} />, col);
+      await r.user.click(screen.getByRole('meter', { name: 'Geral' }));
+      await r.user.selectOptions(screen.getByLabelText('Ordenar vagas'), 'recentes');
+      const first = screen.getAllByRole('row')[1]!;
+      expect(first).toHaveTextContent('0081');
+    });
+  });
 });

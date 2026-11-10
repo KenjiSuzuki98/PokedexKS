@@ -26,6 +26,41 @@ function baseOf(c: Collection, dex: number): Species | undefined {
   return same.find((s) => !s.form) ?? same[0];
 }
 
+/** IV de 0 a 15 sem teclado: arrastar, ou − e +. Vazio = não informado (− e + partem de 15). */
+function IVSlider({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  const n = value === '' ? null : Number(value);
+  const step = (d: number) => onChange(String(Math.min(15, Math.max(0, (n ?? 15) + d))));
+  return (
+    <div className={`ivs${n === null ? ' unset' : ''}`}>
+      <span className="ivs-label">{label}</span>
+      <button type="button" aria-label={`Diminuir ${label}`} onClick={() => step(-1)}>−</button>
+      <input
+        type="range"
+        min={0}
+        max={15}
+        step={1}
+        aria-label={label}
+        value={n ?? 0}
+        onChange={(e) => onChange(e.target.value)}
+        // Tocar sem arrastar (inclusive no valor em que já está) também marca o valor.
+        onClick={(e) => onChange(e.currentTarget.value)}
+      />
+      <button type="button" aria-label={`Aumentar ${label}`} onClick={() => step(1)}>+</button>
+      <output className="ivs-value">{n ?? '--'}</output>
+    </div>
+  );
+}
+
+/** Marcação que liga/desliga, com cara de botão (bom de tocar com o polegar). */
+function Chip(props: { label: string; text: string; checked: boolean; disabled?: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <label className={`chip${props.checked ? ' on' : ''}${props.disabled ? ' off' : ''}`}>
+      <input type="checkbox" aria-label={props.label} checked={props.checked} disabled={props.disabled} onChange={(e) => props.onChange(e.target.checked)} />
+      {props.text}
+    </label>
+  );
+}
+
 function Toggle<T extends string>(props: { label: string; value: T; options: [T, string, string][]; disabled?: (v: T) => boolean; onChange: (v: T) => void }) {
   return (
     <div role="group" aria-label={props.label} className="toggle">
@@ -56,9 +91,11 @@ export function ExemplarForm({
   exemplarId,
   onDone,
   recognize = recognizeImage,
+  onCancel,
 }: {
   exemplarId?: string;
   onDone: (id: string) => void;
+  onCancel?: () => void;
   /** Lê o texto do print (padrão: OCR grátis no aparelho). */
   recognize?: (file: File) => Promise<string>;
 }) {
@@ -121,7 +158,7 @@ export function ExemplarForm({
   const iv = readIV();
 
   function build(speciesId: string): Exemplar {
-    const kept = { ...(original ?? { id: newId(), date: today() }) } as Exemplar;
+    const kept = { ...(original ?? { id: newId(), date: today(), addedAt: new Date().toISOString() }) } as Exemplar;
     for (const k of OPTIONAL) delete kept[k];
     return {
       ...kept,
@@ -250,36 +287,127 @@ export function ExemplarForm({
 
   const backgrounds = c.backgrounds.filter((b) => !sp || b.species === 'todas' || b.species.includes(sp.id) || b.id === backgroundId);
 
+  const title = original ? `Editar ${originalSp?.name ?? 'exemplar'}` : 'Novo exemplar';
+  const needsMore = variationId === NEW || backgroundId === NEW;
+  const idText = preview ? (preview.nickname ? `#${preview.nickname}` : OUT_LABEL[preview.status]) : '#_____';
+
   return (
-    <form className="form exemplar-form" noValidate onSubmit={submit}>
-      <div className="ef-top">
-        <div className="ef-pokemon field">
-          <span>Pokémon</span>
-          <SpeciesPicker label="Pokémon" value={pickedId} onChange={choosePokemon} />
-        </div>
+    <form className="form exemplar-form" aria-label={title} noValidate onSubmit={submit}>
+      <header className="ef-head">
+        {onCancel && <button type="button" className="icon" aria-label="Cancelar" onClick={onCancel}>✕</button>}
+        <h2>{title}</h2>
+      </header>
+
+      <div className="ef-body">
+        <SpeciesPicker label="Pokémon" value={pickedId} onChange={choosePokemon} placeholder="Pokémon: nome, Nº ou código" />
         <div className="ef-auto">
           <Auto label="Nº Pokédex">{sp ? dex4(sp) + (variationId === NEW ? '+' : '') : '----'}</Auto>
-          <Auto label="Região">{sp ? regionOf(sp.dex) : '--------'}</Auto>
-          <Auto label="ID">
-            {preview ? (preview.nickname ? `#${preview.nickname}` : OUT_LABEL[preview.status]) : '#_____'}
-          </Auto>
+          <Auto label="Região">{sp ? regionOf(sp.dex) : '—'}</Auto>
+          <Auto label="IV %">{iv && iv !== 'erro' ? iv.percent : '--'}</Auto>
+          <Auto label="ID">{idText}</Auto>
         </div>
+
+        <div className="chips">
+          <Chip label="Brilhante" text="✦ Brilhante" checked={shiny} onChange={setShiny} />
+          <Chip label="Sortudo" text="🍀 Sortudo" checked={lucky} onChange={setLucky} />
+          <Chip label="Recebido em troca" text="🔁 Troca" checked={lucky || traded} disabled={lucky} onChange={setTraded} />
+          <Chip label="Dinamax" text="Dmax" checked={dynamax} onChange={setDynamax} />
+          <Chip label="Gigamax" text="Gmax" checked={gigamax} onChange={setGigamax} />
+        </div>
+
+        <div className="ef-rows">
+          <span>Sexo</span>
+          <Toggle
+            label="Sexo"
+            value={(effectiveSex ?? '') as Sex | ''}
+            options={[['', '∅', 'Não informado'], ['macho', '♂', 'Macho'], ['femea', '♀', 'Fêmea']]}
+            disabled={(v) => !!sp && sp.gender !== 'ambos' && v !== (fixedSex ?? '')}
+            onChange={setSex}
+          />
+          <span>Tamanho</span>
+          <Toggle
+            label="Tamanho"
+            value={size}
+            options={[['normal', 'Normal', 'Normal'], ['xxs', 'XXS', 'XXS'], ['xxl', 'XXL', 'XXL']]}
+            onChange={setSize}
+          />
+          <span>Rocket</span>
+          <Toggle
+            label="Rocket"
+            value={rocket}
+            options={[['normal', 'Nenhum', 'Nenhum'], ['sombroso', 'Sombroso', 'Sombroso'], ['purificado', 'Purificado', 'Purificado']]}
+            onChange={setRocket}
+          />
+        </div>
+
+        <div className="ef-iv">
+          <IVSlider label="ATK" value={atk} onChange={setAtk} />
+          <IVSlider label="DEF" value={def} onChange={setDef} />
+          <IVSlider label="PS" value={sta} onChange={setSta} />
+          {(atk || def || sta) && (
+            <button type="button" className="link ivs-clear" onClick={() => { setAtk(''); setDef(''); setSta(''); }}>Limpar IV</button>
+          )}
+        </div>
+
+        <div className="ef-selects">
+          <label>
+            Variação
+            <select value={variationId} onChange={(e) => { setVariationId(e.target.value); setCostumeId(''); }} disabled={!base}>
+              {!base && <option value="">—</option>}
+              {variations.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+              {base && <option value={NEW}>nova variação…</option>}
+            </select>
+          </label>
+          <label>
+            Traje
+            <select value={costumeId} onChange={(e) => setCostumeId(e.target.value)}>
+              <option value="">sem traje</option>
+              {variation?.costumes.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
+            </select>
+          </label>
+          <label>
+            Fundo
+            <select value={backgroundId} onChange={(e) => setBackgroundId(e.target.value)}>
+              <option value="">sem fundo</option>
+              {backgrounds.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
+              <option value={NEW}>novo fundo…</option>
+            </select>
+          </label>
+        </div>
+
+        <details className="ef-more" open={needsMore || undefined}>
+          <summary>Mais detalhes</summary>
+          {variationId === NEW && (
+            <label>Nome da nova variação<input value={newVariation} placeholder="ex.: Libre" onChange={(e) => setNewVariation(e.target.value)} /></label>
+          )}
+          {backgroundId === NEW && (
+            <>
+              <label>Nome do fundo novo<input value={newBg.name} onChange={(e) => setNewBg({ ...newBg, name: e.target.value })} /></label>
+              <label>
+                Tipo do fundo
+                <select value={newBg.type} onChange={(e) => setNewBg({ ...newBg, type: e.target.value as BackgroundType })}>
+                  <option value="localidade">localidade</option>
+                  <option value="especial">especial</option>
+                  <option value="aventura">efeito de aventura</option>
+                </select>
+              </label>
+            </>
+          )}
+          <label>
+            Evento de origem
+            <select value={eventId} onChange={(e) => setEventId(e.target.value)}>
+              <option value="">—</option>
+              {c.events.map((ev) => <option key={ev.id} value={ev.id}>{ev.name}</option>)}
+            </select>
+          </label>
+          <label>Notas<textarea rows={2} value={notes} onChange={(e) => setNotes(e.target.value)} /></label>
+          <p className="muted hint">Traje novo: cadastre no evento, na Linha do tempo.</p>
+        </details>
       </div>
 
-      <div className="ef-print">
-        <label className="file-button">
-          📷 Ler print
-          <input type="file" accept="image/*" aria-label="Ler print" onChange={readPrint} disabled={reading} />
-        </label>
-        <button type="button" aria-expanded={calc.open} onClick={() => setCalc({ ...calc, open: !calc.open })}>
-          🧮 IV por PC/PS/poeira
-        </button>
-        {reading && <span className="muted">Lendo print…</span>}
-      </div>
-      {readNote && <p className="muted" role="status">{readNote}</p>}
       {calc.open && (
         <fieldset className="ef-calc">
-          <legend>Calcular IV</legend>
+          <legend>Calcular IV pelo PC, PS e poeira</legend>
           <label>PC<input type="number" inputMode="numeric" value={calc.cp} onChange={(e) => setCalc({ ...calc, cp: e.target.value })} /></label>
           <label>PS máximo<input type="number" inputMode="numeric" value={calc.hp} onChange={(e) => setCalc({ ...calc, hp: e.target.value })} /></label>
           <label>Poeira<input type="number" inputMode="numeric" value={calc.dust} onChange={(e) => setCalc({ ...calc, dust: e.target.value })} /></label>
@@ -290,7 +418,7 @@ export function ExemplarForm({
           {ivCalc && ivCalc.combos.length === 0 && <p className="warn">Nenhuma combinação bate. Confira PC, PS, poeira e Pokémon.</p>}
           {ivCalc && ivCalc.combos.length > 1 && (
             <div className="combos">
-              <p className="muted">IV entre {ivCalc.min}% e {ivCalc.max}%. Escolha a combinação (a avaliação do jogo ajuda):</p>
+              <p className="muted">IV entre {ivCalc.min}% e {ivCalc.max}%. Escolha a combinação:</p>
               {ivCalc.combos.slice(0, 40).map((x) => (
                 <button key={`${x.atk}/${x.def}/${x.sta}`} type="button" onClick={() => applyCombo(x)}>
                   {x.atk}/{x.def}/{x.sta} ({x.percent}%)
@@ -298,114 +426,31 @@ export function ExemplarForm({
               ))}
             </div>
           )}
+          <button type="button" onClick={() => setCalc({ ...calc, open: false })}>Fechar</button>
         </fieldset>
       )}
 
-      <div className="ef-mid">
-        <div className="ef-checks">
-          <label className="check"><input type="checkbox" checked={shiny} onChange={(e) => setShiny(e.target.checked)} />Brilhante</label>
-          <label className="check"><input type="checkbox" checked={lucky} onChange={(e) => setLucky(e.target.checked)} />Sortudo</label>
-          <label className="check"><input type="checkbox" checked={dynamax} onChange={(e) => setDynamax(e.target.checked)} />Dinamax</label>
-          <label className="check"><input type="checkbox" checked={gigamax} onChange={(e) => setGigamax(e.target.checked)} />Gigamax</label>
-          <label className="check">
-            <input type="checkbox" checked={lucky || traded} disabled={lucky} onChange={(e) => setTraded(e.target.checked)} />
-            Recebido em troca
-          </label>
-        </div>
-        <div className="ef-stats">
-          <div className="ef-iv">
-            {(['ATK', 'DEF', 'PS'] as const).map((label, i) => {
-              const [value, set] = [[atk, setAtk], [def, setDef], [sta, setSta]][i] as [string, (v: string) => void];
-              return (
-                <label key={label}>
-                  {label}
-                  <input type="number" min={0} max={15} inputMode="numeric" value={value} onChange={(e) => set(e.target.value)} />
-                </label>
-              );
-            })}
-            <Auto label="IV %">{iv && iv !== 'erro' ? iv.percent : '--'}</Auto>
-          </div>
-          <Toggle
-            label="Sexo"
-            value={(effectiveSex ?? '') as Sex | ''}
-            options={[['', '∅', 'Não informado'], ['macho', '♂', 'Macho'], ['femea', '♀', 'Fêmea']]}
-            disabled={(v) => !!sp && sp.gender !== 'ambos' && v !== (fixedSex ?? '')}
-            onChange={setSex}
-          />
-          <Toggle
-            label="Tamanho"
-            value={size}
-            options={[['normal', '∅', 'Normal'], ['xxs', 'XXS', 'XXS'], ['xxl', 'XXL', 'XXL']]}
-            onChange={setSize}
-          />
-          <Toggle
-            label="Rocket"
-            value={rocket}
-            options={[['normal', 'Nenhum', 'Nenhum'], ['sombroso', 'Som', 'Sombroso'], ['purificado', 'Pur', 'Purificado']]}
-            onChange={setRocket}
-          />
-        </div>
+      <div className="ef-msgs">
+        {reading && <p className="muted">Lendo print…</p>}
+        {readNote && <p className="muted" role="status">{readNote}</p>}
+        {warnings.length > 0 && (
+          <ul className="warn">
+            {warnings.map((w) => <li key={w}>{w}</li>)}
+          </ul>
+        )}
+        {error && <p role="alert" className="error">{error}</p>}
       </div>
 
-      <label>
-        Variação
-        <select value={variationId} onChange={(e) => { setVariationId(e.target.value); setCostumeId(''); }} disabled={!base}>
-          {!base && <option value="">—</option>}
-          {variations.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-          {base && <option value={NEW}>nova variação…</option>}
-        </select>
-      </label>
-      {variationId === NEW && (
-        <label>Nome da nova variação<input value={newVariation} placeholder="ex.: Libre" onChange={(e) => setNewVariation(e.target.value)} /></label>
-      )}
-
-      <label>
-        Traje
-        <select value={costumeId} onChange={(e) => setCostumeId(e.target.value)}>
-          <option value="">sem traje</option>
-          {variation?.costumes.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
-        </select>
-      </label>
-      <p className="muted hint">Traje novo: cadastre no evento, na Linha do tempo.</p>
-
-      <label>
-        Fundo
-        <select value={backgroundId} onChange={(e) => setBackgroundId(e.target.value)}>
-          <option value="">sem fundo</option>
-          {backgrounds.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
-          <option value={NEW}>novo fundo…</option>
-        </select>
-      </label>
-      {backgroundId === NEW && (
-        <>
-          <label>Nome do fundo novo<input value={newBg.name} onChange={(e) => setNewBg({ ...newBg, name: e.target.value })} /></label>
-          <label>
-            Tipo do fundo
-            <select value={newBg.type} onChange={(e) => setNewBg({ ...newBg, type: e.target.value as BackgroundType })}>
-              <option value="localidade">localidade</option>
-              <option value="especial">especial</option>
-              <option value="aventura">efeito de aventura</option>
-            </select>
-          </label>
-        </>
-      )}
-
-      <label>
-        Evento de origem
-        <select value={eventId} onChange={(e) => setEventId(e.target.value)}>
-          <option value="">—</option>
-          {c.events.map((ev) => <option key={ev.id} value={ev.id}>{ev.name}</option>)}
-        </select>
-      </label>
-      <label>Notas<textarea value={notes} onChange={(e) => setNotes(e.target.value)} /></label>
-
-      {warnings.length > 0 && (
-        <ul className="warn">
-          {warnings.map((w) => <li key={w}>{w}</li>)}
-        </ul>
-      )}
-      {error && <p role="alert" className="error">{error}</p>}
-      <button type="submit" className="primary">Salvar</button>
+      <div className="ef-bar" role="toolbar" aria-label="Ações">
+        <label className="file-button">
+          📷 Print
+          <input type="file" accept="image/*" aria-label="Ler print" onChange={readPrint} disabled={reading} />
+        </label>
+        <button type="button" aria-label="IV por PC/PS/poeira" aria-expanded={calc.open} onClick={() => setCalc({ ...calc, open: !calc.open })}>
+          🧮 IV
+        </button>
+        <button type="submit" className="primary">Salvar</button>
+      </div>
     </form>
   );
 }

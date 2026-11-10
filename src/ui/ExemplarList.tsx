@@ -34,6 +34,17 @@ function attrText(c: Collection, e: Exemplar, key: AttrKey): string {
   }
 }
 
+/** Rótulos da direção: para datas, "antigos/recentes primeiro". */
+function DirOptions({ sortKey }: { sortKey?: AttrKey }) {
+  const date = sortKey === 'inclusao' || sortKey === 'data';
+  return (
+    <>
+      <option value="asc">{date ? 'antigos primeiro' : 'crescente'}</option>
+      <option value="desc">{date ? 'recentes primeiro' : 'decrescente'}</option>
+    </>
+  );
+}
+
 export function ExemplarList({ onOpen }: { onOpen: (id: string) => void }) {
   const { collection: c, result: r } = useCollection();
   const [text, setText] = useState('');
@@ -85,8 +96,7 @@ export function ExemplarList({ onOpen }: { onOpen: (id: string) => void }) {
         <label>
           Direção 1
           <select value={sort1.dir} onChange={(e) => setSort1({ ...sort1, dir: e.target.value as 'asc' | 'desc' })}>
-            <option value="asc">crescente</option>
-            <option value="desc">decrescente</option>
+            <DirOptions sortKey={sort1.key} />
           </select>
         </label>
         <label>
@@ -99,8 +109,7 @@ export function ExemplarList({ onOpen }: { onOpen: (id: string) => void }) {
         <label>
           Direção 2
           <select value={sort2?.dir ?? 'desc'} disabled={!sort2} onChange={(e) => sort2 && setSort2({ ...sort2, dir: e.target.value as 'asc' | 'desc' })}>
-            <option value="asc">crescente</option>
-            <option value="desc">decrescente</option>
+            <DirOptions sortKey={sort2?.key} />
           </select>
         </label>
         <label>

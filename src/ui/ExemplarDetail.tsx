@@ -16,9 +16,7 @@ export function ExemplarDetail({ id, onClose }: { id: string; onClose: () => voi
   if (editing) {
     return (
       <section>
-        <h2>Editar {speciesName(c, e.speciesId)}</h2>
-        <ExemplarForm exemplarId={id} onDone={() => setEditing(false)} />
-        <button type="button" onClick={() => setEditing(false)}>Cancelar</button>
+        <ExemplarForm exemplarId={id} onDone={() => setEditing(false)} onCancel={() => setEditing(false)} />
       </section>
     );
   }
