@@ -129,3 +129,32 @@ table.slots tr.missing td { color: var(--muted); }
 .opened, .event { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
 .data { display: grid; gap: 10px; max-width: 560px; }
 .data label { display: flex; flex-direction: column; gap: 4px; }
+
+/* Seletor de Pokémon */
+.field { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; color: var(--muted); }
+.picker { position: relative; }
+.picker > input { width: 100%; }
+.picker-pop { position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 2px); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 6px 18px rgb(0 0 0 / .18); }
+.picker-order { display: flex; gap: 4px; padding: 4px; border-bottom: 1px solid var(--border); }
+.picker-order button { padding: 2px 8px; font-size: .8rem; }
+.picker-order button[aria-pressed='true'] { background: var(--muted); color: var(--surface); }
+.picker-order button:last-child { margin-left: auto; }
+.picker ul[role='listbox'] { list-style: none; margin: 0; padding: 2px 0; max-height: 260px; overflow-y: auto; overscroll-behavior: contain; color: var(--text); font-size: .9rem; }
+.picker li[role='option'] { padding: 6px 10px; cursor: pointer; }
+.picker li[role='option']:hover, .picker li.active { background: var(--surface-2); }
+.picker li[aria-selected='true'] { font-weight: 600; }
+.picker li.muted { padding: 6px 10px; }
+
+/* Filtro recolhível */
+button.icon { font-size: 1.1rem; line-height: 1; padding: 5px 8px; }
+button.icon[aria-expanded='true'] { background: var(--surface-2); }
+.toolbar.filters { padding: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+
+/* Itens de um evento (editáveis) */
+ul.brings { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+ul.brings li, .loose li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+ul.brings li > span { flex: 1 1 100%; font-size: .85rem; }
+.event > button { margin: 6px 6px 0 0; }
+.loose { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+.loose ul { list-style: none; padding: 0; display: grid; gap: 6px; }
+.hint { font-size: .8rem; margin: -4px 0 0; }

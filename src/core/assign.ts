@@ -89,20 +89,40 @@ export function computeCollection(c: Collection): CollectionResult {
     byRoot.set(root, [...(byRoot.get(root) ?? []), e]);
   }
 
-  const occupancy: Record<string, string | null> = {};
+  // Na vaga de uma fase, quem já está nela (ou mais perto dela) ganha de qualquer reserva; depois o IV.
+  const phasePriority = (a: Exemplar, b: Exemplar) => {
+    const da = byId.get(a.speciesId);
+    const db = byId.get(b.speciesId);
+    return (db ? depth(db, byId) : 0) - (da ? depth(da, byId) : 0) || compareExemplars(a, b);
+  };
+
   const committed = new Map<string, string>();
-  const won = new Map<string, Slot[]>();
   const eligibleFor = (phase: Species) =>
     (byRoot.get(rootOf(phase.id)) ?? []).filter((e) => {
       const at = committed.get(e.id);
       return (at === undefined || at === phase.id) && canReach(e, phase, byId);
     });
 
-  // Fases mais altas primeiro: o maior IV vai para a maior evolução.
+  /** Vagas da fase e quem ganha cada uma, entre os exemplares colocados nela. */
+  function evalPhase(phase: Species, members: Exemplar[]): { winners: Map<string, Slot[]>; filled: number } {
+    const sorted = [...members].sort(phasePriority);
+    const winners = new Map<string, Slot[]>();
+    let filled = 0;
+    for (const slot of slotsBySpecies.get(phase.id) ?? []) {
+      const w = sorted.find((e) => matchesSlot(e, slot));
+      if (!w) continue;
+      filled += 1;
+      winners.set(w.id, [...(winners.get(w.id) ?? []), slot]);
+    }
+    return { winners, filled };
+  }
+
+  // 1) Distribuição inicial: fases mais altas primeiro (o maior IV vai para a maior evolução).
   // Entre ramos da mesma altura e da mesma família (Eevee), vai primeiro o ramo com menos
   // candidatos, para a reserva ocupar um ramo livre em vez de tirar a vaga de quem já evoluiu.
   const groups = new Map<string, { depth: number; phases: Species[] }>();
   for (const sp of c.species) {
+    if (!byRoot.has(rootOf(sp.id))) continue;
     const d = depth(sp, byId);
     const key = `${d}|${rootOf(sp.id)}`;
     const g = groups.get(key) ?? { depth: d, phases: [] };
@@ -110,26 +130,76 @@ export function computeCollection(c: Collection): CollectionResult {
     groups.set(key, g);
   }
   const ordered = [...groups.values()].sort((a, b) => b.depth - a.depth);
-
   for (const g of ordered) {
     const pending = [...g.phases].sort((a, b) => a.id.localeCompare(b.id));
     while (pending.length) {
       const counts = pending.map((p) => eligibleFor(p).length);
       const i = counts.indexOf(Math.min(...counts));
       const phase = pending.splice(i, 1)[0]!;
-      assignPhase(phase, eligibleFor(phase));
+      for (const id of evalPhase(phase, eligibleFor(phase)).winners.keys()) committed.set(id, phase.id);
     }
   }
 
-  function assignPhase(phase: Species, eligible: Exemplar[]): void {
-    for (const slot of slotsBySpecies.get(phase.id) ?? []) {
-      const winner = eligible.find((e) => matchesSlot(e, slot));
-      occupancy[slot.id] = winner?.id ?? null;
-      if (!winner) continue;
-      committed.set(winner.id, phase.id);
-      won.set(winner.id, [...(won.get(winner.id) ?? []), slot]);
+  // 2) Sem desperdício: move um exemplar de fase quando isso mantém mais exemplares na coleção
+  // ou, mantendo os mesmos, preenche mais vagas.
+  const familyPhases = new Map<string, Species[]>();
+  for (const sp of c.species) {
+    const root = rootOf(sp.id);
+    if (byRoot.has(root)) familyPhases.set(root, [...(familyPhases.get(root) ?? []), sp]);
+  }
+  for (const [root, members] of byRoot) {
+    const phases = familyPhases.get(root) ?? [];
+    if (members.length < 2 || phases.length < 2) continue;
+    const placed = new Map<string, string | undefined>(members.map((e) => [e.id, committed.get(e.id)]));
+    const inPhase = (pid: string) => members.filter((e) => placed.get(e.id) === pid);
+    const scoreOf = (pid: string | undefined) => {
+      if (!pid) return [0, 0] as const;
+      const r = evalPhase(byId.get(pid)!, inPhase(pid));
+      return [r.winners.size, r.filled] as const;
+    };
+    for (let round = 0, improved = true; improved && round < 20; round++) {
+      improved = false;
+      // Os de menor IV tentam mudar primeiro: o maior IV continua indo para a maior evolução.
+      for (const e of [...members].reverse()) {
+        const from = placed.get(e.id);
+        for (const to of phases) {
+          if (to.id === from || !canReach(e, to, byId)) continue;
+          const before = [scoreOf(from), scoreOf(to.id)];
+          placed.set(e.id, to.id);
+          const after = [scoreOf(from), scoreOf(to.id)];
+          const kept = after[0]![0] + after[1]![0] - before[0]![0] - before[1]![0];
+          const filled = after[0]![1] + after[1]![1] - before[0]![1] - before[1]![1];
+          if (kept > 0 || (kept === 0 && filled > 0)) {
+            improved = true;
+            break;
+          }
+          placed.set(e.id, from);
+        }
+      }
+    }
+    for (const e of members) {
+      const pid = placed.get(e.id);
+      if (pid) committed.set(e.id, pid);
+      else committed.delete(e.id);
     }
   }
+
+  // 3) Resultado final por fase.
+  const occupancy: Record<string, string | null> = {};
+  const won = new Map<string, Slot[]>();
+  for (const slot of slots) occupancy[slot.id] = null;
+  const phaseMembers = new Map<string, Exemplar[]>();
+  for (const e of c.exemplars) {
+    const pid = committed.get(e.id);
+    if (pid) phaseMembers.set(pid, [...(phaseMembers.get(pid) ?? []), e]);
+  }
+  for (const [pid, members] of phaseMembers) {
+    for (const [id, list] of evalPhase(byId.get(pid)!, members).winners) {
+      won.set(id, list);
+      for (const s of list) occupancy[s.id] = id;
+    }
+  }
+  for (const e of c.exemplars) if (!won.has(e.id)) committed.delete(e.id);
 
   const exemplars: Record<string, ExemplarResult> = {};
   const renamePending: RenamePending[] = [];

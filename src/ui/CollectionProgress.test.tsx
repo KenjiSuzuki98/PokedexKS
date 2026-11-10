@@ -78,6 +78,10 @@ describe('CollectionProgress', () => {
     await r.user.type(screen.getByRole('searchbox', { name: /buscar/i }), '81');
     expect(screen.getByRole('meter', { name: 'Cadeia Magnemite' })).toBeInTheDocument();
     expect(screen.queryByRole('meter', { name: 'Cadeia Pichu' })).toBeNull();
+    await r.user.clear(screen.getByRole('searchbox', { name: /buscar/i }));
+    await r.user.type(screen.getByRole('searchbox', { name: /buscar/i }), '0026BR');
+    expect(screen.getByRole('meter', { name: 'Cadeia Pichu' })).toBeInTheDocument();
+    expect(screen.queryByRole('meter', { name: 'Cadeia Magnemite' })).toBeNull();
   });
 
   it('novas vagas abertas aparecem e podem ser marcadas como vistas', async () => {

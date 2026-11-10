@@ -1,10 +1,11 @@
 import { ivScore, type CollectionResult } from './assign';
 import { chainRoot, depth, speciesMap } from './chain';
+import { makePokemonSearch } from './search';
 import type { Collection, Exemplar } from './types';
 
 export type AttrKey =
   | 'evolucao' | 'cadeia' | 'especie' | 'dex' | 'iv' | 'cp' | 'data' | 'status' | 'origem'
-  | 'sexo' | 'tamanho' | 'brilhante' | 'sortudo' | 'rocket' | 'traje' | 'fundo' | 'evento';
+  | 'sexo' | 'tamanho' | 'brilhante' | 'sortudo' | 'rocket' | 'traje' | 'fundo' | 'evento' | 'codigo';
 
 export interface SortCriterion {
   key: AttrKey;
@@ -50,6 +51,7 @@ function makeGetter(c: Collection, r: CollectionResult) {
       case 'traje': return e.costumeId ?? '';
       case 'fundo': return e.backgroundId ?? '';
       case 'evento': return e.eventId ?? '';
+      case 'codigo': return r.exemplars[e.id]?.nickname ?? '';
     }
   };
 }
@@ -91,12 +93,17 @@ export function filterExemplars(
   q: { filters?: Filter[]; text?: string },
 ): Exemplar[] {
   const get = makeGetter(c, r);
-  const names = new Map(c.species.map((s) => [s.id, normalize(s.name)]));
-  const text = q.text ? normalize(q.text.trim()) : '';
+  const byId = speciesMap(c);
+  const search = makePokemonSearch(c, r.slots);
+  const text = q.text?.trim() ?? '';
   return list.filter((e) => {
     if (text) {
-      const haystack = [names.get(e.speciesId) ?? '', normalize(e.notes ?? ''), normalize(e.nickname ?? '')];
-      if (!haystack.some((h) => h.includes(text))) return false;
+      const sp = byId.get(e.speciesId);
+      const hit =
+        (sp && search.species(sp, text)) ||
+        search.code([r.exemplars[e.id]?.nickname, e.nickname], text) ||
+        normalize(e.notes ?? '').includes(normalize(text));
+      if (!hit) return false;
     }
     return (q.filters ?? []).every((f) => {
       const v = get(e, f.key);

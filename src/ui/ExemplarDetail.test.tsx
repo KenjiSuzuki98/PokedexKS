@@ -23,7 +23,8 @@ describe('ExemplarDetail', () => {
   });
 
   it('reserva mostra para qual evolução está guardada', () => {
-    renderWith(<ExemplarDetail id={pika.id} onClose={() => {}} />, c);
+    // sozinho na cadeia, o Pikachu fica guardado para Raichu
+    renderWith(<ExemplarDetail id={pika.id} onClose={() => {}} />, collection({ exemplars: [pika] }));
     expect(screen.getByText(/aguardando evolução.*Raichu/i)).toBeInTheDocument();
   });
 

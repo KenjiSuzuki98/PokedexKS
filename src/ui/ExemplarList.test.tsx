@@ -45,8 +45,48 @@ describe('ExemplarList', () => {
     expect(rows()).toHaveLength(1);
   });
 
+  it('busca por Nº Pokédex e pelo código de renomear', async () => {
+    const { user } = renderWith(<ExemplarList onOpen={() => {}} />, c);
+    await user.type(screen.getByRole('searchbox', { name: /buscar/i }), '26');
+    expect(rows()).toHaveLength(1);
+    await user.clear(screen.getByRole('searchbox', { name: /buscar/i }));
+    await user.type(screen.getByRole('searchbox', { name: /buscar/i }), '0026BR');
+    expect(rows()).toHaveLength(1);
+  });
+
+  it('filtros e ordenação ficam escondidos até clicar em filtrar', async () => {
+    const { user } = renderWith(<ExemplarList onOpen={() => {}} />, c);
+    expect(screen.queryByLabelText('Ordenar por')).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Limpar filtros' })).toBeNull();
+    await user.click(screen.getByRole('button', { name: 'Filtrar' }));
+    expect(screen.getByLabelText('Ordenar por')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Filtrar' }));
+    expect(screen.queryByLabelText('Ordenar por')).toBeNull();
+  });
+
+  it('com filtro ativo aparece o botão de limpar, que volta a lista inteira', async () => {
+    const { user } = renderWith(<ExemplarList onOpen={() => {}} />, c);
+    await user.click(screen.getByRole('button', { name: 'Filtrar' }));
+    await user.selectOptions(screen.getByLabelText('Filtrar status'), 'trocar');
+    expect(rows()).toHaveLength(1);
+    await user.click(screen.getByRole('button', { name: 'Limpar filtros' }));
+    expect(rows()).toHaveLength(5);
+    expect(screen.queryByRole('button', { name: 'Limpar filtros' })).toBeNull();
+  });
+
+  it('filtra e ordena pelo código de renomear', async () => {
+    const { user } = renderWith(<ExemplarList onOpen={() => {}} />, c);
+    await user.click(screen.getByRole('button', { name: 'Filtrar' }));
+    await user.selectOptions(screen.getByLabelText('Filtrar por'), 'codigo');
+    await user.type(screen.getByLabelText('Código contém'), '0026');
+    expect(rows()).toHaveLength(2);
+    await user.selectOptions(screen.getByLabelText('Ordenar por'), 'codigo');
+    expect(rows()[0]).toHaveTextContent('0026BR');
+  });
+
   it('ordena por dois critérios, crescente ou decrescente', async () => {
     const { user } = renderWith(<ExemplarList onOpen={() => {}} />, c);
+    await user.click(screen.getByRole('button', { name: 'Filtrar' }));
     await user.selectOptions(screen.getByLabelText('Ordenar por'), 'iv');
     await user.selectOptions(screen.getByLabelText('Direção 1'), 'asc');
     expect(ivCol()).toEqual(['20%', '31%', '40%', '69%', '96%'].map((p) => expect.stringContaining(p)));
@@ -59,6 +99,7 @@ describe('ExemplarList', () => {
 
   it('filtra por status e por atributo', async () => {
     const { user } = renderWith(<ExemplarList onOpen={() => {}} />, c);
+    await user.click(screen.getByRole('button', { name: 'Filtrar' }));
     await user.selectOptions(screen.getByLabelText('Filtrar status'), 'trocar');
     expect(rows()).toHaveLength(1);
     await user.selectOptions(screen.getByLabelText('Filtrar status'), '');

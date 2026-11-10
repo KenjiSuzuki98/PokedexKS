@@ -4,6 +4,7 @@ import { acknowledgeOpenedSlots } from '../core/ops';
 import { computeProgress } from '../core/progress';
 import { slotsInScope, type Scope } from '../core/scope';
 import type { Species } from '../core/types';
+import { makePokemonSearch } from '../core/search';
 import { useCollection } from './context';
 import { formatIV, speciesName } from './format';
 import { Gauge } from './Gauge';
@@ -20,7 +21,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   sexo: 'Sexo',
 };
 const PAGE = 60;
-const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
 type View =
   | { kind: 'home' }
@@ -140,10 +140,8 @@ export function CollectionProgress({ onOpenExemplar }: { onOpenExemplar: (id: st
   }
 
   const opened = (c.openedSlots ?? []).map((id) => r.slots.find((s) => s.id === id)).filter((s) => s !== undefined);
-  const term = norm(search.trim());
-  const visibleChains = chains.filter(
-    ([, members]) => !term || members.some((s) => norm(s.name).includes(term) || String(s.dex) === term.replace(/^0+/, '')),
-  );
+  const finder = makePokemonSearch(c, r.slots);
+  const visibleChains = chains.filter(([, members]) => !search.trim() || members.some((s) => finder.species(s, search)));
   const home: View = { kind: 'home' };
 
   return (
@@ -179,7 +177,7 @@ export function CollectionProgress({ onOpenExemplar }: { onOpenExemplar: (id: st
       <input
         type="search"
         aria-label="Buscar cadeia"
-        placeholder="Buscar por nome ou Nº"
+        placeholder="Nome, Nº ou código"
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);

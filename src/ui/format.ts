@@ -19,6 +19,7 @@ export const ATTR_LABELS: Record<AttrKey, string> = {
   traje: 'Traje',
   fundo: 'Fundo',
   evento: 'Evento de origem',
+  codigo: 'Código (renomear)',
 };
 
 export function speciesName(c: Collection, id: string): string {

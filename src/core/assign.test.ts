@@ -42,11 +42,13 @@ describe('cascata Pichu / Pikachu / Raichu', () => {
     expect(r.exemplars[p96.id]!.reservedFor).toBeUndefined();
   });
 
-  it('um Raichu de verdade com IV menor perde a vaga Raichu para o Pikachu reservado', () => {
+  it('um Raichu já evoluído fica com a vaga Raichu mesmo com IV menor; o Pikachu fica na vaga Pikachu', () => {
     const r90 = ex({ speciesId: 'raichu', iv: iv(90) });
     const r = run([p96, r90]);
-    expect(r.occupancy['0026EV']).toBe(p96.id);
-    expect(r.exemplars[r90.id]!.status).toBe('trocar');
+    expect(r.occupancy['0026EV']).toBe(r90.id);
+    expect(r.occupancy['0025EV']).toBe(p96.id);
+    expect(r.exemplars[r90.id]!.status).toBe('manter');
+    expect(r.exemplars[p96.id]).toMatchObject({ status: 'manter', phaseId: 'pikachu' });
   });
 
   it('um exemplar de atributo raro reservado não tira a vaga de evolução da fase de baixo', () => {
@@ -55,6 +57,51 @@ describe('cascata Pichu / Pikachu / Raichu', () => {
     expect(r.occupancy['0026BR']).toBe(shiny.id);
     expect(r.exemplars[shiny.id]!.phaseId).toBe('raichu');
     expect(r.occupancy['0025EV']).toBe(p85.id);
+  });
+});
+
+describe('prioridade por evolução e sem desperdício', () => {
+  const boina = { id: 'boina', code: 'BOIN', name: 'Boina', shiny: false };
+  const sp = [
+    species({ id: 'pichu', name: 'Pichu', dex: 172 }),
+    species({ id: 'pikachu', name: 'Pikachu', dex: 25, evolvesFrom: 'pichu', costumes: [boina] }),
+    species({ id: 'raichu', name: 'Raichu', dex: 26, evolvesFrom: 'pikachu', costumes: [boina] }),
+  ];
+  const go = (exemplars: Exemplar[]) => computeCollection(collection({ species: sp, exemplars }));
+
+  it('Pikachu e Raichu de traje (Raichu com IV menor): os dois ficam, cada um na sua fase', () => {
+    const pika = ex({ speciesId: 'pikachu', iv: iv(96), costumeId: 'boina', date: '2025-01-01' });
+    const rai = ex({ speciesId: 'raichu', iv: iv(80), costumeId: 'boina', date: '2025-02-01' });
+    const r = go([pika, rai]);
+    expect(r.occupancy['0026TBOIN']).toBe(rai.id);
+    expect(r.occupancy['0025TBOIN']).toBe(pika.id);
+    expect(r.exemplars[rai.id]).toMatchObject({ status: 'manter', phaseId: 'raichu' });
+    expect(r.exemplars[pika.id]).toMatchObject({ status: 'manter', phaseId: 'pikachu' });
+  });
+
+  it('só um terceiro exemplar do mesmo traje, sobressalente, vai para troca', () => {
+    const pika = ex({ speciesId: 'pikachu', iv: iv(96), costumeId: 'boina' });
+    const rai = ex({ speciesId: 'raichu', iv: iv(80), costumeId: 'boina' });
+    const extra = ex({ speciesId: 'pikachu', iv: iv(70), costumeId: 'boina' });
+    expect(go([pika, rai, extra]).exemplars[extra.id]!.status).toBe('trocar');
+  });
+
+  it('entre duas reservas para a mesma fase, ganha a mais evoluída', () => {
+    const pichu = ex({ speciesId: 'pichu', iv: iv(99) });
+    const pika = ex({ speciesId: 'pikachu', iv: iv(80) });
+    const r = go([pichu, pika]);
+    expect(r.occupancy['0026EV']).toBe(pika.id);
+    expect(r.exemplars[pichu.id]!.status).toBe('manter');
+  });
+
+  it('não reserva um exemplar para uma vaga só se ele preencheria mais vagas na fase atual', () => {
+    const a = ex({ speciesId: 'pikachu', iv: iv(98) });
+    const b = ex({ speciesId: 'pikachu', iv: iv(90), size: 'xxl' });
+    const r = go([a, b]);
+    expect(r.occupancy['0026EV']).toBe(a.id);
+    expect(r.occupancy['0025EV']).toBe(b.id);
+    expect(r.occupancy['0025XXL']).toBe(b.id);
+    expect(r.exemplars[b.id]!.phaseId).toBe('pikachu');
   });
 });
 

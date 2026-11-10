@@ -1,13 +1,28 @@
-import type { Collection } from './types';
+import { slugify } from './events';
+import type { Collection, Costume, Exemplar, Species } from './types';
 
-export const CURRENT_SCHEMA = 1;
+export const CURRENT_SCHEMA = 2;
 
 type Data = Record<string, any>;
 /** Migração da versão N para N+1. */
 export type Migration = (data: Data) => Data;
 
 /** Migrações reais do app. Ao mudar o formato: suba CURRENT_SCHEMA e registre aqui a migração da versão anterior. */
-export const MIGRATIONS: Record<number, Migration> = {};
+export const MIGRATIONS: Record<number, Migration> = {
+  // v2: trajes só dos eventos cadastrados por mim. Sai o que veio da tabela automática (id "<espécie>-<nome>")
+  // e não está em uso por nenhum exemplar.
+  1: (d) => {
+    const species = (d.species ?? []) as Species[];
+    const ids = new Set(species.map((s) => s.id));
+    const used = new Set(((d.exemplars ?? []) as Exemplar[]).map((e) => e.costumeId).filter(Boolean));
+    const automatic = (t: Costume) => {
+      if (t.since?.eventId || used.has(t.id)) return false;
+      const suffix = '-' + slugify(t.name);
+      return t.id.endsWith(suffix) && ids.has(t.id.slice(0, -suffix.length));
+    };
+    return { ...d, species: species.map((s) => ({ ...s, costumes: (s.costumes ?? []).filter((t) => !automatic(t)) })) };
+  },
+};
 
 export interface SchemaOptions {
   migrations: Record<number, Migration>;

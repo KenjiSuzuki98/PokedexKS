@@ -1,5 +1,6 @@
 import { CURRENT_SCHEMA, exportBackup, importBackup, type Migration } from './backup';
-import { collection, ex, iv } from './test-helpers';
+import { collection, ex, iv, species } from './test-helpers';
+import seed from '../data/species.json';
 
 describe('backup', () => {
   it('exporta com versão do esquema e importa de volta igual', () => {
@@ -33,5 +34,34 @@ describe('backup', () => {
       /migração/,
     );
     expect(() => importBackup('não é json')).toThrow();
+  });
+
+  it('v1 → v2: tira os trajes automáticos da tabela, menos os que algum exemplar usa', () => {
+    const pikachu = species({
+      id: 'pikachu',
+      name: 'Pikachu',
+      dex: 25,
+      costumes: [
+        { id: 'pikachu-festa', code: 'FEST', name: 'Festa', shiny: true },
+        { id: 'pikachu-boina', code: 'BOIN', name: 'Boina', shiny: false },
+        { id: 'libre', code: 'LIBR', name: 'Libre', shiny: false },
+        { id: 'pikachu-halloween', code: 'HALL', name: 'Halloween', shiny: false, since: { eventId: 'ev1' } },
+      ],
+    });
+    const raichu = species({
+      id: 'raichu', name: 'Raichu', dex: 26, evolvesFrom: 'pikachu',
+      costumes: [{ id: 'pikachu-festa', code: 'FEST', name: 'Festa', shiny: true }],
+    });
+    const old = JSON.stringify({
+      schemaVersion: 1,
+      data: collection({ species: [pikachu, raichu], exemplars: [ex({ speciesId: 'pikachu', costumeId: 'pikachu-boina' })] }),
+    });
+    const c = importBackup(old);
+    expect(c.species[0]!.costumes.map((t) => t.id)).toEqual(['pikachu-boina', 'libre', 'pikachu-halloween']);
+    expect(c.species[1]!.costumes).toEqual([]);
+  });
+
+  it('a tabela inicial de espécies não traz trajes automáticos', () => {
+    expect((seed as { costumes: unknown[] }[]).every((s) => s.costumes.length === 0)).toBe(true);
   });
 });

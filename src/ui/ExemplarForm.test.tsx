@@ -135,16 +135,25 @@ describe('ExemplarForm', () => {
     expect(r.collection.exemplars[0]!.speciesId).toBe(created.id);
   });
 
-  it('cadastra traje novo na hora (com brilhante)', async () => {
-    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+  it('traje: só escolhe entre os trajes cadastrados nos eventos, sem criar traje no cadastro', async () => {
+    const boina = { id: 'boina', code: 'BOIN', name: 'Boina', shiny: false, since: { eventId: 'ev1' } };
+    const withCostume = table.map((s) => (s.id === 'pikachu' ? { ...s, costumes: [boina] } : s));
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base({ species: withCostume }));
     await pick(r.user, 'Pikachu');
-    await r.user.selectOptions(screen.getByLabelText('Traje'), '__novo');
-    await r.user.type(screen.getByLabelText('Nome do traje novo'), 'Festa');
-    await r.user.click(screen.getByLabelText('Traje tem brilhante'));
+    const traje = screen.getByLabelText('Traje');
+    expect(within(traje).getAllByRole('option').map((o) => o.textContent)).toEqual(['sem traje', 'Boina']);
+    expect(screen.getByText(/traje novo.*linha do tempo/i)).toBeInTheDocument();
+    await r.user.selectOptions(traje, 'boina');
     await save(r.user);
-    const pika = r.collection.species.find((s) => s.id === 'pikachu')!;
-    expect(pika.costumes).toEqual([expect.objectContaining({ name: 'Festa', shiny: true })]);
-    expect(r.collection.exemplars[0]!.costumeId).toBe(pika.costumes[0]!.id);
+    expect(r.collection.exemplars[0]!.costumeId).toBe('boina');
+  });
+
+  it('escolhe o Pokémon pelo código de renomear', async () => {
+    const r = renderWith(<ExemplarForm onDone={() => {}} />, base());
+    await pick(r.user, '0026A');
+    expect(auto('Nº Pokédex')).toHaveTextContent('0026A');
+    await save(r.user);
+    expect(r.collection.exemplars[0]!.speciesId).toBe('raichu-alola');
   });
 
   it('cadastra fundo novo na hora', async () => {

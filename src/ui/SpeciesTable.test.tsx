@@ -38,15 +38,9 @@ describe('SpeciesTable', () => {
     expect(r.collection.species.find((s) => s.id === 'pikachu')!.base.atk).toBe(120);
   });
 
-  it('adiciona traje novo (e a versão brilhante)', async () => {
-    const r = renderWith(<SpeciesTable />);
-    const form = screen.getByRole('form', { name: 'Novo traje' });
-    await r.user.selectOptions(within(form).getByLabelText('Espécie'), 'pikachu');
-    await r.user.type(within(form).getByLabelText('Nome'), 'Festa');
-    await r.user.click(within(form).getByLabelText('Tem brilhante'));
-    await r.user.click(within(form).getByRole('button', { name: 'Adicionar traje' }));
-    expect(generateSlots(r.collection).map((s) => s.id)).toEqual(expect.arrayContaining(['0025TFEST', '0025BTFEST']));
-    expect(row(/^Pikachu$/)).toHaveTextContent('Festa');
+  it('traje não é cadastrado aqui, só nos eventos (evita duplicado)', () => {
+    renderWith(<SpeciesTable />);
+    expect(screen.queryByRole('form', { name: 'Novo traje' })).toBeNull();
   });
 
   it('adiciona espécie nova e avisa se o ID de vaga colidir', async () => {
@@ -55,7 +49,7 @@ describe('SpeciesTable', () => {
     await r.user.type(within(form).getByLabelText('Nome'), 'Raichu de Alola');
     await r.user.type(within(form).getByLabelText('Nº Pokédex'), '26');
     await r.user.type(within(form).getByLabelText('Forma'), 'A');
-    await r.user.selectOptions(within(form).getByLabelText('Evolui de'), 'pikachu');
+    await r.user.type(within(form).getByRole('combobox', { name: 'Evolui de' }), 'Pikachu');
     await r.user.click(within(form).getByRole('button', { name: 'Adicionar espécie' }));
     expect(r.collection.species.find((s) => s.name === 'Raichu de Alola')).toMatchObject({ dex: 26, form: 'A', evolvesFrom: 'pikachu' });
 
@@ -72,6 +66,17 @@ describe('SpeciesTable', () => {
     await r.user.type(within(form).getByLabelText(/valores/i), 'Com chapéu:CH');
     await r.user.click(within(form).getByRole('button', { name: 'Criar categoria' }));
     expect(generateSlots(r.collection).map((s) => s.id)).toEqual(expect.arrayContaining(['0025CH', '0026CH', '0172CH']));
+  });
+
+  it('categoria só para espécies escolhidas no seletor', async () => {
+    const r = renderWith(<SpeciesTable />, collection());
+    const form = screen.getByRole('form', { name: 'Nova categoria' });
+    await r.user.type(within(form).getByLabelText('Nome'), 'Laço');
+    await r.user.type(within(form).getByLabelText(/valores/i), 'Com laço:LC');
+    await r.user.type(within(form).getByRole('combobox', { name: 'Espécie da categoria' }), 'Pikachu');
+    await r.user.click(within(form).getByRole('button', { name: 'Adicionar espécie à categoria' }));
+    await r.user.click(within(form).getByRole('button', { name: 'Criar categoria' }));
+    expect(r.collection.customCategories[0]!.species).toEqual(['pikachu']);
   });
 });
 
@@ -95,5 +100,8 @@ describe('busca na tabela de espécies', () => {
     await r.user.clear(screen.getByRole('searchbox', { name: /buscar espécie/i }));
     await r.user.type(screen.getByRole('searchbox', { name: /buscar espécie/i }), '172');
     expect(screen.getAllByRole('rowheader').map((h) => h.textContent)).toEqual(['Pichu']);
+    await r.user.clear(screen.getByRole('searchbox', { name: /buscar espécie/i }));
+    await r.user.type(screen.getByRole('searchbox', { name: /buscar espécie/i }), '0026BR');
+    expect(screen.getAllByRole('rowheader').map((h) => h.textContent)).toEqual(['Raichu']);
   });
 });

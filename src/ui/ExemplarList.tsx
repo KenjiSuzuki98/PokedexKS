@@ -9,7 +9,7 @@ import { ATTR_LABELS, dexLabel, formatIV, formatStats, speciesName } from './for
 const KEYS = (Object.keys(ATTR_LABELS) as AttrKey[]).filter((k) => k !== 'cp' && k !== 'data');
 const OUT_LABEL: Record<Status, string> = { manter: '', trocar: 'Fora da Pokédex — troca', descartar: 'Fora da Pokédex — descarte' };
 // Atributos com poucos valores, bons para filtro por valor.
-const FILTER_KEYS: AttrKey[] = ['cadeia', 'especie', 'origem', 'sexo', 'tamanho', 'brilhante', 'sortudo', 'rocket', 'traje', 'fundo', 'evento'];
+const FILTER_KEYS: AttrKey[] = ['codigo', 'cadeia', 'especie', 'origem', 'sexo', 'tamanho', 'brilhante', 'sortudo', 'rocket', 'traje', 'fundo', 'evento'];
 
 /** Valor legível de um atributo, usado no filtro por valor. */
 function attrText(c: Collection, e: Exemplar, key: AttrKey): string {
@@ -42,9 +42,17 @@ export function ExemplarList({ onOpen }: { onOpen: (id: string) => void }) {
   const [statusFilter, setStatusFilter] = useState<Status | ''>('');
   const [attr, setAttr] = useState<AttrKey | ''>('');
   const [attrValue, setAttrValue] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
+  const active = !!(text || statusFilter || (attr && attrValue));
+  const clear = () => {
+    setText('');
+    setStatusFilter('');
+    setAttr('');
+    setAttrValue('');
+  };
 
   const filterValues = useMemo(
-    () => (attr ? [...new Set(c.exemplars.map((e) => attrText(c, e, attr)))].sort() : []),
+    () => (attr && attr !== 'codigo' ? [...new Set(c.exemplars.map((e) => attrText(c, e, attr)))].sort() : []),
     [attr, c],
   );
 
@@ -52,14 +60,22 @@ export function ExemplarList({ onOpen }: { onOpen: (id: string) => void }) {
     const filters: Filter[] = [];
     if (statusFilter) filters.push({ key: 'status', value: statusFilter });
     let items = filterExemplars(c, r, c.exemplars, { filters, text });
-    if (attr && attrValue !== '') items = items.filter((e) => attrText(c, e, attr) === attrValue);
+    if (attr === 'codigo' && attrValue.trim()) {
+      const q = attrValue.trim().toUpperCase();
+      items = items.filter((e) => (r.exemplars[e.id]?.nickname ?? '').includes(q));
+    } else if (attr && attrValue !== '') items = items.filter((e) => attrText(c, e, attr) === attrValue);
     return sortExemplars(c, r, items, sort2 ? [sort1, sort2] : [sort1]);
   }, [c, r, statusFilter, text, attr, attrValue, sort1, sort2]);
 
   return (
     <section>
       <div className="toolbar">
-        <input type="search" aria-label="Buscar" placeholder="Buscar espécie, apelido ou nota" value={text} onChange={(e) => setText(e.target.value)} />
+        <input type="search" aria-label="Buscar" placeholder="Nome, Nº ou código" value={text} onChange={(e) => setText(e.target.value)} />
+        <button type="button" className="icon" aria-label="Filtrar" title="Filtrar e ordenar" aria-expanded={showFilters} onClick={() => setShowFilters(!showFilters)}>🔎</button>
+        {active && <button type="button" className="icon" aria-label="Limpar filtros" title="Limpar filtros" onClick={clear}>🧹</button>}
+      </div>
+      {showFilters && (
+      <div className="toolbar filters">
         <label>
           Ordenar por
           <select value={sort1.key} onChange={(e) => setSort1({ ...sort1, key: e.target.value as AttrKey })}>
@@ -103,7 +119,13 @@ export function ExemplarList({ onOpen }: { onOpen: (id: string) => void }) {
             {FILTER_KEYS.map((k) => <option key={k} value={k}>{ATTR_LABELS[k]}</option>)}
           </select>
         </label>
-        {attr && (
+        {attr === 'codigo' && (
+          <label>
+            Código contém
+            <input value={attrValue} placeholder="ex.: 0025BR" onChange={(e) => setAttrValue(e.target.value)} />
+          </label>
+        )}
+        {attr && attr !== 'codigo' && (
           <label>
             Valor
             <select value={attrValue} onChange={(e) => setAttrValue(e.target.value)}>
@@ -113,6 +135,7 @@ export function ExemplarList({ onOpen }: { onOpen: (id: string) => void }) {
           </label>
         )}
       </div>
+      )}
 
       <p className="muted">{list.length} exemplar(es)</p>
       <table>

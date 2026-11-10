@@ -1,12 +1,13 @@
 import { useMemo, useState, type FormEvent, type ReactNode } from 'react';
 import { computeCollection } from '../core/assign';
-import { addCostume, makeCode, registerBackground, slugify } from '../core/events';
+import { makeCode, registerBackground, slugify } from '../core/events';
 import { percentOf } from '../core/iv/parse';
 import { addExemplar, addSpecies, exemplarWarnings, replaceExemplar } from '../core/ops';
 import { regionOf } from '../core/region';
 import type { BackgroundType, Collection, Exemplar, IV, Rocket, Sex, Size, Species, Status } from '../core/types';
 import { useCollection } from './context';
 import { newId, today } from './format';
+import { SpeciesPicker } from './SpeciesPicker';
 
 const NEW = '__novo';
 // Campos opcionais controlados pelo formulário: são limpos e regravados a cada salvar.
@@ -14,21 +15,12 @@ const OPTIONAL: (keyof Exemplar)[] = ['iv', 'costumeId', 'backgroundId', 'dynama
 const OUT_LABEL: Record<Status, string> = { manter: '', trocar: 'Fora da Pokédex — troca', descartar: 'Fora da Pokédex — descarte' };
 const REGION_LETTERS = ['A', 'G', 'H', 'P'];
 
-const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
 const dex4 = (sp: Species) => String(sp.dex).padStart(4, '0') + (sp.form ?? '');
 
 /** Espécie principal de um Nº (a sem letra de forma, ou a primeira). */
 function baseOf(c: Collection, dex: number): Species | undefined {
   const same = c.species.filter((s) => s.dex === dex);
   return same.find((s) => !s.form) ?? same[0];
-}
-
-/** Resolve o que foi digitado no campo Pokémon: nome (de espécie ou forma) ou Nº. */
-function resolve(c: Collection, text: string): Species | undefined {
-  const t = norm(text).replace(/^#/, '');
-  if (!t) return undefined;
-  if (/^\d+$/.test(t)) return baseOf(c, Number(t));
-  return c.species.find((s) => norm(s.name) === t);
 }
 
 function Toggle<T extends string>(props: { label: string; value: T; options: [T, string, string][]; disabled?: (v: T) => boolean; onChange: (v: T) => void }) {
@@ -62,7 +54,7 @@ export function ExemplarForm({ exemplarId, onDone }: { exemplarId?: string; onDo
   const original = c.exemplars.find((e) => e.id === exemplarId);
   const originalSp = c.species.find((s) => s.id === original?.speciesId);
 
-  const [pokemon, setPokemon] = useState(originalSp ? baseOf(c, originalSp.dex)?.name ?? originalSp.name : '');
+  const [pickedId, setPickedId] = useState(originalSp?.id ?? '');
   const [variationId, setVariationId] = useState(original?.speciesId ?? '');
   const [newVariation, setNewVariation] = useState('');
   const [atk, setAtk] = useState(original?.iv?.atk?.toString() ?? '');
@@ -77,7 +69,6 @@ export function ExemplarForm({ exemplarId, onDone }: { exemplarId?: string; onDo
   const [dynamax, setDynamax] = useState(original?.dynamax ?? false);
   const [gigamax, setGigamax] = useState(original?.gigamax ?? false);
   const [costumeId, setCostumeId] = useState(original?.costumeId ?? '');
-  const [newCostume, setNewCostume] = useState({ name: '', shiny: false });
   const [backgroundId, setBackgroundId] = useState(original?.backgroundId ?? '');
   const [newBg, setNewBg] = useState({ name: '', type: 'localidade' as BackgroundType });
   const [eventId, setEventId] = useState(original?.eventId ?? '');
@@ -89,15 +80,15 @@ export function ExemplarForm({ exemplarId, onDone }: { exemplarId?: string; onDo
     [c.species],
   );
 
-  function choosePokemon(text: string) {
-    setPokemon(text);
-    const sp = resolve(c, text);
-    setVariationId(sp?.id ?? '');
+  function choosePokemon(id: string) {
+    setPickedId(id);
+    setVariationId(id);
     setCostumeId('');
   }
 
   const variation = variationId === NEW ? undefined : c.species.find((s) => s.id === variationId);
-  const base = variation ? baseOf(c, variation.dex) : resolve(c, pokemon);
+  const picked = c.species.find((s) => s.id === pickedId);
+  const base = variation ? baseOf(c, variation.dex) : picked ? baseOf(c, picked.dex) : undefined;
   const sp = variation ?? (variationId === NEW ? base : undefined);
   const variations = base ? options.filter((s) => s.dex === base.dex) : [];
   const fixedSex: Sex | null = sp?.gender === 'macho' || sp?.gender === 'femea' ? sp.gender : null;
@@ -127,7 +118,7 @@ export function ExemplarForm({ exemplarId, onDone }: { exemplarId?: string; onDo
       shiny,
       lucky,
       rocket,
-      ...(costumeId && costumeId !== NEW ? { costumeId } : {}),
+      ...(costumeId ? { costumeId } : {}),
       ...(backgroundId && backgroundId !== NEW ? { backgroundId } : {}),
       ...(dynamax ? { dynamax } : {}),
       ...(gigamax ? { gigamax } : {}),
@@ -154,7 +145,6 @@ export function ExemplarForm({ exemplarId, onDone }: { exemplarId?: string; onDo
     if (!base || (!variation && variationId !== NEW)) return setError('Escolha o Pokémon da lista (nome ou Nº).');
     if (iv === 'erro') return setError('ATK, DEF e PS: cada valor deve ser inteiro de 0 a 15.');
     if (variationId === NEW && !newVariation.trim()) return setError('Informe o nome da nova variação.');
-    if (costumeId === NEW && !newCostume.name.trim()) return setError('Informe o nome do traje novo.');
     if (backgroundId === NEW && !newBg.name.trim()) return setError('Informe o nome do fundo novo.');
 
     let savedId = '';
@@ -179,11 +169,6 @@ export function ExemplarForm({ exemplarId, onDone }: { exemplarId?: string; onDo
           speciesId = created.id;
         }
         let e = build(speciesId);
-        if (costumeId === NEW) {
-          next = addCostume(next, speciesId, { name: newCostume.name.trim(), shiny: newCostume.shiny });
-          const costume = next.species.find((s) => s.id === speciesId)!.costumes.find((t) => t.name === newCostume.name.trim())!;
-          e = { ...e, costumeId: costume.id };
-        }
         if (backgroundId === NEW) {
           const r = registerBackground(next, { name: newBg.name.trim(), type: newBg.type, speciesId });
           next = r.collection;
@@ -203,23 +188,10 @@ export function ExemplarForm({ exemplarId, onDone }: { exemplarId?: string; onDo
   return (
     <form className="form exemplar-form" noValidate onSubmit={submit}>
       <div className="ef-top">
-        <label className="ef-pokemon">
-          Pokémon
-          <input
-            role="combobox"
-            list="pokemon-options"
-            value={pokemon}
-            placeholder="nome ou Nº"
-            onChange={(e) => choosePokemon(e.target.value)}
-          />
-          <datalist id="pokemon-options">
-            {options.map((s) => (
-              <option key={s.id} value={s.name}>
-                #{s.dex}
-              </option>
-            ))}
-          </datalist>
-        </label>
+        <div className="ef-pokemon field">
+          <span>Pokémon</span>
+          <SpeciesPicker label="Pokémon" value={pickedId} onChange={choosePokemon} />
+        </div>
         <div className="ef-auto">
           <Auto label="Nº Pokédex">{sp ? dex4(sp) + (variationId === NEW ? '+' : '') : '----'}</Auto>
           <Auto label="Região">{sp ? regionOf(sp.dex) : '--------'}</Auto>
@@ -292,18 +264,9 @@ export function ExemplarForm({ exemplarId, onDone }: { exemplarId?: string; onDo
         <select value={costumeId} onChange={(e) => setCostumeId(e.target.value)}>
           <option value="">sem traje</option>
           {variation?.costumes.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
-          <option value={NEW}>novo traje…</option>
         </select>
       </label>
-      {costumeId === NEW && (
-        <>
-          <label>Nome do traje novo<input value={newCostume.name} onChange={(e) => setNewCostume({ ...newCostume, name: e.target.value })} /></label>
-          <label className="check">
-            <input type="checkbox" checked={newCostume.shiny} onChange={(e) => setNewCostume({ ...newCostume, shiny: e.target.checked })} />
-            Traje tem brilhante
-          </label>
-        </>
-      )}
+      <p className="muted hint">Traje novo: cadastre no evento, na Linha do tempo.</p>
 
       <label>
         Fundo

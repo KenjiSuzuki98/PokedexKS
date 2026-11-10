@@ -8,26 +8,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "bulbasaur-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      },
-      {
-        "id": "bulbasaur-fall-2019",
-        "code": "FALL",
-        "name": "Fall 2019",
-        "shiny": true
-      },
-      {
-        "id": "bulbasaur-viseira-de-pikachu",
-        "code": "VISE",
-        "name": "Viseira de Pikachu",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 118,
       "def": 111,
@@ -43,20 +24,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "ivysaur-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      },
-      {
-        "id": "ivysaur-viseira-de-pikachu",
-        "code": "VISE",
-        "name": "Viseira de Pikachu",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 151,
       "def": 143,
@@ -73,20 +41,7 @@
     "mega": true,
     "dynamax": true,
     "gigamax": true,
-    "costumes": [
-      {
-        "id": "venusaur-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      },
-      {
-        "id": "venusaur-viseira-de-pikachu",
-        "code": "VISE",
-        "name": "Viseira de Pikachu",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 198,
       "def": 189,
@@ -103,32 +58,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "charmander-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      },
-      {
-        "id": "charmander-fall-2019",
-        "code": "FALL",
-        "name": "Fall 2019",
-        "shiny": true
-      },
-      {
-        "id": "charmander-goggles-2026",
-        "code": "GOGG",
-        "name": "Goggles 2026",
-        "shiny": true
-      },
-      {
-        "id": "charmander-viseira-de-pikachu",
-        "code": "VISE",
-        "name": "Viseira de Pikachu",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 116,
       "def": 93,
@@ -144,26 +74,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "charmeleon-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      },
-      {
-        "id": "charmander-goggles-2026",
-        "code": "GOGG",
-        "name": "Goggles 2026",
-        "shiny": true
-      },
-      {
-        "id": "charmeleon-viseira-de-pikachu",
-        "code": "VISE",
-        "name": "Viseira de Pikachu",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 158,
       "def": 126,
@@ -180,26 +91,7 @@
     "mega": true,
     "dynamax": true,
     "gigamax": true,
-    "costumes": [
-      {
-        "id": "charizard-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      },
-      {
-        "id": "charmander-goggles-2026",
-        "code": "GOGG",
-        "name": "Goggles 2026",
-        "shiny": true
-      },
-      {
-        "id": "charizard-viseira-de-pikachu",
-        "code": "VISE",
-        "name": "Viseira de Pikachu",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 223,
       "def": 173,
@@ -216,32 +108,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "squirtle-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      },
-      {
-        "id": "squirtle-fall-2019",
-        "code": "FALL",
-        "name": "Fall 2019",
-        "shiny": true
-      },
-      {
-        "id": "squirtle-viseira-de-pikachu",
-        "code": "VISE",
-        "name": "Viseira de Pikachu",
-        "shiny": true
-      },
-      {
-        "id": "squirtle-oculos-escuros",
-        "code": "OCUL",
-        "name": "Óculos escuros",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 94,
       "def": 121,
@@ -257,26 +124,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "wartortle-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      },
-      {
-        "id": "wartortle-viseira-de-pikachu",
-        "code": "VISE",
-        "name": "Viseira de Pikachu",
-        "shiny": true
-      },
-      {
-        "id": "squirtle-oculos-escuros",
-        "code": "OCUL",
-        "name": "Óculos escuros",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 126,
       "def": 155,
@@ -293,26 +141,7 @@
     "mega": true,
     "dynamax": true,
     "gigamax": true,
-    "costumes": [
-      {
-        "id": "blastoise-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      },
-      {
-        "id": "blastoise-viseira-de-pikachu",
-        "code": "VISE",
-        "name": "Viseira de Pikachu",
-        "shiny": true
-      },
-      {
-        "id": "squirtle-oculos-escuros",
-        "code": "OCUL",
-        "name": "Óculos escuros",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 171,
       "def": 207,
@@ -329,14 +158,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "caterpie-go-fest-2026",
-        "code": "GOFE",
-        "name": "GO Fest 2026",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 55,
       "def": 55,
@@ -369,14 +191,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": true,
-    "costumes": [
-      {
-        "id": "butterfree-laco",
-        "code": "LACO",
-        "name": "Laço",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 167,
       "def": 137,
@@ -526,14 +341,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "raticate-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 161,
       "def": 139,
@@ -634,620 +442,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": true,
-    "costumes": [
-      {
-        "id": "pikachu-assistente-do-professor-willow",
-        "code": "ASSI",
-        "name": "Assistente do Professor Willow",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-astronauta",
-        "code": "ASTR",
-        "name": "Astronauta",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-baloes-de-5o-aniversario",
-        "code": "BALO",
-        "name": "Balões de 5º aniversário",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-baloes-de-okinawa",
-        "code": "BAL2",
-        "name": "Balões de Okinawa",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-baloes-laranja",
-        "code": "BAL3",
-        "name": "Balões laranja",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-baloes-multicoloridos",
-        "code": "BAL4",
-        "name": "Balões multicoloridos",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-baloes-roxos",
-        "code": "BAL5",
-        "name": "Balões roxos",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-baloes-verdes",
-        "code": "BAL6",
-        "name": "Balões verdes",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-baloes-vermelhos",
-        "code": "BAL7",
-        "name": "Balões vermelhos",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-boina-do-lucas",
-        "code": "BOIN",
-        "name": "Boina do Lucas",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-boina-do-rei",
-        "code": "BOI2",
-        "name": "Boina do Rei",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-mundial",
-        "code": "BONE",
-        "name": "Boné Mundial",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-da-equipe-instinto",
-        "code": "BON2",
-        "name": "Boné da Equipe Instinto",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-da-equipe-sabedoria",
-        "code": "BON3",
-        "name": "Boné da Equipe Sabedoria",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-da-equipe-valor",
-        "code": "BON4",
-        "name": "Boné da Equipe Valor",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-da-hilda",
-        "code": "BON5",
-        "name": "Boné da Hilda",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-da-leaf",
-        "code": "BON6",
-        "name": "Boné da Leaf",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-da-lyra",
-        "code": "BON7",
-        "name": "Boné da Lyra",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-da-serena",
-        "code": "BON8",
-        "name": "Boné da Serena",
-        "shiny": true
-      },
-      {
-        "id": "pichu-bone-do-ash",
-        "code": "BON9",
-        "name": "Boné do Ash",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-do-calem",
-        "code": "BO10",
-        "name": "Boné do Calem",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-do-charizard",
-        "code": "BO11",
-        "name": "Boné do Charizard",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-do-ethan",
-        "code": "BO12",
-        "name": "Boné do Ethan",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-do-hilbert",
-        "code": "BO13",
-        "name": "Boné do Hilbert",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-do-lucario",
-        "code": "BO14",
-        "name": "Boné do Lucario",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-do-rayquaza",
-        "code": "BO15",
-        "name": "Boné do Rayquaza",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-do-red",
-        "code": "BO16",
-        "name": "Boné do Red",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-bone-do-umbreon",
-        "code": "BO17",
-        "name": "Boné do Umbreon",
-        "shiny": true
-      },
-      {
-        "id": "pichu-bone-fragment",
-        "code": "BO18",
-        "name": "Boné fragment",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-camisa-azul-estampada-de-citricos",
-        "code": "CAMI",
-        "name": "Camisa azul estampada de cítricos",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-camisa-de-batik",
-        "code": "CAM2",
-        "name": "Camisa de batik",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-camisa-de-beisebol",
-        "code": "CAM3",
-        "name": "Camisa de beisebol",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-camisa-de-futebol-da-indonesia",
-        "code": "CAM4",
-        "name": "Camisa de futebol da Indonésia",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-camisa-kariyushi",
-        "code": "CAM5",
-        "name": "Camisa kariyushi",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-camiseta-lilas-com-flores",
-        "code": "CAM6",
-        "name": "Camiseta lilás com flores",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-camiseta-verde-com-frutas",
-        "code": "CAM7",
-        "name": "Camiseta verde com frutas",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-campeonato-mundial-2022",
-        "code": "CAMP",
-        "name": "Campeonato Mundial 2022",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-campeonato-mundial-2023",
-        "code": "CAM8",
-        "name": "Campeonato Mundial 2023",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-campeonato-mundial-2024",
-        "code": "CAM9",
-        "name": "Campeonato Mundial 2024",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-campeonato-mundial-2025",
-        "code": "CA10",
-        "name": "Campeonato Mundial 2025",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-campeonato-mundial-2026",
-        "code": "CA11",
-        "name": "Campeonato Mundial 2026",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-carnaval-de-inverno",
-        "code": "CARN",
-        "name": "Carnaval de inverno",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-cartola-de-festa",
-        "code": "CART",
-        "name": "Cartola de festa",
-        "shiny": true
-      },
-      {
-        "id": "pichu-chapeu-de-ano-novo",
-        "code": "CHAP",
-        "name": "Chapéu de Ano Novo",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-chapeu-de-bolo",
-        "code": "CHA2",
-        "name": "Chapéu de bolo",
-        "shiny": true
-      },
-      {
-        "id": "pichu-chapeu-de-bruxa",
-        "code": "CHA3",
-        "name": "Chapéu de bruxa",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-chapeu-de-detetive",
-        "code": "CHA4",
-        "name": "Chapéu de detetive",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-chapeu-de-detetive-2023",
-        "code": "CHA5",
-        "name": "Chapéu de detetive 2023",
-        "shiny": true
-      },
-      {
-        "id": "pichu-chapeu-de-festa-roxo",
-        "code": "CHA6",
-        "name": "Chapéu de festa roxo",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-chapeu-de-festa-vermelho",
-        "code": "CHA7",
-        "name": "Chapéu de festa vermelho",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-chapeu-de-flores",
-        "code": "CHA8",
-        "name": "Chapéu de flores",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-chapeu-de-palha",
-        "code": "CHA9",
-        "name": "Chapéu de palha",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-chapeu-de-safari",
-        "code": "CH10",
-        "name": "Chapéu de safári",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-chapeu-do-cap",
-        "code": "CH11",
-        "name": "Chapéu do Cap",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-chapeu-do-pokemon-estampas-ilustradas",
-        "code": "CH12",
-        "name": "Chapéu do Pokémon Estampas Ilustradas",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-chapeu-inspirado-em-meloetta",
-        "code": "CH13",
-        "name": "Chapéu inspirado em Meloetta",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-coroa-de-ametista",
-        "code": "CORO",
-        "name": "Coroa de ametista",
-        "shiny": true
-      },
-      {
-        "id": "pichu-coroa-de-flores",
-        "code": "COR2",
-        "name": "Coroa de flores",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-coroa-de-lua",
-        "code": "COR3",
-        "name": "Coroa de lua",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-coroa-de-malaquita",
-        "code": "COR4",
-        "name": "Coroa de malaquita",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-coroa-de-pirita",
-        "code": "COR5",
-        "name": "Coroa de pirita",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-coroa-de-quartzo",
-        "code": "COR6",
-        "name": "Coroa de quartzo",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-coroa-de-sol",
-        "code": "COR7",
-        "name": "Coroa de sol",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-coroa-de-agua-marinha",
-        "code": "COR8",
-        "name": "Coroa de água-marinha",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-escavador",
-        "code": "ESCA",
-        "name": "Escavador",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-explorador",
-        "code": "EXPL",
-        "name": "Explorador",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-fantasia-de-mimikyu",
-        "code": "FANT",
-        "name": "Fantasia de Mimikyu",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-fantasia-de-flor-de-gracidea",
-        "code": "FAN2",
-        "name": "Fantasia de flor de Gracidea",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-fantasia-de-gostosuras-e-travessuras",
-        "code": "FAN3",
-        "name": "Fantasia de gostosuras e travessuras",
-        "shiny": true
-      },
-      {
-        "id": "pichu-flores-de-cerejeira",
-        "code": "FLOR",
-        "name": "Flores de cerejeira",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-go-fest-2022",
-        "code": "GOFE",
-        "name": "GO Fest 2022",
-        "shiny": true
-      },
-      {
-        "id": "pichu-gorro-com-flocos-de-neve",
-        "code": "GORR",
-        "name": "Gorro com flocos de neve",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-gorro-da-dawn",
-        "code": "GOR2",
-        "name": "Gorro da Dawn",
-        "shiny": true
-      },
-      {
-        "id": "pichu-gorro-de-natal",
-        "code": "GOR3",
-        "name": "Gorro de Natal",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-gorro-do-brendan",
-        "code": "GOR4",
-        "name": "Gorro do Brendan",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-halloween-2026",
-        "code": "HALL",
-        "name": "Halloween 2026",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-k-2026-a-01",
-        "code": "K202",
-        "name": "K 2026 A 01",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-kurta",
-        "code": "KURT",
-        "name": "Kurta",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-laco-da-may",
-        "code": "LACO",
-        "name": "Laço da May",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-lenco-da-akari",
-        "code": "LENC",
-        "name": "Lenço da Akari",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-libre",
-        "code": "LIBR",
-        "name": "Libre",
-        "shiny": true
-      },
-      {
-        "id": "pichu-look-de-verao",
-        "code": "LOOK",
-        "name": "Look de verão",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-monoculo-amarelo",
-        "code": "MONO",
-        "name": "Monóculo amarelo",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-monoculo-azul",
-        "code": "MON2",
-        "name": "Monóculo azul",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-monoculo-vermelho",
-        "code": "MON3",
-        "name": "Monóculo vermelho",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-phd",
-        "code": "PHD",
-        "name": "Ph.D.",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-pokexciting-azul",
-        "code": "POKE",
-        "name": "PokéXciting! Azul",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-pokexciting-rosa",
-        "code": "POK2",
-        "name": "PokéXciting! Rosa",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-pokexciting-turquesa",
-        "code": "POK3",
-        "name": "PokéXciting! Turquesa",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-pokexciting-vermelho",
-        "code": "POK4",
-        "name": "PokéXciting! Vermelho",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-pop-star",
-        "code": "POPS",
-        "name": "Pop Star",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-rock-star",
-        "code": "ROCK",
-        "name": "Rock Star",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-sari",
-        "code": "SARI",
-        "name": "Sári",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-traje-espacial-de-cosmog",
-        "code": "TRAJ",
-        "name": "Traje espacial de Cosmog",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-traje-festivo",
-        "code": "TRA2",
-        "name": "Traje festivo",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-travessura-de-halloween",
-        "code": "TRAV",
-        "name": "Travessura de Halloween",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-viseira-da-rosa",
-        "code": "VISE",
-        "name": "Viseira da Rosa",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-viseira-de-maratona",
-        "code": "VIS2",
-        "name": "Viseira de maratona",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-viseira-do-nate",
-        "code": "VIS3",
-        "name": "Viseira do Nate",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-oculos-amarelos",
-        "code": "OCUL",
-        "name": "Óculos amarelos",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-oculos-azuis",
-        "code": "OCU2",
-        "name": "Óculos azuis",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-oculos-vermelhos",
-        "code": "OCU3",
-        "name": "Óculos vermelhos",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 112,
       "def": 96,
@@ -1264,92 +459,7 @@
     "mega": true,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "pikachu-bone-mundial",
-        "code": "BONE",
-        "name": "Boné Mundial",
-        "shiny": true
-      },
-      {
-        "id": "pichu-bone-do-ash",
-        "code": "BON2",
-        "name": "Boné do Ash",
-        "shiny": true
-      },
-      {
-        "id": "pichu-bone-fragment",
-        "code": "BON3",
-        "name": "Boné fragment",
-        "shiny": true
-      },
-      {
-        "id": "pichu-chapeu-de-ano-novo",
-        "code": "CHAP",
-        "name": "Chapéu de Ano Novo",
-        "shiny": true
-      },
-      {
-        "id": "pichu-chapeu-de-bruxa",
-        "code": "CHA2",
-        "name": "Chapéu de bruxa",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-chapeu-de-detetive",
-        "code": "CHA3",
-        "name": "Chapéu de detetive",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-chapeu-de-detetive-2023",
-        "code": "CHA4",
-        "name": "Chapéu de detetive 2023",
-        "shiny": true
-      },
-      {
-        "id": "pichu-chapeu-de-festa-roxo",
-        "code": "CHA5",
-        "name": "Chapéu de festa roxo",
-        "shiny": true
-      },
-      {
-        "id": "pichu-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      },
-      {
-        "id": "pichu-flores-de-cerejeira",
-        "code": "FLOR",
-        "name": "Flores de cerejeira",
-        "shiny": true
-      },
-      {
-        "id": "pichu-gorro-com-flocos-de-neve",
-        "code": "GORR",
-        "name": "Gorro com flocos de neve",
-        "shiny": true
-      },
-      {
-        "id": "pichu-gorro-de-natal",
-        "code": "GOR2",
-        "name": "Gorro de Natal",
-        "shiny": true
-      },
-      {
-        "id": "pichu-look-de-verao",
-        "code": "LOOK",
-        "name": "Look de verão",
-        "shiny": true
-      },
-      {
-        "id": "pikachu-traje-festivo",
-        "code": "TRAJ",
-        "name": "Traje festivo",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 193,
       "def": 151,
@@ -1484,14 +594,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "nidoqueen-coroa",
-        "code": "CORO",
-        "name": "Coroa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 180,
       "def": 173,
@@ -1524,14 +627,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "nidorino-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 137,
       "def": 111,
@@ -1548,14 +644,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "nidoking-coroa",
-        "code": "CORO",
-        "name": "Coroa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 204,
       "def": 156,
@@ -1606,14 +695,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "vulpix-festival-arrepiante",
-        "code": "FEST",
-        "name": "Festival Arrepiante",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 96,
       "def": 109,
@@ -1646,14 +728,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "vulpix-festival-arrepiante",
-        "code": "FEST",
-        "name": "Festival Arrepiante",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 169,
       "def": 190,
@@ -1688,14 +763,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "jigglypuff-laco",
-        "code": "LACO",
-        "name": "Laço",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 80,
       "def": 41,
@@ -1712,14 +780,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "jigglypuff-laco",
-        "code": "LACO",
-        "name": "Laço",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 156,
       "def": 90,
@@ -1736,14 +797,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "zubat-dia-das-bruxas-2026",
-        "code": "DIAD",
-        "name": "Dia das Bruxas 2026",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 83,
       "def": 73,
@@ -1759,14 +813,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "zubat-dia-das-bruxas-2026",
-        "code": "DIAD",
-        "name": "Dia das Bruxas 2026",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 161,
       "def": 150,
@@ -1899,14 +946,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "diglett-chapeu-coco",
-        "code": "CHAP",
-        "name": "Chapéu-coco",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 109,
       "def": 78,
@@ -1939,14 +979,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "diglett-chapeu-coco",
-        "code": "CHAP",
-        "name": "Chapéu-coco",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 167,
       "def": 136,
@@ -2066,20 +1099,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "psyduck-swim-2025",
-        "code": "SWIM",
-        "name": "Swim 2025",
-        "shiny": true
-      },
-      {
-        "id": "psyduck-traje-festivo",
-        "code": "TRAJ",
-        "name": "Traje festivo",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 122,
       "def": 95,
@@ -2095,14 +1115,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "psyduck-traje-festivo",
-        "code": "TRAJ",
-        "name": "Traje festivo",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 191,
       "def": 162,
@@ -2353,14 +1366,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": true,
-    "costumes": [
-      {
-        "id": "machamp-wildarea-2026-01",
-        "code": "WILD",
-        "name": "Wildarea 2026 01",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 234,
       "def": 159,
@@ -2563,20 +1569,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "ponyta-acessorio-tematico-de-candela",
-        "code": "ACES",
-        "name": "Acessório temático de Candela",
-        "shiny": true
-      },
-      {
-        "id": "ponyta-chapeu-inspirado-em-meloetta",
-        "code": "CHAP",
-        "name": "Chapéu inspirado em Meloetta",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 170,
       "def": 127,
@@ -2609,14 +1602,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "ponyta-acessorio-tematico-de-candela",
-        "code": "ACES",
-        "name": "Acessório temático de Candela",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 207,
       "def": 162,
@@ -2651,20 +1637,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "slowpoke-2020",
-        "code": "2020",
-        "name": "2020",
-        "shiny": true
-      },
-      {
-        "id": "slowpoke-chapeu-de-cauboi",
-        "code": "CHAP",
-        "name": "Chapéu de caubói",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 109,
       "def": 98,
@@ -2697,14 +1670,7 @@
     "mega": true,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "slowpoke-2020",
-        "code": "2021",
-        "name": "2021",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 177,
       "def": 180,
@@ -2871,14 +1837,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "grimer-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 135,
       "def": 90,
@@ -2911,14 +1870,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "grimer-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 190,
       "def": 172,
@@ -3019,32 +1971,7 @@
     "mega": true,
     "dynamax": true,
     "gigamax": true,
-    "costumes": [
-      {
-        "id": "gengar-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      },
-      {
-        "id": "gengar-costume-2020",
-        "code": "COST",
-        "name": "Costume 2020",
-        "shiny": true
-      },
-      {
-        "id": "gengar-fantasia-de-gostosuras-e-travessuras",
-        "code": "FANT",
-        "name": "Fantasia de gostosuras e travessuras",
-        "shiny": true
-      },
-      {
-        "id": "gengar-festival-arrepiante",
-        "code": "FEST",
-        "name": "Festival Arrepiante",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 261,
       "def": 149,
@@ -3261,14 +2188,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "cubone-coroa-de-cravo-de-defunto",
-        "code": "CORO",
-        "name": "Coroa de cravo-de-defunto",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 90,
       "def": 144,
@@ -3284,14 +2204,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "cubone-coroa-de-cravo-de-defunto",
-        "code": "CORO",
-        "name": "Coroa de cravo-de-defunto",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 144,
       "def": 186,
@@ -3458,14 +2371,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "happiny-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 60,
       "def": 128,
@@ -3680,14 +2586,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "elekid-acessorio-tematico-de-spark",
-        "code": "ACES",
-        "name": "Acessório temático de Spark",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 198,
       "def": 158,
@@ -3837,20 +2736,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": true,
-    "costumes": [
-      {
-        "id": "lapras-acessorio-tematico-de-blanche",
-        "code": "ACES",
-        "name": "Acessório temático de Blanche",
-        "shiny": true
-      },
-      {
-        "id": "lapras-costume-2020",
-        "code": "COST",
-        "name": "Costume 2020",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 165,
       "def": 174,
@@ -3866,20 +2752,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "ditto-spring-2026-a",
-        "code": "SPRI",
-        "name": "Spring 2026 A",
-        "shiny": true
-      },
-      {
-        "id": "ditto-spring-2026-b",
-        "code": "SPR2",
-        "name": "Spring 2026 B",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 91,
       "def": 91,
@@ -3895,50 +2768,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "eevee-chapeu-de-explorador",
-        "code": "CHAP",
-        "name": "Chapéu de explorador",
-        "shiny": true
-      },
-      {
-        "id": "eevee-chapeu-de-festa",
-        "code": "CHA2",
-        "name": "Chapéu de festa",
-        "shiny": true
-      },
-      {
-        "id": "eevee-chapeu-festivo",
-        "code": "CHA3",
-        "name": "Chapéu festivo",
-        "shiny": true
-      },
-      {
-        "id": "eevee-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      },
-      {
-        "id": "eevee-coroa-de-lua",
-        "code": "COR2",
-        "name": "Coroa de lua",
-        "shiny": true
-      },
-      {
-        "id": "eevee-coroa-de-sol",
-        "code": "COR3",
-        "name": "Coroa de sol",
-        "shiny": true
-      },
-      {
-        "id": "eevee-flores-de-cerejeira",
-        "code": "FLOR",
-        "name": "Flores de cerejeira",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 104,
       "def": 114,
@@ -3954,32 +2784,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "eevee-chapeu-de-explorador",
-        "code": "CHAP",
-        "name": "Chapéu de explorador",
-        "shiny": true
-      },
-      {
-        "id": "eevee-chapeu-festivo",
-        "code": "CHA2",
-        "name": "Chapéu festivo",
-        "shiny": true
-      },
-      {
-        "id": "eevee-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      },
-      {
-        "id": "eevee-flores-de-cerejeira",
-        "code": "FLOR",
-        "name": "Flores de cerejeira",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 205,
       "def": 161,
@@ -3996,32 +2801,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "eevee-chapeu-de-explorador",
-        "code": "CHAP",
-        "name": "Chapéu de explorador",
-        "shiny": true
-      },
-      {
-        "id": "eevee-chapeu-festivo",
-        "code": "CHA2",
-        "name": "Chapéu festivo",
-        "shiny": true
-      },
-      {
-        "id": "eevee-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      },
-      {
-        "id": "eevee-flores-de-cerejeira",
-        "code": "FLOR",
-        "name": "Flores de cerejeira",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 232,
       "def": 182,
@@ -4038,32 +2818,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "eevee-chapeu-de-explorador",
-        "code": "CHAP",
-        "name": "Chapéu de explorador",
-        "shiny": true
-      },
-      {
-        "id": "eevee-chapeu-festivo",
-        "code": "CHA2",
-        "name": "Chapéu festivo",
-        "shiny": true
-      },
-      {
-        "id": "eevee-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      },
-      {
-        "id": "eevee-flores-de-cerejeira",
-        "code": "FLOR",
-        "name": "Flores de cerejeira",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 246,
       "def": 179,
@@ -4162,14 +2917,7 @@
     "mega": true,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "aerodactyl-summer-2023",
-        "code": "SUMM",
-        "name": "Summer 2023",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 221,
       "def": 159,
@@ -4185,26 +2933,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": true,
-    "costumes": [
-      {
-        "id": "snorlax-chapeu-de-cauboi",
-        "code": "CHAP",
-        "name": "Chapéu de caubói",
-        "shiny": true
-      },
-      {
-        "id": "snorlax-touca-de-dormir",
-        "code": "TOUC",
-        "name": "Touca de dormir",
-        "shiny": true
-      },
-      {
-        "id": "snorlax-wildarea-2024",
-        "code": "WILD",
-        "name": "Wildarea 2024",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 190,
       "def": 169,
@@ -4353,14 +3082,7 @@
     "mega": true,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "dragonite-oculos-de-sol-e-gravata-borboleta",
-        "code": "OCUL",
-        "name": "Óculos de sol e gravata-borboleta",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 263,
       "def": 198,
@@ -4377,14 +3099,7 @@
     "mega": true,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "mewtwo-1o-aniversario",
-        "code": "1ANI",
-        "name": "1º aniversário",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 300,
       "def": 182,
@@ -4633,14 +3348,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "hoothoot-chapeu-de-ano-novo",
-        "code": "CHAP",
-        "name": "Chapéu de Ano Novo",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 67,
       "def": 88,
@@ -4656,14 +3364,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "noctowl-chapeu-de-ano-novo",
-        "code": "CHAP",
-        "name": "Chapéu de Ano Novo",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 145,
       "def": 156,
@@ -4746,14 +3447,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "zubat-dia-das-bruxas-2026",
-        "code": "DIAD",
-        "name": "Dia das Bruxas 2026",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 194,
       "def": 178,
@@ -4803,68 +3497,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "pichu-bone-do-ash",
-        "code": "BONE",
-        "name": "Boné do Ash",
-        "shiny": true
-      },
-      {
-        "id": "pichu-bone-fragment",
-        "code": "BON2",
-        "name": "Boné fragment",
-        "shiny": true
-      },
-      {
-        "id": "pichu-chapeu-de-ano-novo",
-        "code": "CHAP",
-        "name": "Chapéu de Ano Novo",
-        "shiny": true
-      },
-      {
-        "id": "pichu-chapeu-de-bruxa",
-        "code": "CHA2",
-        "name": "Chapéu de bruxa",
-        "shiny": true
-      },
-      {
-        "id": "pichu-chapeu-de-festa-roxo",
-        "code": "CHA3",
-        "name": "Chapéu de festa roxo",
-        "shiny": true
-      },
-      {
-        "id": "pichu-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      },
-      {
-        "id": "pichu-flores-de-cerejeira",
-        "code": "FLOR",
-        "name": "Flores de cerejeira",
-        "shiny": true
-      },
-      {
-        "id": "pichu-gorro-com-flocos-de-neve",
-        "code": "GORR",
-        "name": "Gorro com flocos de neve",
-        "shiny": true
-      },
-      {
-        "id": "pichu-gorro-de-natal",
-        "code": "GOR2",
-        "name": "Gorro de Natal",
-        "shiny": true
-      },
-      {
-        "id": "pichu-look-de-verao",
-        "code": "LOOK",
-        "name": "Look de verão",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 77,
       "def": 53,
@@ -4912,14 +3545,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "togepi-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 67,
       "def": 116,
@@ -4935,14 +3561,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "togetic-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 139,
       "def": 181,
@@ -5093,14 +3712,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "sudowoodo-winter-2025",
-        "code": "WINT",
-        "name": "Winter 2025",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 167,
       "def": 176,
@@ -5249,14 +3861,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "wooper-gorro",
-        "code": "GORR",
-        "name": "Gorro",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 75,
       "def": 66,
@@ -5289,14 +3894,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "wooper-gorro",
-        "code": "GORR",
-        "name": "Gorro",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 152,
       "def": 143,
@@ -5313,38 +3911,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "espeon-cachecol-de-sol",
-        "code": "CACH",
-        "name": "Cachecol de sol",
-        "shiny": true
-      },
-      {
-        "id": "eevee-chapeu-de-explorador",
-        "code": "CHAP",
-        "name": "Chapéu de explorador",
-        "shiny": true
-      },
-      {
-        "id": "eevee-chapeu-festivo",
-        "code": "CHA2",
-        "name": "Chapéu festivo",
-        "shiny": true
-      },
-      {
-        "id": "eevee-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      },
-      {
-        "id": "eevee-flores-de-cerejeira",
-        "code": "FLOR",
-        "name": "Flores de cerejeira",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 261,
       "def": 175,
@@ -5361,38 +3928,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "umbreon-cachecol-de-lua",
-        "code": "CACH",
-        "name": "Cachecol de lua",
-        "shiny": true
-      },
-      {
-        "id": "eevee-chapeu-de-explorador",
-        "code": "CHAP",
-        "name": "Chapéu de explorador",
-        "shiny": true
-      },
-      {
-        "id": "eevee-chapeu-festivo",
-        "code": "CHA2",
-        "name": "Chapéu festivo",
-        "shiny": true
-      },
-      {
-        "id": "eevee-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      },
-      {
-        "id": "eevee-flores-de-cerejeira",
-        "code": "FLOR",
-        "name": "Flores de cerejeira",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 126,
       "def": 240,
@@ -5425,14 +3961,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "slowpoke-2020",
-        "code": "2022",
-        "name": "2022",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 177,
       "def": 180,
@@ -5483,176 +4012,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "unown-a",
-        "code": "A",
-        "name": "A",
-        "shiny": true
-      },
-      {
-        "id": "unown-b",
-        "code": "B",
-        "name": "B",
-        "shiny": true
-      },
-      {
-        "id": "unown-c",
-        "code": "C",
-        "name": "C",
-        "shiny": true
-      },
-      {
-        "id": "unown-d",
-        "code": "D",
-        "name": "D",
-        "shiny": true
-      },
-      {
-        "id": "unown-e",
-        "code": "E",
-        "name": "E",
-        "shiny": true
-      },
-      {
-        "id": "unown-exclamation-point",
-        "code": "EXCL",
-        "name": "Exclamation Point",
-        "shiny": true
-      },
-      {
-        "id": "unown-f",
-        "code": "F",
-        "name": "F",
-        "shiny": true
-      },
-      {
-        "id": "unown-g",
-        "code": "G",
-        "name": "G",
-        "shiny": true
-      },
-      {
-        "id": "unown-h",
-        "code": "H",
-        "name": "H",
-        "shiny": true
-      },
-      {
-        "id": "unown-i",
-        "code": "I",
-        "name": "I",
-        "shiny": true
-      },
-      {
-        "id": "unown-j",
-        "code": "J",
-        "name": "J",
-        "shiny": true
-      },
-      {
-        "id": "unown-k",
-        "code": "K",
-        "name": "K",
-        "shiny": true
-      },
-      {
-        "id": "unown-l",
-        "code": "L",
-        "name": "L",
-        "shiny": true
-      },
-      {
-        "id": "unown-m",
-        "code": "M",
-        "name": "M",
-        "shiny": true
-      },
-      {
-        "id": "unown-n",
-        "code": "N2",
-        "name": "N",
-        "shiny": true
-      },
-      {
-        "id": "unown-o",
-        "code": "O",
-        "name": "O",
-        "shiny": true
-      },
-      {
-        "id": "unown-p",
-        "code": "P",
-        "name": "P",
-        "shiny": true
-      },
-      {
-        "id": "unown-q",
-        "code": "Q",
-        "name": "Q",
-        "shiny": true
-      },
-      {
-        "id": "unown-question-mark",
-        "code": "QUES",
-        "name": "Question Mark",
-        "shiny": true
-      },
-      {
-        "id": "unown-r",
-        "code": "R",
-        "name": "R",
-        "shiny": true
-      },
-      {
-        "id": "unown-s",
-        "code": "S",
-        "name": "S",
-        "shiny": true
-      },
-      {
-        "id": "unown-t",
-        "code": "T",
-        "name": "T",
-        "shiny": true
-      },
-      {
-        "id": "unown-u",
-        "code": "U",
-        "name": "U",
-        "shiny": true
-      },
-      {
-        "id": "unown-v",
-        "code": "V",
-        "name": "V",
-        "shiny": true
-      },
-      {
-        "id": "unown-w",
-        "code": "W",
-        "name": "W",
-        "shiny": true
-      },
-      {
-        "id": "unown-x",
-        "code": "X",
-        "name": "X",
-        "shiny": true
-      },
-      {
-        "id": "unown-y",
-        "code": "Y",
-        "name": "Y",
-        "shiny": true
-      },
-      {
-        "id": "unown-z",
-        "code": "Z",
-        "name": "Z",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 136,
       "def": 91,
@@ -5668,14 +4028,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "wobbuffet-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 60,
       "def": 106,
@@ -5905,14 +4258,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "sneasel-oculos-escuros",
-        "code": "OCUL",
-        "name": "Óculos escuros",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 189,
       "def": 146,
@@ -5945,14 +4291,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "teddiursa-chapeu-de-bruxa",
-        "code": "CHAP",
-        "name": "Chapéu de bruxa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 142,
       "def": 93,
@@ -5968,14 +4307,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "teddiursa-chapeu-de-bruxa",
-        "code": "CHAP",
-        "name": "Chapéu de bruxa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 236,
       "def": 144,
@@ -6058,14 +4390,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "corsola-spring-2026",
-        "code": "SPRI",
-        "name": "Spring 2026",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 118,
       "def": 156,
@@ -6131,14 +4456,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "delibird-winter-2020",
-        "code": "WINT",
-        "name": "Winter 2020",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 128,
       "def": 90,
@@ -6287,14 +4605,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "stantler-sinos",
-        "code": "SINO",
-        "name": "Sinos",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 192,
       "def": 131,
@@ -6359,14 +4670,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "smoochum-laco",
-        "code": "LACO",
-        "name": "Laço",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 153,
       "def": 91,
@@ -6382,14 +4686,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "elekid-acessorio-tematico-de-spark",
-        "code": "ACES",
-        "name": "Acessório temático de Spark",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 135,
       "def": 101,
@@ -6437,14 +4734,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "happiny-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 129,
       "def": 169,
@@ -6559,14 +4849,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "lugia-1o-aniversario",
-        "code": "1ANI",
-        "name": "1º aniversário",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 193,
       "def": 310,
@@ -6831,14 +5114,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "zigzagoon-chapeu-inspirado-em-meloetta",
-        "code": "CHAP",
-        "name": "Chapéu inspirado em Meloetta",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 58,
       "def": 80,
@@ -6906,14 +5182,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "wurmple-chapeu-de-festa",
-        "code": "CHAP",
-        "name": "Chapéu de festa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 75,
       "def": 59,
@@ -7179,14 +5448,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "kirlia-cartola",
-        "code": "CART",
-        "name": "Cartola",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 117,
       "def": 90,
@@ -7203,14 +5465,7 @@
     "mega": true,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "gardevoir-chapeu-inspirado-em-meloetta",
-        "code": "CHAP",
-        "name": "Chapéu inspirado em Meloetta",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 237,
       "def": 195,
@@ -7293,14 +5548,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "slakoth-viseira",
-        "code": "VISE",
-        "name": "Viseira",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 104,
       "def": 92,
@@ -7316,14 +5564,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "slakoth-viseira",
-        "code": "VISE",
-        "name": "Viseira",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 159,
       "def": 145,
@@ -7340,14 +5581,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "slakoth-viseira",
-        "code": "VISE",
-        "name": "Viseira",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 290,
       "def": 166,
@@ -7561,14 +5795,7 @@
     "mega": true,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "sableye-costume-2020",
-        "code": "COST",
-        "name": "Costume 2020",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 141,
       "def": 136,
@@ -7978,128 +6205,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "spinda-00",
-        "code": "00",
-        "name": "00",
-        "shiny": true
-      },
-      {
-        "id": "spinda-01",
-        "code": "01",
-        "name": "01",
-        "shiny": true
-      },
-      {
-        "id": "spinda-02",
-        "code": "02",
-        "name": "02",
-        "shiny": true
-      },
-      {
-        "id": "spinda-03",
-        "code": "03",
-        "name": "03",
-        "shiny": true
-      },
-      {
-        "id": "spinda-04",
-        "code": "04",
-        "name": "04",
-        "shiny": true
-      },
-      {
-        "id": "spinda-05",
-        "code": "05",
-        "name": "05",
-        "shiny": true
-      },
-      {
-        "id": "spinda-06",
-        "code": "06",
-        "name": "06",
-        "shiny": true
-      },
-      {
-        "id": "spinda-07",
-        "code": "07",
-        "name": "07",
-        "shiny": true
-      },
-      {
-        "id": "spinda-08",
-        "code": "08",
-        "name": "08",
-        "shiny": true
-      },
-      {
-        "id": "spinda-09",
-        "code": "09",
-        "name": "09",
-        "shiny": true
-      },
-      {
-        "id": "spinda-10",
-        "code": "10",
-        "name": "10",
-        "shiny": true
-      },
-      {
-        "id": "spinda-11",
-        "code": "11",
-        "name": "11",
-        "shiny": true
-      },
-      {
-        "id": "spinda-12",
-        "code": "12",
-        "name": "12",
-        "shiny": true
-      },
-      {
-        "id": "spinda-13",
-        "code": "13",
-        "name": "13",
-        "shiny": true
-      },
-      {
-        "id": "spinda-14",
-        "code": "14",
-        "name": "14",
-        "shiny": true
-      },
-      {
-        "id": "spinda-15",
-        "code": "15",
-        "name": "15",
-        "shiny": true
-      },
-      {
-        "id": "spinda-16",
-        "code": "16",
-        "name": "16",
-        "shiny": true
-      },
-      {
-        "id": "spinda-17",
-        "code": "17",
-        "name": "17",
-        "shiny": true
-      },
-      {
-        "id": "spinda-18",
-        "code": "18",
-        "name": "18",
-        "shiny": true
-      },
-      {
-        "id": "spinda-19",
-        "code": "19",
-        "name": "19",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 116,
       "def": 116,
@@ -8148,14 +6254,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "flygon-chapeu-inspirado-em-meloetta",
-        "code": "CHAP",
-        "name": "Chapéu inspirado em Meloetta",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 205,
       "def": 168,
@@ -8616,14 +6715,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "duskull-coroa-de-cravo-de-defunto",
-        "code": "CORO",
-        "name": "Coroa de cravo-de-defunto",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 70,
       "def": 162,
@@ -8639,14 +6731,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "dusclops-coroa-de-cravo-de-defunto",
-        "code": "CORO",
-        "name": "Coroa de cravo-de-defunto",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 124,
       "def": 234,
@@ -8696,14 +6781,7 @@
     "mega": true,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "absol-oculos-escuros",
-        "code": "OCUL",
-        "name": "Óculos escuros",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 246,
       "def": 120,
@@ -8768,14 +6846,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "spheal-cachecol-festivo",
-        "code": "CACH",
-        "name": "Cachecol festivo",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 95,
       "def": 90,
@@ -9252,20 +7323,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "turtwig-chapeu-de-dawn",
-        "code": "CHAP",
-        "name": "Chapéu de Dawn",
-        "shiny": true
-      },
-      {
-        "id": "turtwig-chapeu-de-lucas",
-        "code": "CHA2",
-        "name": "Chapéu de Lucas",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 119,
       "def": 110,
@@ -9315,20 +7373,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "chimchar-chapeu-de-dawn",
-        "code": "CHAP",
-        "name": "Chapéu de Dawn",
-        "shiny": true
-      },
-      {
-        "id": "chimchar-chapeu-de-lucas",
-        "code": "CHA2",
-        "name": "Chapéu de Lucas",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 113,
       "def": 86,
@@ -9378,26 +7423,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "piplup-chapeu-de-dawn",
-        "code": "CHAP",
-        "name": "Chapéu de Dawn",
-        "shiny": true
-      },
-      {
-        "id": "piplup-chapeu-de-lucas",
-        "code": "CHA2",
-        "name": "Chapéu de Lucas",
-        "shiny": true
-      },
-      {
-        "id": "piplup-travessura-de-halloween",
-        "code": "TRAV",
-        "name": "Travessura de Halloween",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 112,
       "def": 102,
@@ -9563,14 +7589,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "shinx-cartola",
-        "code": "CART",
-        "name": "Cartola",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 117,
       "def": 64,
@@ -10073,14 +8092,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "drifblim-travessura-de-halloween",
-        "code": "TRAV",
-        "name": "Travessura de Halloween",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 180,
       "def": 102,
@@ -10097,14 +8109,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "buneary-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 130,
       "def": 105,
@@ -10120,14 +8125,7 @@
     "mega": true,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "lopunny-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 156,
       "def": 194,
@@ -10325,14 +8323,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "happiny-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 25,
       "def": 77,
@@ -10545,14 +8536,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "croagunk-bone-invertido",
-        "code": "BONE",
-        "name": "Boné invertido",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 116,
       "def": 76,
@@ -10568,14 +8552,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "toxicroak-bone-invertido",
-        "code": "BONE",
-        "name": "Boné invertido",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 211,
       "def": 133,
@@ -10775,14 +8752,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "elekid-acessorio-tematico-de-spark",
-        "code": "ACES",
-        "name": "Acessório temático de Spark",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 249,
       "def": 163,
@@ -10816,14 +8786,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "togekiss-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 225,
       "def": 217,
@@ -10857,32 +8820,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "eevee-chapeu-de-explorador",
-        "code": "CHAP",
-        "name": "Chapéu de explorador",
-        "shiny": true
-      },
-      {
-        "id": "eevee-chapeu-festivo",
-        "code": "CHA2",
-        "name": "Chapéu festivo",
-        "shiny": true
-      },
-      {
-        "id": "eevee-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      },
-      {
-        "id": "eevee-flores-de-cerejeira",
-        "code": "FLOR",
-        "name": "Flores de cerejeira",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 216,
       "def": 219,
@@ -10899,38 +8837,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "glaceon-capa-festiva",
-        "code": "CAPA",
-        "name": "Capa festiva",
-        "shiny": true
-      },
-      {
-        "id": "eevee-chapeu-de-explorador",
-        "code": "CHAP",
-        "name": "Chapéu de explorador",
-        "shiny": true
-      },
-      {
-        "id": "eevee-chapeu-festivo",
-        "code": "CHA2",
-        "name": "Chapéu festivo",
-        "shiny": true
-      },
-      {
-        "id": "eevee-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      },
-      {
-        "id": "eevee-flores-de-cerejeira",
-        "code": "FLOR",
-        "name": "Flores de cerejeira",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 238,
       "def": 205,
@@ -11032,14 +8939,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "dusknoir-coroa-de-cravo-de-defunto",
-        "code": "CORO",
-        "name": "Coroa de cravo-de-defunto",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 180,
       "def": 254,
@@ -12236,14 +10136,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "blitzle-colar",
-        "code": "COLA",
-        "name": "Colar",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 118,
       "def": 64,
@@ -12640,14 +10533,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "cottonee-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 71,
       "def": 111,
@@ -12663,14 +10549,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "cottonee-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 164,
       "def": 176,
@@ -13254,14 +11133,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "minccino-fantasia-fashion",
-        "code": "FANT",
-        "name": "Fantasia fashion",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 98,
       "def": 80,
@@ -13277,14 +11149,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "minccino-fantasia-fashion",
-        "code": "FANT",
-        "name": "Fantasia fashion",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 198,
       "def": 130,
@@ -14052,14 +11917,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "cubchoo-winter-2020",
-        "code": "WINT",
-        "name": "Winter 2020",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 128,
       "def": 74,
@@ -14075,14 +11933,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "cubchoo-winter-2020",
-        "code": "WINT",
-        "name": "Winter 2020",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 233,
       "def": 152,
@@ -14989,14 +12840,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "froakie-chapeu-de-bruxa",
-        "code": "CHAP",
-        "name": "Chapéu de bruxa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 122,
       "def": 84,
@@ -15012,14 +12856,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "froakie-chapeu-de-bruxa",
-        "code": "CHAP",
-        "name": "Chapéu de bruxa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 168,
       "def": 114,
@@ -15036,14 +12873,7 @@
     "mega": true,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "froakie-chapeu-de-bruxa",
-        "code": "CHAP",
-        "name": "Chapéu de bruxa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 223,
       "def": 152,
@@ -15143,128 +12973,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "scatterbug-padrao-arquipelago",
-        "code": "PADR",
-        "name": "Padrão Arquipélago",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-chique",
-        "code": "PAD2",
-        "name": "Padrão Chique",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-continental",
-        "code": "PAD3",
-        "name": "Padrão Continental",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-deserto",
-        "code": "PAD4",
-        "name": "Padrão Deserto",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-elegante",
-        "code": "PAD5",
-        "name": "Padrão Elegante",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-jardim",
-        "code": "PAD6",
-        "name": "Padrão Jardim",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-marinho",
-        "code": "PAD7",
-        "name": "Padrão Marinho",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-moderno",
-        "code": "PAD8",
-        "name": "Padrão Moderno",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-moncao",
-        "code": "PAD9",
-        "name": "Padrão Monção",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-neve-congelada",
-        "code": "PA10",
-        "name": "Padrão Neve Congelada",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-oceano",
-        "code": "PA11",
-        "name": "Padrão Oceano",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-planalto",
-        "code": "PA12",
-        "name": "Padrão Planalto",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-poke-bola",
-        "code": "PA13",
-        "name": "Padrão Poké Bola",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-polar",
-        "code": "PA14",
-        "name": "Padrão Polar",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-prado",
-        "code": "PA15",
-        "name": "Padrão Prado",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-rio",
-        "code": "PA16",
-        "name": "Padrão Rio",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-savana",
-        "code": "PA17",
-        "name": "Padrão Savana",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-selva",
-        "code": "PA18",
-        "name": "Padrão Selva",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-solar",
-        "code": "PA19",
-        "name": "Padrão Solar",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-tundra",
-        "code": "PA20",
-        "name": "Padrão Tundra",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 63,
       "def": 63,
@@ -15280,128 +12989,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "scatterbug-padrao-arquipelago",
-        "code": "PADR",
-        "name": "Padrão Arquipélago",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-chique",
-        "code": "PAD2",
-        "name": "Padrão Chique",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-continental",
-        "code": "PAD3",
-        "name": "Padrão Continental",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-deserto",
-        "code": "PAD4",
-        "name": "Padrão Deserto",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-elegante",
-        "code": "PAD5",
-        "name": "Padrão Elegante",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-jardim",
-        "code": "PAD6",
-        "name": "Padrão Jardim",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-marinho",
-        "code": "PAD7",
-        "name": "Padrão Marinho",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-moderno",
-        "code": "PAD8",
-        "name": "Padrão Moderno",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-moncao",
-        "code": "PAD9",
-        "name": "Padrão Monção",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-neve-congelada",
-        "code": "PA10",
-        "name": "Padrão Neve Congelada",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-oceano",
-        "code": "PA11",
-        "name": "Padrão Oceano",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-planalto",
-        "code": "PA12",
-        "name": "Padrão Planalto",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-poke-bola",
-        "code": "PA13",
-        "name": "Padrão Poké Bola",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-polar",
-        "code": "PA14",
-        "name": "Padrão Polar",
-        "shiny": true
-      },
-      {
-        "id": "spewpa-padrao-prado",
-        "code": "PA15",
-        "name": "Padrão Prado",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-rio",
-        "code": "PA16",
-        "name": "Padrão Rio",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-savana",
-        "code": "PA17",
-        "name": "Padrão Savana",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-selva",
-        "code": "PA18",
-        "name": "Padrão Selva",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-solar",
-        "code": "PA19",
-        "name": "Padrão Solar",
-        "shiny": true
-      },
-      {
-        "id": "scatterbug-padrao-tundra",
-        "code": "PA20",
-        "name": "Padrão Tundra",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 48,
       "def": 89,
@@ -16704,32 +14292,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "eevee-chapeu-de-explorador",
-        "code": "CHAP",
-        "name": "Chapéu de explorador",
-        "shiny": true
-      },
-      {
-        "id": "eevee-chapeu-festivo",
-        "code": "CHA2",
-        "name": "Chapéu festivo",
-        "shiny": true
-      },
-      {
-        "id": "eevee-coroa-de-flores",
-        "code": "CORO",
-        "name": "Coroa de flores",
-        "shiny": true
-      },
-      {
-        "id": "eevee-flores-de-cerejeira",
-        "code": "FLOR",
-        "name": "Flores de cerejeira",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 203,
       "def": 205,
@@ -16762,14 +14325,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "dedenne-traje-festivo",
-        "code": "TRAJ",
-        "name": "Traje festivo",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 164,
       "def": 134,
@@ -16935,32 +14491,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "pumpkaboo-festival-arrepiante",
-        "code": "VARI",
-        "name": "Variedade Grande) (Festival Arrepiante",
-        "shiny": true
-      },
-      {
-        "id": "pumpkaboo-festival-arrepiante",
-        "code": "VAR2",
-        "name": "Variedade Jumbo) (Festival Arrepiante",
-        "shiny": true
-      },
-      {
-        "id": "pumpkaboo-festival-arrepiante",
-        "code": "VAR3",
-        "name": "Variedade Média) (Festival Arrepiante",
-        "shiny": true
-      },
-      {
-        "id": "pumpkaboo-festival-arrepiante",
-        "code": "VAR4",
-        "name": "Variedade Pequena) (Festival Arrepiante",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 122,
       "def": 124,
@@ -17027,32 +14558,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "gourgeist-festival-arrepiante",
-        "code": "VARI",
-        "name": "Variedade Grande) (Festival Arrepiante",
-        "shiny": true
-      },
-      {
-        "id": "gourgeist-festival-arrepiante",
-        "code": "VAR2",
-        "name": "Variedade Jumbo) (Festival Arrepiante",
-        "shiny": true
-      },
-      {
-        "id": "gourgeist-festival-arrepiante",
-        "code": "VAR3",
-        "name": "Variedade Média) (Festival Arrepiante",
-        "shiny": true
-      },
-      {
-        "id": "gourgeist-festival-arrepiante",
-        "code": "VAR4",
-        "name": "Variedade Pequena) (Festival Arrepiante",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 171,
       "def": 219,
@@ -17173,14 +14679,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "noibat-tiara",
-        "code": "TIAR",
-        "name": "Tiara",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 83,
       "def": 73,
@@ -17196,14 +14695,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "noibat-tiara",
-        "code": "TIAR",
-        "name": "Tiara",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 205,
       "def": 175,
@@ -17386,14 +14878,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "rowlet-cartola-de-dia-das-bruxas",
-        "code": "CART",
-        "name": "Cartola de Dia das Bruxas",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 102,
       "def": 99,
@@ -17409,14 +14894,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "rowlet-cartola-de-dia-das-bruxas",
-        "code": "CART",
-        "name": "Cartola de Dia das Bruxas",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 142,
       "def": 139,
@@ -17433,14 +14911,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "rowlet-cartola-de-dia-das-bruxas",
-        "code": "CART",
-        "name": "Cartola de Dia das Bruxas",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 210,
       "def": 179,
@@ -17673,14 +15144,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "charjabug-winter-2025",
-        "code": "WINT",
-        "name": "Winter 2025",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 145,
       "def": 161,
@@ -17697,14 +15161,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "charjabug-winter-2025",
-        "code": "WINT",
-        "name": "Winter 2025",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 254,
       "def": 158,
@@ -18187,14 +15644,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "bewear-wildarea-2025",
-        "code": "WILD",
-        "name": "Wildarea 2025",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 226,
       "def": 141,
@@ -19477,14 +16927,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "wooloo-traje-festivo",
-        "code": "TRAJ",
-        "name": "Traje festivo",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 76,
       "def": 97,
@@ -19500,14 +16943,7 @@
     "mega": false,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "wooloo-traje-festivo",
-        "code": "TRAJ",
-        "name": "Traje festivo",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 159,
       "def": 198,
@@ -19890,20 +17326,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "sinistea-forma-autentica-dia-das-bruxas-2026",
-        "code": "FORM",
-        "name": "Forma Autêntica - Dia das Bruxas 2026",
-        "shiny": true
-      },
-      {
-        "id": "sinistea-forma-falsificada-dia-das-bruxas-2026",
-        "code": "FOR2",
-        "name": "Forma Falsificada - Dia das Bruxas 2026",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 134,
       "def": 96,
@@ -19936,20 +17359,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "polteageist-forma-autentica-dia-das-bruxas-2026",
-        "code": "FORM",
-        "name": "Forma Autêntica - Dia das Bruxas 2026",
-        "shiny": true
-      },
-      {
-        "id": "polteageist-forma-falsificada-dia-das-bruxas-2026",
-        "code": "FOR2",
-        "name": "Forma Falsificada - Dia das Bruxas 2026",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 248,
       "def": 189,
@@ -20186,14 +17596,7 @@
     "mega": true,
     "dynamax": true,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "falinks-condutor-de-trem",
-        "code": "COND",
-        "name": "Condutor de trem",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 193,
       "def": 170,
@@ -20603,14 +18006,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "teddiursa-chapeu-de-bruxa",
-        "code": "CHAP",
-        "name": "Chapéu de bruxa",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 243,
       "def": 181,
@@ -20710,14 +18106,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "floragato-chapeu-com-pin-da-liko",
-        "code": "CHAP",
-        "name": "Chapéu com pin da Liko",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 157,
       "def": 128,
@@ -22013,20 +19402,7 @@
     "mega": false,
     "dynamax": false,
     "gigamax": false,
-    "costumes": [
-      {
-        "id": "gimmighoul-moeda-de-paldea",
-        "code": "MOED",
-        "name": "Moeda de Paldea",
-        "shiny": true
-      },
-      {
-        "id": "gimmighoul-moeda-do-evento-2026",
-        "code": "MOE2",
-        "name": "Moeda do evento 2026",
-        "shiny": true
-      }
-    ],
+    "costumes": [],
     "base": {
       "atk": 140,
       "def": 76,
